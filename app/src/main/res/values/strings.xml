@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ComposeSurveyApp</string>
+    <string name="appName">Surveyticon</string>
+    <string name="loginForContinue">Please login for continue</string>
+    <string name="welcome">Welcome to</string>
+    <string name="enterEmail">Enter E-Mail</string>
+    <string name="error_unknown">Unexpected error occurred</string>
+    <string name="invalidInputs">Invalid inputs</string>
+</resources>
