@@ -101,7 +101,8 @@ fun RegisterScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp),
+                    .padding(start = 20.dp, end = 20.dp)
+                    .testTag(TestTags.REGISTER_EMAIL),
                 label = {
                     Text(text = "Enter E-Mail", fontWeight = FontWeight.Light)
                 },
@@ -123,7 +124,8 @@ fun RegisterScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp),
+                    .padding(start = 20.dp, end = 20.dp)
+                    .testTag(TestTags.REGISTER_PASSWORD),
                 label = {
                     Text(text = "Enter password", fontWeight = FontWeight.Light)
                 },
@@ -152,7 +154,8 @@ fun RegisterScreen(
                 },
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp),
+                    .padding(start = 20.dp, end = 20.dp)
+                    .testTag(TestTags.REGISTER_BUTTON),
                 enabled = viewModel.uiEnable.value
             ) {
                 Text(text = "Register", fontFamily = istokweb, fontSize = 25.sp)
@@ -161,7 +164,8 @@ fun RegisterScreen(
             Text(text = "Already have an account?")
             TextButton(
                 onClick = { onNavigate(Screen.LoginScreen.route) },
-                enabled = viewModel.uiEnable.value
+                enabled = viewModel.uiEnable.value,
+                modifier = Modifier.testTag(TestTags.REGISTER_SCREEN_TEXT_BUTTON)
             ) {
                 Text(text = "Login here")
             }
@@ -176,7 +180,7 @@ fun RegisterScreen(
             if (state.isLoading) {
                 Log.d("Login", "isLoading")
                 viewModel.setUiEnable(false)
-                CircularProgressIndicator()
+                CircularProgressIndicator(modifier = Modifier.testTag(TestTags.REGISTER_PROGRESSBAR))
             } else {
                 viewModel.setUiEnable(true)
             }

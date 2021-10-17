@@ -4,10 +4,11 @@ import android.provider.Settings.Global.getString
 import com.mnowo.composesurveyapp.R
 import com.mnowo.composesurveyapp.core.presentation.util.Resource
 import com.mnowo.composesurveyapp.feature_auth.domain.models.LoginResult
+import com.mnowo.composesurveyapp.feature_auth.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class LoginUseCase {
+class LoginUseCase(authRepository: AuthRepository) {
 
     operator fun invoke(email: String, password: String) : Flow<Resource<LoginResult>> = flow {
         emit(Resource.Loading())

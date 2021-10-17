@@ -21,12 +21,25 @@ class RegisterUseCase @Inject constructor(
             val emailResult = ValidationUtil.validateEmail(email)
             val passwordResult = ValidationUtil.validateText(password)
 
-            if(emailResult.isValidInput == true || passwordResult.isValidInput == true) {
+            if(emailResult.isValidInput == true && passwordResult.isValidInput == true) {
                 val respondResult = authRepository.registerWithEmailAndPassword(email, password)
                 val registerResult = RegisterResult(registerResult = respondResult)
-                emit(Resource.Success(registerResult))
+
+                if(respondResult.errorMessage != null) {
+                    emit(Resource.Error<RegisterResult>(message = respondResult.errorMessage.toString()))
+                } else {
+                    emit(Resource.Success(registerResult))
+                }
             } else {
-                emit(Resource.Error<RegisterResult>(message = "Invalid inputs"))
+                if(emailResult.isInvalidInput == true) {
+                    emit(Resource.Error<RegisterResult>(data = RegisterResult(emailError = true), message = "Error"))
+                }
+                if(passwordResult.isInvalidInput == true) {
+                    emit(Resource.Error<RegisterResult>(data = RegisterResult(passwordError = true), message = "Error"))
+                }
+                if(emailResult.isInvalidEmail == true) {
+                    emit(Resource.Error<RegisterResult>(data = RegisterResult(emailError = true), message = "Error"))
+                }
             }
 
         } catch (e: Exception) {

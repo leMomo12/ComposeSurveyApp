@@ -1,4 +1,4 @@
-package com.mnowo.composesurveyapp.di
+package com.mnowo.composesurveyapp.feature_auth.presentation.di
 
 import com.mnowo.composesurveyapp.feature_auth.data.remote.AuthRemoteDb
 import com.mnowo.composesurveyapp.feature_auth.data.repository.AuthRepositoryImpl
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AuthModule {
+object AuthModuleTest {
 
     @Provides
     @Singleton

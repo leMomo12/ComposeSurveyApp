@@ -5,5 +5,4 @@
     <string name="welcome">Welcome to</string>
     <string name="enterEmail">Enter E-Mail</string>
     <string name="error_unknown">Unexpected error occurred</string>
-    <string name="invalidInputs">Invalid inputs</string>
 </resources>

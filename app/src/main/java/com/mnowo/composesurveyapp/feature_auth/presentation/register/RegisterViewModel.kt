@@ -69,7 +69,9 @@ class RegisterViewModel @Inject constructor(
                 )
             }
             is RegisterEvent.Register -> {
-                d("Registration", "RegisterEvent")
+                _isErrorEmail.value = false
+                _isErrorPassword.value = false
+
                 viewModelScope.launch {
                     _state.value = state.value.copy(isLoading = true)
                     registerUseCase(
@@ -89,22 +91,27 @@ class RegisterViewModel @Inject constructor(
                                 d("Registration", "Successful")
                             }
                             is Resource.Error -> {
-                                d("Registration", "Error")
-                                if (result.data?.emailError != null) {
-                                    _isErrorEmail.value = true
-                                    if (result.data.passwordError != null) {
+                                when {
+                                    result.data?.passwordError != null -> {
                                         _isErrorPassword.value = true
                                     }
-                                } else if (result.data?.passwordError != null) {
-                                    _isErrorPassword.value = true
-                                } else {
+                                    result.data?.emailError != null -> {
+                                        _isErrorEmail.value = true
+                                    }
+                                    else -> {
+                                        if(result.message == "The email address is badly formatted.") {
+                                            _isErrorEmail.value = true
+                                        }
 
+                                        if(result.message!!.contains("The given password is invalid.")) {
+                                            _isErrorPassword.value = true
+                                        }
+                                    }
                                 }
                                 _state.value = RegisterState(isLoading = false)
                             }
                         }
                     }.launchIn(viewModelScope)
-
                 }
             }
         }

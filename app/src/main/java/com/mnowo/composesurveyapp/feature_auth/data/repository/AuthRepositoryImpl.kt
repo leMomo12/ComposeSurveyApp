@@ -8,6 +8,7 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authRemoteDb: AuthRemoteDb
 ) : AuthRepository {
+
     override suspend fun signInWithEmailAndPassword(
         email: String,
         password: String
