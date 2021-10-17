@@ -86,7 +86,7 @@ class RegisterViewModel @Inject constructor(
                             is Resource.Success -> {
                                 _state.value = RegisterState(isLoading = false)
                                 _eventFlow.emit(
-                                    UiEvent.Navigate(Screen.SplashScreen.route)
+                                    UiEvent.Navigate(Screen.HomeScreen.route)
                                 )
                                 d("Registration", "Successful")
                             }

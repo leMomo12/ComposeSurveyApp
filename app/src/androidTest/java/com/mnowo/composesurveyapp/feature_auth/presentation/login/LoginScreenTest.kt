@@ -10,6 +10,7 @@ import com.mnowo.composesurveyapp.core.ui.theme.ComposeSurveyAppTheme
 import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.di.AppModule
 import com.mnowo.composesurveyapp.di.AuthModule
+import com.mnowo.composesurveyapp.di.HomeModule
 import com.mnowo.composesurveyapp.feature_auth.presentation.register.RegisterScreen
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -19,7 +20,7 @@ import org.junit.Before
 import org.junit.Rule
 
 @HiltAndroidTest
-@UninstallModules(AppModule::class, AuthModule::class)
+@UninstallModules(AppModule::class, AuthModule::class, HomeModule::class)
 class LoginScreenTest {
 
     @get:Rule(order = 0)

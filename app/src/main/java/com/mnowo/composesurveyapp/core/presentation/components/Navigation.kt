@@ -14,6 +14,7 @@ import com.mnowo.composesurveyapp.feature_auth.presentation.login.LoginScreen
 import com.google.accompanist.navigation.animation.navigation
 import com.mnowo.composesurveyapp.feature_auth.presentation.register.RegisterScreen
 import com.mnowo.composesurveyapp.feature_auth.presentation.splash.SplashScreen
+import com.mnowo.composesurveyapp.feature_home.presentation.home.HomeScreen
 
 @ExperimentalAnimationApi
 @Composable
@@ -38,6 +39,10 @@ fun Navigation(navController: NavHostController) {
 
         composable(Screen.RegisterScreen.route) {
             RegisterScreen(navController = navController, onNavigate = navController::navigate)
+        }
+
+        composable(Screen.HomeScreen.route) {
+            HomeScreen(navController)
         }
     }
 }

@@ -1,20 +1,27 @@
 package com.mnowo.composesurveyapp.feature_auth.presentation.login
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mnowo.composesurveyapp.core.domain.TextFieldState
+import com.mnowo.composesurveyapp.core.presentation.util.Resource
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
+import com.mnowo.composesurveyapp.core.util.Screen
+import com.mnowo.composesurveyapp.feature_auth.domain.use_case.LoginUseCase
+import com.mnowo.composesurveyapp.feature_auth.presentation.register.RegisterState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-
+    private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
     private val _passwordVisibility = mutableStateOf(false)
@@ -62,9 +69,49 @@ class LoginViewModel @Inject constructor(
                 )
             }
             is LoginEvent.Login -> {
+                _isErrorEmail.value = false
+                _isErrorPassword.value = false
+
                 viewModelScope.launch {
                     _state.value = state.value.copy(isLoading = true)
+                    loginUseCase(
+                        email = emailState.value.text,
+                        password = passwordState.value.text
+                    ).onEach { result ->
+                        when (result) {
+                            is Resource.Loading -> {
+                                _state.value = LoginState(isLoading = true)
+                                Log.d("Registration", "Loading")
+                            }
+                            is Resource.Success -> {
+                                _state.value = LoginState(isLoading = false)
+                                _eventFlow.emit(
+                                    UiEvent.Navigate(Screen.HomeScreen.route)
+                                )
+                                Log.d("Registration", "Successful")
+                            }
+                            is Resource.Error -> {
+                                when {
+                                    result.data?.passwordError != null -> {
+                                        _isErrorPassword.value = true
+                                    }
+                                    result.data?.emailError != null -> {
+                                        _isErrorEmail.value = true
+                                    }
+                                    else -> {
+                                        if(result.message == "The email address is badly formatted.") {
+                                            _isErrorEmail.value = true
+                                        }
 
+                                        if(result.message!!.contains("The given password is invalid.")) {
+                                            _isErrorPassword.value = true
+                                        }
+                                    }
+                                }
+                                _state.value = LoginState(isLoading = false)
+                            }
+                        }
+                    }.launchIn(viewModelScope)
                 }
             }
         }
