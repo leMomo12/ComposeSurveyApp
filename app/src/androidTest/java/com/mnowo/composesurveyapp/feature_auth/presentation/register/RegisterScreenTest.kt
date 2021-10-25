@@ -17,6 +17,10 @@ import com.mnowo.composesurveyapp.feature_auth.presentation.login.LoginScreen
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import kotlinx.coroutines.android.awaitFrame
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import okhttp3.internal.wait
 import org.junit.Assert.*
 
 import org.junit.Before
@@ -83,5 +87,21 @@ class RegisterScreenTest {
         composeRule.onNodeWithTag(TestTags.REGISTER_EMAIL).assertIsNotEnabled()
         composeRule.onNodeWithTag(TestTags.REGISTER_PASSWORD).assertIsNotEnabled()
         composeRule.onNodeWithTag(TestTags.REGISTER_PROGRESSBAR).assertIsDisplayed()
+    }
+
+    @ExperimentalAnimationApi
+    @Test
+    fun performRegisterButtonWithInvalidInputs() {
+        runBlocking {
+            composeRule.onNodeWithTag(TestTags.REGISTER_EMAIL).performTextInput("")
+            composeRule.onNodeWithTag(TestTags.REGISTER_PASSWORD).performTextInput("")
+            composeRule.onNodeWithTag(TestTags.REGISTER_BUTTON).performClick()
+
+            composeRule.onNodeWithTag(TestTags.REGISTER_BUTTON).assertIsNotEnabled()
+            composeRule.onNodeWithTag(TestTags.REGISTER_SCREEN_TEXT_BUTTON).assertIsNotEnabled()
+            composeRule.onNodeWithTag(TestTags.REGISTER_EMAIL).assertIsNotEnabled()
+            composeRule.onNodeWithTag(TestTags.REGISTER_PASSWORD).assertIsNotEnabled()
+            composeRule.onNodeWithTag(TestTags.REGISTER_PROGRESSBAR).assertIsDisplayed()
+        }
     }
 }

@@ -15,7 +15,6 @@ class RegisterUseCase @Inject constructor(
 ) {
 
     operator fun invoke(email: String, password: String) : Flow<Resource<RegisterResult>> = flow {
-        Log.d("Registration", "In UseCase")
         try {
             emit(Resource.Loading<RegisterResult>())
             val emailResult = ValidationUtil.validateEmail(email)
@@ -43,7 +42,6 @@ class RegisterUseCase @Inject constructor(
             }
 
         } catch (e: Exception) {
-            Log.d("Registration", "UseCaseError ${e.message}")
             emit(Resource.Error<RegisterResult>(message = e.localizedMessage ?: "An unexpected error occurred" ))
         }
     }
