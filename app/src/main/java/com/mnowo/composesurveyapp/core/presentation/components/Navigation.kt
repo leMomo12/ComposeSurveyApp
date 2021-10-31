@@ -12,6 +12,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.feature_auth.presentation.login.LoginScreen
 import com.google.accompanist.navigation.animation.navigation
+import com.mnowo.composesurveyapp.feature_add_survey.NewSurveyScreen
 import com.mnowo.composesurveyapp.feature_auth.presentation.register.RegisterScreen
 import com.mnowo.composesurveyapp.feature_auth.presentation.splash.SplashScreen
 import com.mnowo.composesurveyapp.feature_home.presentation.home.HomeScreen
@@ -42,7 +43,11 @@ fun Navigation(navController: NavHostController) {
         }
 
         composable(Screen.HomeScreen.route) {
-            HomeScreen(navController)
+            HomeScreen(navController, onNavigate = navController::navigate)
+        }
+
+        composable(Screen.NewSurveyScreen.route) {
+            NewSurveyScreen(navController)
         }
     }
 }

@@ -10,12 +10,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mnowo.composesurveyapp.R
 import com.mnowo.composesurveyapp.core.util.Screen
 
 @Composable
-fun SplashScreen(navController: NavController) {
+fun SplashScreen(navController: NavController, viewModel: SplashViewModel = hiltViewModel()) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -28,7 +29,11 @@ fun SplashScreen(navController: NavController) {
         )
 
         LaunchedEffect(key1 = true) {
-            navController.navigate(Screen.LoginScreen.route)
+            if(viewModel.state.value) {
+                navController.navigate(Screen.HomeScreen.route)
+            } else {
+                navController.navigate(Screen.LoginScreen.route)
+            }
         }
     }
 }
