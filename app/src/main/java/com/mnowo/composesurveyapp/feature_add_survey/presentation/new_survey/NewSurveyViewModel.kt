@@ -6,9 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mnowo.composesurveyapp.core.domain.TextFieldState
 import com.mnowo.composesurveyapp.core.presentation.util.Resource
+import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
+import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyTitleAndDescription
 import com.mnowo.composesurveyapp.feature_add_survey.domain.use_case.AddSurveyTitleAndDescriptionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -33,6 +37,9 @@ class NewSurveyViewModel @Inject constructor(
 
     private val _state = mutableStateOf(NewSurveyState())
     val state: State<NewSurveyState> = _state
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     fun onEvent(event: NewSurveyEvent) {
         when (event) {
@@ -65,7 +72,9 @@ class NewSurveyViewModel @Inject constructor(
                             }
                             is Resource.Success -> {
                                 _state.value = NewSurveyState(isLoading = false)
-
+                                _eventFlow.emit(
+                                    UiEvent.Navigate(Screen.AddSurveyQuestionScreen.route)
+                                )
                             }
                             is Resource.Error -> {
                                 when {

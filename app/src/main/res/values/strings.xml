@@ -8,4 +8,10 @@
     <string name="addNewsurvey">Add a new survey</string>
     <string name="enterSurveyTitle">Enter survey title</string>
     <string name="enterSurveyDescription">Enter survey description</string>
+    <string name="addNewQuestion">Add a new question</string>
+    <string name="enterQuestionTitle">Enter question title</string>
+    <string name="enterFirstAnswerOption">Enter first answer option</string>
+    <string name="enterSecondAnswerOption">Enter second answer option</string>
+    <string name="enterThirdAnswerOption">Enter third answer option</string>
+    <string name="enterFouthAnswerOption">Enter fourth answer option</string>
 </resources>

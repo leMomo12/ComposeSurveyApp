@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Title
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -17,11 +18,17 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mnowo.composesurveyapp.R
+import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.feature_add_survey.presentation.new_survey.NewSurveyEvent
 import com.mnowo.composesurveyapp.feature_add_survey.presentation.new_survey.NewSurveyViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel = hiltViewModel()) {
+fun NewSurveyScreen(
+    navController: NavController,
+    onNavigate: (String) -> Unit = {},
+    viewModel: NewSurveyViewModel = hiltViewModel()
+) {
 
     val state = viewModel.state.value
     val titleState = viewModel.titleState.value
@@ -34,12 +41,26 @@ fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel 
         Font(R.font.istokweb_regular, FontWeight.Medium),
     )
 
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    onNavigate(event.route)
+                }
+                is UiEvent.ShowSnackbar -> {
+
+                }
+            }
+
+        }
+    }
+
     Column(
         Modifier
             .fillMaxSize()
             .padding(10.dp)
     ) {
-        IconButton(onClick = {  }) {
+        IconButton(onClick = { }) {
             Icon(
                 Icons.Default.ArrowBackIos,
                 contentDescription = "",
@@ -64,12 +85,14 @@ fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel 
             value = titleState.text,
             onValueChange = {
                 viewModel.onEvent(NewSurveyEvent.EnteredTitle(it))
-            }, modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp),
+            },
             leadingIcon = {
                 Icon(Icons.Default.Title, "")
             },
+            isError = viewModel.isTitleError.value,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp),
             label = {
                 Text(text = stringResource(R.string.enterSurveyTitle))
 
@@ -84,6 +107,7 @@ fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel 
             leadingIcon = {
                 Icon(Icons.Default.Description, "")
             },
+            isError = viewModel.isDescriptionError.value,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 20.dp, end = 20.dp),
@@ -94,7 +118,7 @@ fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel 
         Spacer(modifier = Modifier.padding(vertical = 40.dp))
         Button(
             onClick = {
-                      viewModel.onEvent(NewSurveyEvent.AddTitleAndDescription)
+                viewModel.onEvent(NewSurveyEvent.AddTitleAndDescription)
             },
             Modifier
                 .fillMaxWidth()
