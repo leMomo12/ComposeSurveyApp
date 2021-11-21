@@ -5,7 +5,16 @@ import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyTitleAn
 
 interface AddSurveyRepository {
 
-    suspend fun addSurveyTitleAndDescription(surveyTitleAndDescription: SurveyTitleAndDescription)
-
     suspend fun addQuestion(surveyQuestion: SurveyQuestion)
+
+    suspend fun getSurveyQuestions(): List<SurveyQuestion>
+
+    suspend fun getTitleAndDescription(): SurveyTitleAndDescription
+
+    suspend fun addSurvey(
+        surveyQuestion: SurveyQuestion,
+        surveyTitleAndDescription: SurveyTitleAndDescription
+    )
+
+    suspend fun addSurveyTitleAndDescription(surveyTitleAndDescription: SurveyTitleAndDescription)
 }

@@ -211,7 +211,7 @@ fun AddSurveyQuestionScreen(
             Spacer(modifier = Modifier.padding(vertical = 10.dp))
             
             Button(onClick = {
-
+                viewModel.onEvent(AddSurveyQuestionEvent.PublishSurvey)
             }) {
                 Text(text = "Publish survey")
             }

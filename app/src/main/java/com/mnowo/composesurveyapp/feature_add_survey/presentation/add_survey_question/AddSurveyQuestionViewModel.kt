@@ -11,6 +11,7 @@ import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.util.UiText
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import com.mnowo.composesurveyapp.feature_add_survey.domain.use_case.AddQuestionUseCase
+import com.mnowo.composesurveyapp.feature_add_survey.domain.use_case.AddSurveyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -21,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddSurveyQuestionViewModel @Inject constructor(
-    private val addQuestionUseCase: AddQuestionUseCase
+    private val addQuestionUseCase: AddQuestionUseCase,
+    private val addSurveyUseCase: AddSurveyUseCase
 ) : ViewModel() {
 
     private val _questionTitleState = mutableStateOf(TextFieldState())
@@ -117,7 +119,11 @@ class AddSurveyQuestionViewModel @Inject constructor(
                 }
             }
             is AddSurveyQuestionEvent.PublishSurvey -> {
+                viewModelScope.launch {
+                    _state.value = state.value.copy(isLoading = true)
 
+                    addSurveyUseCase().launchIn(viewModelScope)
+                }
             }
         }
     }
