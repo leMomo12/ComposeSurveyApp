@@ -14,19 +14,49 @@ class AddSurveyUseCase @Inject constructor(
     private val addSurveyRepository: AddSurveyRepository
 ) {
 
-    operator fun invoke() : Flow<Resource<GetSurveyQuestionsResult>> = flow {
+    operator fun invoke(): Flow<Resource<GetSurveyQuestionsResult>> = flow {
         emit(Resource.Loading<GetSurveyQuestionsResult>())
         try {
             val questionListData = addSurveyRepository.getSurveyQuestions()
 
             val titleAndDescription = addSurveyRepository.getTitleAndDescription()
 
-            addSurveyRepository.addSurveyTitleAndDescription(titleAndDescription)
+            val titleAndDescriptionResult =
+                addSurveyRepository.addSurveyTitleAndDescription(titleAndDescription)
 
-            for(data in questionListData) {
-                d("AddSurvey", "Item: ${data.toString()}")
-                addSurveyRepository.addSurvey(data, titleAndDescription)
+            var surveyStatus = true
+
+            if (titleAndDescriptionResult.isSuccessful == true) {
+                for (data in questionListData) {
+                    d("AddSurvey", "Item: ${data.toString()}")
+                    val surveyResult = addSurveyRepository.addSurvey(data, titleAndDescription)
+                    if(surveyResult.isSuccessful == false) {
+                        emit(
+                            Resource.Error<GetSurveyQuestionsResult>(
+                                message = titleAndDescriptionResult.errorMessage
+                                    ?: "Unexpected error occurred"
+                            )
+                        )
+                        surveyStatus = false
+                    }
+                }
+                if(!surveyStatus) {
+                    Resource.Error<GetSurveyQuestionsResult>(
+                        message = "Unexpected error occurred"
+                    )
+                } else {
+                    emit(Resource.Success<GetSurveyQuestionsResult>(data = GetSurveyQuestionsResult()))
+                    d("AddSurvey", "Successfully added Survey")
+                }
+            } else {
+                emit(
+                    Resource.Error<GetSurveyQuestionsResult>(
+                        message = titleAndDescriptionResult.errorMessage
+                            ?: "Unexpected error occurred"
+                    )
+                )
             }
+
 
         } catch (e: Exception) {
             d("AddSurvey", "Error")

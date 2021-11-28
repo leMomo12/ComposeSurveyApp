@@ -6,7 +6,7 @@ import com.mnowo.composesurveyapp.core.util.Constants
 
 @Entity(tableName = Constants.SURVEY_TITLE_AND_DESCRIPTION_TABLE)
 data class SurveyTitleAndDescription(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     var id: Int,
     var title: String,
     var description: String

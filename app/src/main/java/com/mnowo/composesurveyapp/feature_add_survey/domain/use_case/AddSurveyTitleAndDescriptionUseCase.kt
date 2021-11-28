@@ -20,7 +20,7 @@ class AddSurveyTitleAndDescriptionUseCase @Inject constructor(
             val descriptionResult = ValidationUtil.validateText(surveyTitleAndDescription.description)
 
             if (titleResult.isValidInput == true && descriptionResult.isValidInput == true) {
-                addSurveyRepository.addSurveyTitleAndDescription(surveyTitleAndDescription)
+                addSurveyRepository.addSurveyTitleAndDescriptionToRoom(surveyTitleAndDescription)
                 emit(
                     Resource.Success<AddTitleAndDescriptionResult>(
                         AddTitleAndDescriptionResult(

@@ -5,10 +5,11 @@ import androidx.room.RoomDatabase
 import com.mnowo.composesurveyapp.feature_add_survey.data.local.AddSurveyDao
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyTitleAndDescription
+import javax.inject.Inject
 
 @Database(
     entities = [SurveyTitleAndDescription::class, SurveyQuestion::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class SurveyDatabase : RoomDatabase() {

@@ -12,7 +12,7 @@ import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyTitleAn
 interface AddSurveyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addSurveyTitleAndDescription(surveyTitleAndDescription: SurveyTitleAndDescription)
+    suspend fun addSurveyTitleAndDescriptionToRoom(surveyTitleAndDescription: SurveyTitleAndDescription)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addQuestion(surveyQuestion: SurveyQuestion)

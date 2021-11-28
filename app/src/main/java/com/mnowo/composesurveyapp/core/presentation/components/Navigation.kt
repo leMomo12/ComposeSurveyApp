@@ -14,6 +14,7 @@ import com.mnowo.composesurveyapp.feature_auth.presentation.login.LoginScreen
 import com.google.accompanist.navigation.animation.navigation
 import com.mnowo.composesurveyapp.feature_add_survey.NewSurveyScreen
 import com.mnowo.composesurveyapp.feature_add_survey.presentation.add_survey_question.AddSurveyQuestionScreen
+import com.mnowo.composesurveyapp.feature_add_survey.presentation.done_screen.DoneScreen
 import com.mnowo.composesurveyapp.feature_auth.presentation.register.RegisterScreen
 import com.mnowo.composesurveyapp.feature_auth.presentation.splash.SplashScreen
 import com.mnowo.composesurveyapp.feature_home.presentation.home.HomeScreen
@@ -53,6 +54,10 @@ fun Navigation(navController: NavHostController) {
 
         composable(Screen.AddSurveyQuestionScreen.route) {
             AddSurveyQuestionScreen(navController = navController)
+        }
+
+        composable(Screen.DoneScreen.route) {
+            DoneScreen()
         }
     }
 }

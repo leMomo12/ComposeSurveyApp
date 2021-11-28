@@ -1,6 +1,7 @@
 package com.mnowo.composesurveyapp.feature_add_survey.data.repository
 
 import android.util.Log.d
+import com.mnowo.composesurveyapp.core.models.RemoteDbRespond
 import com.mnowo.composesurveyapp.feature_add_survey.data.local.AddSurveyDao
 import com.mnowo.composesurveyapp.feature_add_survey.data.remote.AddSurveyRemoteDb
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
@@ -28,13 +29,17 @@ class AddSurveyRepositoryImpl @Inject constructor(
     override suspend fun addSurvey(
         surveyQuestion: SurveyQuestion,
         surveyTitleAndDescription: SurveyTitleAndDescription
-    ) {
+    ): RemoteDbRespond {
         return addSurveyRemoteDb.addSurveyQuestions(surveyQuestion, surveyTitleAndDescription)
     }
 
-    override suspend fun addSurveyTitleAndDescription(surveyTitleAndDescription: SurveyTitleAndDescription) {
-        d("Add", "Here")
-        return addSurveyDao.addSurveyTitleAndDescription(surveyTitleAndDescription)
+    override suspend fun addSurveyTitleAndDescription(surveyTitleAndDescription: SurveyTitleAndDescription): RemoteDbRespond {
+        return addSurveyRemoteDb.addSurveyTitleAndDescription(surveyTitleAndDescription)
     }
+
+    override suspend fun addSurveyTitleAndDescriptionToRoom(surveyTitleAndDescription: SurveyTitleAndDescription) {
+        return addSurveyDao.addSurveyTitleAndDescriptionToRoom(surveyTitleAndDescription)
+    }
+
 
 }

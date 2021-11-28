@@ -10,6 +10,7 @@ import com.mnowo.composesurveyapp.core.presentation.MainActivity
 import com.mnowo.composesurveyapp.core.ui.theme.ComposeSurveyAppTheme
 import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.core.util.TestTags
+import com.mnowo.composesurveyapp.di.AddSurveyModule
 import com.mnowo.composesurveyapp.di.AppModule
 import com.mnowo.composesurveyapp.di.AuthModule
 import com.mnowo.composesurveyapp.di.HomeModule
@@ -28,7 +29,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-@UninstallModules(AppModule::class, AuthModule::class, HomeModule::class)
+@UninstallModules(AuthModule::class)
 class RegisterScreenTest {
 
     @get:Rule(order = 0)
