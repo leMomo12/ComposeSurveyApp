@@ -44,10 +44,10 @@ class LoginScreenTest {
             ComposeSurveyAppTheme {
                 NavHost(navController = navController, startDestination = Screen.LoginScreen.route) {
                     composable(Screen.LoginScreen.route) {
-                        LoginScreen(navController = navController)
+                        LoginScreen(onNavigate = navController::navigate)
                     }
                     composable(Screen.RegisterScreen.route) {
-                        RegisterScreen(navController = navController)
+                        RegisterScreen(onNavigate = navController::navigate)
                     }
                 }
             }

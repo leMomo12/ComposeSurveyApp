@@ -91,6 +91,13 @@ class NewSurveyViewModel @Inject constructor(
                     }.launchIn(viewModelScope)
                 }
             }
+            is NewSurveyEvent.BackPress -> {
+                viewModelScope.launch {
+                    _eventFlow.emit(
+                        UiEvent.Navigate(Screen.HomeScreen.route)
+                    )
+                }
+            }
 
         }
     }

@@ -37,27 +37,27 @@ fun Navigation(navController: NavHostController) {
                 fadeOut(animationSpec = tween(2000))
             }
         ) {
-            LoginScreen(navController, onNavigate = navController::navigate)
+            LoginScreen(onNavigate = navController::navigate)
         }
 
         composable(Screen.RegisterScreen.route) {
-            RegisterScreen(navController = navController, onNavigate = navController::navigate)
+            RegisterScreen( onNavigate = navController::navigate)
         }
 
         composable(Screen.HomeScreen.route) {
-            HomeScreen(navController, onNavigate = navController::navigate)
+            HomeScreen(onNavigate = navController::navigate)
         }
 
         composable(Screen.NewSurveyScreen.route) {
-            NewSurveyScreen(navController, onNavigate = navController::navigate)
+            NewSurveyScreen( onNavigate = navController::navigate)
         }
 
         composable(Screen.AddSurveyQuestionScreen.route) {
-            AddSurveyQuestionScreen(navController = navController)
+            AddSurveyQuestionScreen(onNavigate = navController::navigate)
         }
 
         composable(Screen.DoneScreen.route) {
-            DoneScreen()
+            DoneScreen(onNavigate = navController::navigate)
         }
     }
 }

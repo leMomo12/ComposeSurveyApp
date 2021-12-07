@@ -7,4 +7,6 @@ interface AuthRepository {
     suspend fun signInWithEmailAndPassword(email: String, password: String) : RemoteDbRespond
 
     suspend fun registerWithEmailAndPassword(email: String, password: String) : RemoteDbRespond
+
+    suspend fun deleteAllQuestions()
 }

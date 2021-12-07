@@ -35,7 +35,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
-    navController: NavController,
     viewModel: LoginViewModel = hiltViewModel(),
     onNavigate: (String) -> Unit = {}
 ) {

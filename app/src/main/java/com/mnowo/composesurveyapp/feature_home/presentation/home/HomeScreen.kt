@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -30,11 +31,11 @@ import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.ui.theme.blue
 import com.mnowo.composesurveyapp.core.ui.theme.grey
 import com.mnowo.composesurveyapp.core.ui.theme.white
+import com.mnowo.composesurveyapp.core.util.TestTags
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun HomeScreen(
-    navController: NavController,
     viewModel: HomeViewModel = hiltViewModel(),
     onNavigate: (String) -> Unit = {}
 ) {
@@ -76,7 +77,9 @@ fun HomeScreen(
                         .scale(1.3f)
                         .clickable {
                             viewModel.onEvent(HomeEvent.AddNewSurvey)
-                        })
+                        }
+                        .testTag(TestTags.HOME_TO_NEW_SURVEY_BUTTON)
+                )
             }
         }
     ) {

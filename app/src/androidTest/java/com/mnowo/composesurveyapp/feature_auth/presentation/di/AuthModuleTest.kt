@@ -1,5 +1,7 @@
 package com.mnowo.composesurveyapp.feature_auth.presentation.di
 
+import com.mnowo.composesurveyapp.core.data.SurveyDatabase
+import com.mnowo.composesurveyapp.feature_auth.data.local.AuthDao
 import com.mnowo.composesurveyapp.feature_auth.data.remote.AuthRemoteDb
 import com.mnowo.composesurveyapp.feature_auth.data.repository.AuthRepositoryImpl
 import com.mnowo.composesurveyapp.feature_auth.domain.repository.AuthRepository
@@ -27,10 +29,13 @@ object AuthModuleTest {
         return RegisterUseCase(authRepository)
     }
 
+    @Provides
+    @Singleton
+    fun provideAuthDao(db: SurveyDatabase) = db.authDao()
 
     @Provides
     @Singleton
-    fun provideAuthRepository(authRemoteDb: AuthRemoteDb): AuthRepository {
-        return AuthRepositoryImpl(authRemoteDb = authRemoteDb)
+    fun provideAuthRepository(authRemoteDb: AuthRemoteDb, authDao: AuthDao): AuthRepository {
+        return AuthRepositoryImpl(authRemoteDb = authRemoteDb, authDao)
     }
 }

@@ -39,5 +39,9 @@ class FakeAuthRepository : AuthRepository {
         }
     }
 
+    override suspend fun deleteAllQuestions() {
+
+    }
+
 
 }

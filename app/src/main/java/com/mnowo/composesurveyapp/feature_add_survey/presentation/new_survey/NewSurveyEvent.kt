@@ -4,5 +4,6 @@ sealed class NewSurveyEvent {
     data class EnteredTitle(val title: String) : NewSurveyEvent()
     data class EnteredDescription(val description: String) : NewSurveyEvent()
     object AddTitleAndDescription : NewSurveyEvent()
+    object BackPress : NewSurveyEvent()
 }
 

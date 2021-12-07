@@ -21,12 +21,11 @@ class AddSurveyUseCase @Inject constructor(
 
             val titleAndDescription = addSurveyRepository.getTitleAndDescription()
 
-            val titleAndDescriptionResult =
-                addSurveyRepository.addSurveyTitleAndDescription(titleAndDescription)
+            val titleAndDescriptionResult = addSurveyRepository.addSurveyTitleAndDescription(titleAndDescription)
 
             var surveyStatus = true
 
-            if (titleAndDescriptionResult.isSuccessful == true) {
+            if (titleAndDescriptionResult.isSuccessful == true && questionListData.isNotEmpty()) {
                 for (data in questionListData) {
                     d("AddSurvey", "Item: ${data.toString()}")
                     val surveyResult = addSurveyRepository.addSurvey(data, titleAndDescription)

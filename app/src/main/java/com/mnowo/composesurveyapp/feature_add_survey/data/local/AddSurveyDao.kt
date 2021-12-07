@@ -22,4 +22,7 @@ interface AddSurveyDao {
 
     @Query("SELECT * FROM survey_question_table")
     suspend fun getSurveyQuestions() : List<SurveyQuestion>
+
+    @Query("DELETE FROM survey_question_table")
+    suspend fun deleteAllQuestions()
 }

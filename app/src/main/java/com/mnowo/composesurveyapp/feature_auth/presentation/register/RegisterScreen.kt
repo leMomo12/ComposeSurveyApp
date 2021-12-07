@@ -34,7 +34,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
-    navController: NavController,
     viewModel: RegisterViewModel = hiltViewModel(),
     onNavigate: (String) -> Unit = {}
 ) {

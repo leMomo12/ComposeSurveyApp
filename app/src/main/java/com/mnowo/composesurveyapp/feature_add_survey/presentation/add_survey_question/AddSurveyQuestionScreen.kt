@@ -5,10 +5,6 @@ import android.util.Log.d
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement.Absolute.SpaceBetween
-import androidx.compose.foundation.layout.Arrangement.SpaceEvenly
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -19,7 +15,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -31,12 +28,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mnowo.composesurveyapp.R
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
+import com.mnowo.composesurveyapp.core.util.TestTags
+import com.mnowo.composesurveyapp.core.util.asString
 import kotlinx.coroutines.flow.collectLatest
-import org.intellij.lang.annotations.JdkConstants
 
 @Composable
 fun AddSurveyQuestionScreen(
-    navController: NavController,
     viewModel: AddSurveyQuestionViewModel = hiltViewModel(),
     onNavigate: (String) -> Unit = {}
 ) {
@@ -56,14 +53,17 @@ fun AddSurveyQuestionScreen(
         Font(R.font.istokweb_regular, FontWeight.Medium),
     )
 
+    val context = LocalContext.current
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
-            when(event) {
+            when (event) {
                 is UiEvent.Navigate -> {
-
+                    onNavigate(event.route)
                 }
                 is UiEvent.ShowSnackbar -> {
-                    
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.uiText.asString(context)
+                    )
                 }
             }
         }
@@ -75,15 +75,8 @@ fun AddSurveyQuestionScreen(
                 .fillMaxSize()
                 .padding(10.dp)
         ) {
-            IconButton(
-                onClick = { },
-                modifier = Modifier
-                    .padding(top = 10.dp, start = 10.dp)
-                    .align(Alignment.Start)
-            ) {
-                Icon(Icons.Default.ArrowBackIos, "")
-            }
-            Spacer(modifier = Modifier.padding(vertical = 10.dp))
+
+            Spacer(modifier = Modifier.padding(vertical = 20.dp))
             Text(
                 text = stringResource(R.string.addNewQuestion),
                 fontSize = 30.sp,
@@ -98,7 +91,8 @@ fun AddSurveyQuestionScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 30.dp, end = 30.dp),
+                    .padding(start = 30.dp, end = 30.dp)
+                    .testTag(TestTags.ADD_SURVEY_QUESTION_TITLE),
                 label = {
                     Text(
                         text = stringResource(R.string.enterQuestionTitle),
@@ -132,6 +126,10 @@ fun AddSurveyQuestionScreen(
                     label = {
                         Text(text = stringResource(R.string.enterFirstAnswerOption))
                     },
+                    leadingIcon = {
+                        Text(text = "1")
+                    },
+                    modifier = Modifier.testTag(TestTags.ADD_SURVEY_QUESTION_ONE),
                     singleLine = true,
                     enabled = viewModel.uiEnabled.value
                 )
@@ -152,6 +150,10 @@ fun AddSurveyQuestionScreen(
                     label = {
                         Text(text = stringResource(R.string.enterSecondAnswerOption))
                     },
+                    leadingIcon = {
+                        Text(text = "2")
+                    },
+                    modifier = Modifier.testTag(TestTags.ADD_SURVEY_QUESTION_TWO),
                     singleLine = true,
                     enabled = viewModel.uiEnabled.value
                 )
@@ -172,6 +174,10 @@ fun AddSurveyQuestionScreen(
                     label = {
                         Text(text = stringResource(R.string.enterThirdAnswerOption))
                     },
+                    leadingIcon = {
+                        Text(text = "3")
+                    },
+                    modifier = Modifier.testTag(TestTags.ADD_SURVEY_QUESTION_THREE),
                     singleLine = true,
                     enabled = viewModel.uiEnabled.value
                 )
@@ -192,6 +198,10 @@ fun AddSurveyQuestionScreen(
                     label = {
                         Text(text = stringResource(R.string.enterFouthAnswerOption))
                     },
+                    leadingIcon = {
+                        Text(text = "4")
+                    },
+                    modifier = Modifier.testTag(TestTags.ADD_SURVEY_QUESTION_FOUR),
                     singleLine = true,
                     enabled = viewModel.uiEnabled.value
                 )
@@ -200,26 +210,32 @@ fun AddSurveyQuestionScreen(
             Spacer(modifier = Modifier.padding(vertical = 20.dp))
 
 
-            OutlinedButton(onClick = {
-                viewModel.onEvent(AddSurveyQuestionEvent.AddQuestion)
-                d("AddQuestion", "Clicked")
-            }) {
+            OutlinedButton(
+                onClick = {
+                    viewModel.onEvent(AddSurveyQuestionEvent.AddQuestion)
+                    d("AddQuestion", "Clicked")
+                },
+                modifier = Modifier.testTag(TestTags.ADD_SURVEY_QUESTION_ADD_QUESTION_BUTTON),
+            ) {
                 Text(text = "Add Question")
                 Icon(Icons.Default.ArrowForward, contentDescription = "IconForward")
             }
-            
+
             Spacer(modifier = Modifier.padding(vertical = 10.dp))
-            
-            Button(onClick = {
-                viewModel.onEvent(AddSurveyQuestionEvent.PublishSurvey)
-            }) {
+
+            Button(
+                onClick = {
+                    viewModel.onEvent(AddSurveyQuestionEvent.PublishSurvey)
+                },
+                modifier = Modifier.testTag(TestTags.ADD_SURVEY_QUESTION_ADD_SURVEY_BUTTON),
+            ) {
                 Text(text = "Publish survey")
             }
 
 
         }
     }
-    
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -228,35 +244,9 @@ fun AddSurveyQuestionScreen(
         if (state.isLoading) {
             Log.d("Login", "isLoading")
             viewModel.setUiEnabled(false)
-            CircularProgressIndicator()
+            CircularProgressIndicator(modifier = Modifier.testTag(TestTags.ADD_SURVEY_QUESTION_PROGRESS_BAR))
         } else {
             viewModel.setUiEnabled(true)
         }
-    }
-}
-
-@Composable
-fun AddQuestionBox(
-    value: String,
-    onValueChange: (String) -> Unit,
-    viewModel: AddSurveyQuestionViewModel
-) {
-    Card(
-        shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(2.dp, Color.LightGray),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 15.dp, start = 20.dp, end = 20.dp)
-            .background(Color.White)
-    ) {
-        TextField(
-            value = value,
-            onValueChange = onValueChange,
-            label = {
-                Text(text = "Enter answer option")
-            },
-            singleLine = true,
-            enabled = viewModel.uiEnabled.value
-        )
     }
 }

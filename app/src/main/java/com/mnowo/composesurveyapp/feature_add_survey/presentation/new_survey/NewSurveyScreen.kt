@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Title
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -19,13 +20,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mnowo.composesurveyapp.R
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
+import com.mnowo.composesurveyapp.core.util.TestTags
 import com.mnowo.composesurveyapp.feature_add_survey.presentation.new_survey.NewSurveyEvent
 import com.mnowo.composesurveyapp.feature_add_survey.presentation.new_survey.NewSurveyViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun NewSurveyScreen(
-    navController: NavController,
     onNavigate: (String) -> Unit = {},
     viewModel: NewSurveyViewModel = hiltViewModel()
 ) {
@@ -60,10 +61,12 @@ fun NewSurveyScreen(
             .fillMaxSize()
             .padding(10.dp)
     ) {
-        IconButton(onClick = { }) {
+        IconButton(onClick = {
+            viewModel.onEvent(NewSurveyEvent.BackPress)
+        }, modifier = Modifier.testTag(TestTags.NEW_SURVEY_TO_HOME_BUTTON)) {
             Icon(
                 Icons.Default.ArrowBackIos,
-                contentDescription = "",
+                contentDescription = ""
             )
         }
         Text(
@@ -92,11 +95,13 @@ fun NewSurveyScreen(
             isError = viewModel.isTitleError.value,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp),
+                .padding(start = 20.dp, end = 20.dp)
+                .testTag(TestTags.NEW_SURVEY_TITLE),
             label = {
                 Text(text = stringResource(R.string.enterSurveyTitle))
 
-            }
+            },
+            singleLine = true
         )
         Spacer(modifier = Modifier.padding(vertical = 10.dp))
         OutlinedTextField(
@@ -110,10 +115,12 @@ fun NewSurveyScreen(
             isError = viewModel.isDescriptionError.value,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp),
+                .padding(start = 20.dp, end = 20.dp)
+                .testTag(TestTags.NEW_SURVEY_DESCRIPTION),
             label = {
                 Text(text = stringResource(R.string.enterSurveyDescription))
-            }
+            },
+            singleLine = true
         )
         Spacer(modifier = Modifier.padding(vertical = 40.dp))
         Button(
@@ -123,6 +130,7 @@ fun NewSurveyScreen(
             Modifier
                 .fillMaxWidth()
                 .padding(start = 20.dp, end = 20.dp)
+                .testTag(TestTags.NEW_SURVEY_BUTTON)
         ) {
             Text(text = "Next Step", fontFamily = istokweb, fontSize = 25.sp)
         }

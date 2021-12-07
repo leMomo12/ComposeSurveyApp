@@ -1,49 +1,45 @@
 package com.mnowo.composesurveyapp.feature_add_survey.data.repository
 
-import android.util.Log.d
 import com.mnowo.composesurveyapp.core.models.RemoteDbRespond
-import com.mnowo.composesurveyapp.feature_add_survey.data.local.AddSurveyDao
-import com.mnowo.composesurveyapp.feature_add_survey.data.remote.AddSurveyRemoteDb
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyTitleAndDescription
 import com.mnowo.composesurveyapp.feature_add_survey.domain.repositrory.AddSurveyRepository
-import javax.inject.Inject
+import org.junit.Assert.*
 
-class AddSurveyRepositoryImpl @Inject constructor(
-    private val addSurveyDao: AddSurveyDao,
-    private val addSurveyRemoteDb: AddSurveyRemoteDb
-) : AddSurveyRepository {
+class FakeAddSurveyRepositoryTest : AddSurveyRepository {
+
+    private var questionList = mutableListOf<SurveyQuestion>()
+
 
     override suspend fun addQuestion(surveyQuestion: SurveyQuestion) {
-        return addSurveyDao.addQuestion(surveyQuestion)
+        questionList.add(SurveyQuestion(1, "title", "one", "two", "three", "four"))
     }
 
     override suspend fun getSurveyQuestions(): List<SurveyQuestion> {
-        return addSurveyDao.getSurveyQuestions()
+        return questionList
     }
 
     override suspend fun getTitleAndDescription(): SurveyTitleAndDescription {
-        return addSurveyDao.getTitleAndDescription()
+        return SurveyTitleAndDescription(1, "title", "description")
     }
 
     override suspend fun addSurvey(
         surveyQuestion: SurveyQuestion,
         surveyTitleAndDescription: SurveyTitleAndDescription
     ): RemoteDbRespond {
-        return addSurveyRemoteDb.addSurveyQuestions(surveyQuestion, surveyTitleAndDescription)
+        return RemoteDbRespond(isSuccessful = true)
     }
 
     override suspend fun addSurveyTitleAndDescription(surveyTitleAndDescription: SurveyTitleAndDescription): RemoteDbRespond {
-        return addSurveyRemoteDb.addSurveyTitleAndDescription(surveyTitleAndDescription)
+        TODO()
     }
 
     override suspend fun addSurveyTitleAndDescriptionToRoom(surveyTitleAndDescription: SurveyTitleAndDescription) {
-        return addSurveyDao.addSurveyTitleAndDescriptionToRoom(surveyTitleAndDescription)
+
     }
 
     override suspend fun deleteAllQuestions() {
-        return addSurveyDao.deleteAllQuestions()
+        questionList.clear()
     }
-
 
 }

@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import com.mnowo.composesurveyapp.feature_add_survey.data.local.AddSurveyDao
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyTitleAndDescription
+import com.mnowo.composesurveyapp.feature_auth.data.local.AuthDao
 import javax.inject.Inject
 
 @Database(
@@ -14,4 +15,5 @@ import javax.inject.Inject
 )
 abstract class SurveyDatabase : RoomDatabase() {
     abstract fun addSurveyDao(): AddSurveyDao
+    abstract fun authDao(): AuthDao
 }

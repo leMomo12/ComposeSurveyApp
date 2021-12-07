@@ -8,10 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.mnowo.composesurveyapp.core.domain.TextFieldState
 import com.mnowo.composesurveyapp.core.presentation.util.Resource
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
+import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.core.util.UiText
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import com.mnowo.composesurveyapp.feature_add_survey.domain.use_case.AddQuestionUseCase
 import com.mnowo.composesurveyapp.feature_add_survey.domain.use_case.AddSurveyUseCase
+import com.mnowo.composesurveyapp.feature_add_survey.domain.use_case.DeleteAllQuestionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -23,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddSurveyQuestionViewModel @Inject constructor(
     private val addQuestionUseCase: AddQuestionUseCase,
-    private val addSurveyUseCase: AddSurveyUseCase
+    private val addSurveyUseCase: AddSurveyUseCase,
+    private val deleteAllQuestionsUseCase: DeleteAllQuestionsUseCase
 ) : ViewModel() {
 
     private val _questionTitleState = mutableStateOf(TextFieldState())
@@ -98,7 +101,7 @@ class AddSurveyQuestionViewModel @Inject constructor(
                             questionFourState.value.text
                         )
                     ).onEach { result ->
-                        when(result) {
+                        when (result) {
                             is Resource.Loading -> {
                                 _state.value = AddSurveyQuestionState(isLoading = true)
                             }
@@ -107,11 +110,16 @@ class AddSurveyQuestionViewModel @Inject constructor(
                                 _eventFlow.emit(
                                     UiEvent.ShowSnackbar(UiText.DynamicString("Successfully added question"))
                                 )
+                                blankAfterSuccessfullyAddingQuestion()
                             }
                             is Resource.Error -> {
                                 _state.value = AddSurveyQuestionState(isLoading = false)
                                 _eventFlow.emit(
-                                    UiEvent.ShowSnackbar(UiText.DynamicString("Failed to add question"))
+                                    UiEvent.ShowSnackbar(
+                                        UiText.DynamicString(
+                                            result.message ?: "Failed to add question"
+                                        )
+                                    )
                                 )
                             }
                         }
@@ -121,10 +129,53 @@ class AddSurveyQuestionViewModel @Inject constructor(
             is AddSurveyQuestionEvent.PublishSurvey -> {
                 viewModelScope.launch {
                     _state.value = state.value.copy(isLoading = true)
+                    addSurveyUseCase().onEach { result ->
+                        when (result) {
+                            is Resource.Loading -> {
+                                _state.value = AddSurveyQuestionState(isLoading = true)
+                            }
+                            is Resource.Success -> {
+                                _state.value = AddSurveyQuestionState(isLoading = false)
 
-                    addSurveyUseCase().launchIn(viewModelScope)
+                                deleteAllQuestionsUseCase.invoke().launchIn(viewModelScope)
+
+                                _eventFlow.emit(
+                                    UiEvent.Navigate(Screen.DoneScreen.route)
+                                )
+                            }
+                            is Resource.Error -> {
+                                _state.value = AddSurveyQuestionState(isLoading = false)
+                                _eventFlow.emit(
+                                    UiEvent.ShowSnackbar(
+                                        UiText.DynamicString(
+                                            result.message ?: "Unexpected error occurred"
+                                        )
+                                    )
+                                )
+                            }
+                        }
+
+                    }.launchIn(viewModelScope)
                 }
             }
         }
+    }
+
+    fun blankAfterSuccessfullyAddingQuestion() = viewModelScope.launch {
+        _questionTitleState.value = questionTitleState.value.copy(
+            text = ""
+        )
+        _questionOneState.value = questionOneState.value.copy(
+            text = ""
+        )
+        _questionTwoState.value = questionTwoState.value.copy(
+            text = ""
+        )
+        _questionThreeState.value = questionThreeState.value.copy(
+            text = ""
+        )
+        _questionFourState.value = questionFourState.value.copy(
+            text = ""
+        )
     }
 }
