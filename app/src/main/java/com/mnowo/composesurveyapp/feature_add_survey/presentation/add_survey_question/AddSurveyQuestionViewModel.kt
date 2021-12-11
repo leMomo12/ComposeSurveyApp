@@ -148,7 +148,7 @@ class AddSurveyQuestionViewModel @Inject constructor(
                                 _eventFlow.emit(
                                     UiEvent.ShowSnackbar(
                                         UiText.DynamicString(
-                                            result.message ?: "Unexpected error occurred"
+                                            "${result.message}, you may forgot to add a question first" ?: "Unexpected error occurred, you may forgot to add a question first"
                                         )
                                     )
                                 )

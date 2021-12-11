@@ -9,5 +9,6 @@ data class SurveyTitleAndDescription(
     @PrimaryKey(autoGenerate = false)
     var id: Int,
     var title: String,
-    var description: String
+    var description: String,
+    val type: String = "info"
 )

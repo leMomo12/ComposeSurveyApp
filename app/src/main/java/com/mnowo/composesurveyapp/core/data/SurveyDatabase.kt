@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @Database(
     entities = [SurveyTitleAndDescription::class, SurveyQuestion::class],
-    version = 3,
+    version = 5,
     exportSchema = false
 )
 abstract class SurveyDatabase : RoomDatabase() {

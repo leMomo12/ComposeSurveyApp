@@ -33,6 +33,9 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
+            is HomeEvent.ScrollUp -> {
+
+            }
         }
     }
 }

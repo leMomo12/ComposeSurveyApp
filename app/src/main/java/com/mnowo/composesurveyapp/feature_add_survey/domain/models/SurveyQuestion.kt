@@ -12,5 +12,6 @@ data class SurveyQuestion(
     var questionOne: String?,
     var questionTwo: String?,
     var questionThree: String?,
-    var questionFour: String?
+    var questionFour: String?,
+    val type: String = "question"
 )
