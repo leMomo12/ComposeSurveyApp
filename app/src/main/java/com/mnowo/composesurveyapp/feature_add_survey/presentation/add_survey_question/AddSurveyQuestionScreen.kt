@@ -2,9 +2,13 @@ package com.mnowo.composesurveyapp.feature_add_survey.presentation.add_survey_qu
 
 import android.util.Log
 import android.util.Log.d
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -15,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -28,10 +33,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mnowo.composesurveyapp.R
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
+import com.mnowo.composesurveyapp.core.ui.theme.blue
+import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.TestTags
 import com.mnowo.composesurveyapp.core.util.asString
 import kotlinx.coroutines.flow.collectLatest
 
+@ExperimentalAnimationApi
 @Composable
 fun AddSurveyQuestionScreen(
     viewModel: AddSurveyQuestionViewModel = hiltViewModel(),
@@ -69,7 +77,14 @@ fun AddSurveyQuestionScreen(
         }
     }
 
-    Scaffold(scaffoldState = scaffoldState) {
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            Row(modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)) {
+                AddSurveyQuestionTopBar(viewModel = viewModel)
+            }
+        }
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
                 .fillMaxSize()
@@ -77,17 +92,22 @@ fun AddSurveyQuestionScreen(
         ) {
 
             Spacer(modifier = Modifier.padding(vertical = 20.dp))
+
             Text(
-                text = stringResource(R.string.addNewQuestion),
+                text = "Now it's time to add some questions",
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = istokweb
+                fontFamily = istokweb,
+                modifier = Modifier.padding(start = 20.dp)
             )
+
             Spacer(modifier = Modifier.padding(vertical = 15.dp))
             OutlinedTextField(
                 value = questionTitleState.text,
                 onValueChange = {
-                    viewModel.onEvent(AddSurveyQuestionEvent.EnteredQuestionTitle(it))
+                    if (it.length <= Constants.MAX_TITLE_LENGTH) {
+                        viewModel.onEvent(AddSurveyQuestionEvent.EnteredQuestionTitle(it))
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -108,7 +128,7 @@ fun AddSurveyQuestionScreen(
                 enabled = viewModel.uiEnabled.value
             )
 
-            Spacer(modifier = Modifier.padding(vertical = 20.dp))
+            Spacer(modifier = Modifier.padding(vertical = 15.dp))
 
             Card(
                 shape = RoundedCornerShape(10.dp),
@@ -121,7 +141,9 @@ fun AddSurveyQuestionScreen(
                 TextField(
                     value = questionOneState.text,
                     onValueChange = {
-                        viewModel.onEvent(AddSurveyQuestionEvent.EnteredQuestionOne(it))
+                        if (it.length <= Constants.MAX_QUESTION_LENGTH) {
+                            viewModel.onEvent(AddSurveyQuestionEvent.EnteredQuestionOne(it))
+                        }
                     },
                     label = {
                         Text(text = stringResource(R.string.enterFirstAnswerOption))
@@ -131,7 +153,8 @@ fun AddSurveyQuestionScreen(
                     },
                     modifier = Modifier.testTag(TestTags.ADD_SURVEY_QUESTION_ONE),
                     singleLine = true,
-                    enabled = viewModel.uiEnabled.value
+                    enabled = viewModel.uiEnabled.value,
+                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White)
                 )
             }
             Card(
@@ -145,7 +168,9 @@ fun AddSurveyQuestionScreen(
                 TextField(
                     value = questionTwoState.text,
                     onValueChange = {
-                        viewModel.onEvent(AddSurveyQuestionEvent.EnteredQuestionTwo(it))
+                        if (it.length <= Constants.MAX_QUESTION_LENGTH) {
+                            viewModel.onEvent(AddSurveyQuestionEvent.EnteredQuestionTwo(it))
+                        }
                     },
                     label = {
                         Text(text = stringResource(R.string.enterSecondAnswerOption))
@@ -155,7 +180,8 @@ fun AddSurveyQuestionScreen(
                     },
                     modifier = Modifier.testTag(TestTags.ADD_SURVEY_QUESTION_TWO),
                     singleLine = true,
-                    enabled = viewModel.uiEnabled.value
+                    enabled = viewModel.uiEnabled.value,
+                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White)
                 )
             }
             Card(
@@ -169,7 +195,9 @@ fun AddSurveyQuestionScreen(
                 TextField(
                     value = questionThreeState.text,
                     onValueChange = {
-                        viewModel.onEvent(AddSurveyQuestionEvent.EnteredQuestionThree(it))
+                        if (it.length <= Constants.MAX_QUESTION_LENGTH) {
+                            viewModel.onEvent(AddSurveyQuestionEvent.EnteredQuestionThree(it))
+                        }
                     },
                     label = {
                         Text(text = stringResource(R.string.enterThirdAnswerOption))
@@ -179,7 +207,8 @@ fun AddSurveyQuestionScreen(
                     },
                     modifier = Modifier.testTag(TestTags.ADD_SURVEY_QUESTION_THREE),
                     singleLine = true,
-                    enabled = viewModel.uiEnabled.value
+                    enabled = viewModel.uiEnabled.value,
+                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White)
                 )
             }
             Card(
@@ -193,7 +222,9 @@ fun AddSurveyQuestionScreen(
                 TextField(
                     value = questionFourState.text,
                     onValueChange = {
-                        viewModel.onEvent(AddSurveyQuestionEvent.EnteredQuestionFour(it))
+                        if (it.length <= Constants.MAX_QUESTION_LENGTH) {
+                            viewModel.onEvent(AddSurveyQuestionEvent.EnteredQuestionFour(it))
+                        }
                     },
                     label = {
                         Text(text = stringResource(R.string.enterFouthAnswerOption))
@@ -203,7 +234,8 @@ fun AddSurveyQuestionScreen(
                     },
                     modifier = Modifier.testTag(TestTags.ADD_SURVEY_QUESTION_FOUR),
                     singleLine = true,
-                    enabled = viewModel.uiEnabled.value
+                    enabled = viewModel.uiEnabled.value,
+                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White)
                 )
             }
 
@@ -249,4 +281,20 @@ fun AddSurveyQuestionScreen(
             viewModel.setUiEnabled(true)
         }
     }
+
+}
+
+@ExperimentalAnimationApi
+@Composable
+fun AddSurveyQuestionTopBar(viewModel: AddSurveyQuestionViewModel) {
+        AnimatedVisibility(
+            visible = viewModel.questionCount != 0,
+            exit = slideOutHorizontally(animationSpec = tween(2000)),
+            enter = slideInHorizontally(animationSpec = tween(4000))
+        ) {
+            Canvas(modifier = Modifier.fillMaxWidth().padding(5.dp)) {
+
+                drawCircle(color = blue, radius = 10f)
+            }
+        }
 }

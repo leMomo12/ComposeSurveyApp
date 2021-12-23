@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.mnowo.composesurveyapp.core.domain.TextFieldState
 import com.mnowo.composesurveyapp.core.presentation.util.Resource
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
+import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.core.util.UiText
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
@@ -28,6 +29,8 @@ class AddSurveyQuestionViewModel @Inject constructor(
     private val addSurveyUseCase: AddSurveyUseCase,
     private val deleteAllQuestionsUseCase: DeleteAllQuestionsUseCase
 ) : ViewModel() {
+
+    var questionCount = 0
 
     private val _questionTitleState = mutableStateOf(TextFieldState())
     val questionTitleState: State<TextFieldState> = _questionTitleState
@@ -63,11 +66,12 @@ class AddSurveyQuestionViewModel @Inject constructor(
     fun onEvent(event: AddSurveyQuestionEvent) {
         when (event) {
             is AddSurveyQuestionEvent.EnteredQuestionTitle -> {
-                _questionTitleState.value = questionTitleState.value.copy(
-                    text = event.title
-                )
+                    _questionTitleState.value = questionTitleState.value.copy(
+                        text = event.title
+                    )
             }
             is AddSurveyQuestionEvent.EnteredQuestionOne -> {
+
                 _questionOneState.value = questionOneState.value.copy(
                     text = event.question
                 )
@@ -161,7 +165,8 @@ class AddSurveyQuestionViewModel @Inject constructor(
         }
     }
 
-    fun blankAfterSuccessfullyAddingQuestion() = viewModelScope.launch {
+    private fun blankAfterSuccessfullyAddingQuestion() = viewModelScope.launch {
+        questionCount++
         _questionTitleState.value = questionTitleState.value.copy(
             text = ""
         )

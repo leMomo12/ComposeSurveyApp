@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mnowo.composesurveyapp.R
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
+import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.TestTags
 import com.mnowo.composesurveyapp.feature_add_survey.presentation.new_survey.NewSurveyEvent
 import com.mnowo.composesurveyapp.feature_add_survey.presentation.new_survey.NewSurveyViewModel
@@ -87,7 +88,9 @@ fun NewSurveyScreen(
         OutlinedTextField(
             value = titleState.text,
             onValueChange = {
-                viewModel.onEvent(NewSurveyEvent.EnteredTitle(it))
+                if (it.length <= Constants.MAX_TITLE_LENGTH) {
+                    viewModel.onEvent(NewSurveyEvent.EnteredTitle(it))
+                }
             },
             leadingIcon = {
                 Icon(Icons.Default.Title, "")
@@ -107,7 +110,9 @@ fun NewSurveyScreen(
         OutlinedTextField(
             value = descriptionState.text,
             onValueChange = {
-                viewModel.onEvent(NewSurveyEvent.EnteredDescription(it))
+                if (it.length <= Constants.MAX_DESCRIPTION_LENGTH) {
+                    viewModel.onEvent(NewSurveyEvent.EnteredDescription(it))
+                }
             },
             leadingIcon = {
                 Icon(Icons.Default.Description, "")

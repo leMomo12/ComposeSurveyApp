@@ -10,4 +10,8 @@ object Constants {
     const val SURVEY_INFO = "survey_info###?H"
 
     const val UNEXPECTED_ERROR = "Unexpected error occurred"
+
+    const val MAX_TITLE_LENGTH = 40
+    const val MAX_DESCRIPTION_LENGTH = 50
+    const val MAX_QUESTION_LENGTH = 30
 }
