@@ -1,10 +1,8 @@
 package com.mnowo.composesurveyapp.di
 
-import com.mnowo.composesurveyapp.feature_auth.data.remote.AuthRemoteDb
-import com.mnowo.composesurveyapp.feature_auth.data.repository.AuthRepositoryImpl
-import com.mnowo.composesurveyapp.feature_auth.domain.repository.AuthRepository
+import com.mnowo.composesurveyapp.feature_home.data.remote.HomeRemoteDb
 import com.mnowo.composesurveyapp.feature_home.data.repository.HomeRepositoryImpl
-import com.mnowo.composesurveyapp.feature_home.domain.HomeRepository
+import com.mnowo.composesurveyapp.feature_home.domain.repository.HomeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +15,7 @@ object HomeModule {
 
     @Provides
     @Singleton
-    fun provideHomeRepository(): HomeRepository {
-        return HomeRepositoryImpl()
+    fun provideHomeRepository(remoteDb: HomeRemoteDb): HomeRepository {
+        return HomeRepositoryImpl(remoteDb)
     }
 }

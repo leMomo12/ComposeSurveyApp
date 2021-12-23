@@ -2,6 +2,7 @@ package com.mnowo.composesurveyapp.feature_add_survey.domain.use_case
 
 import android.util.Log.d
 import com.mnowo.composesurveyapp.core.presentation.util.Resource
+import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.GetSurveyQuestionsResult
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import com.mnowo.composesurveyapp.feature_add_survey.domain.repositrory.AddSurveyRepository
@@ -21,45 +22,67 @@ class AddSurveyUseCase @Inject constructor(
 
             val titleAndDescription = addSurveyRepository.getTitleAndDescription()
 
-            val titleAndDescriptionResult = addSurveyRepository.addSurveyTitleAndDescription(titleAndDescription)
+            val titleAndDescriptionResult =
+                addSurveyRepository.addSurveyTitleAndDescription(titleAndDescription)
+
+            val titleAndDescriptionInfoResult =
+                addSurveyRepository.addSurveyTitleAndDescriptionToInfo(titleAndDescription)
 
             var surveyStatus = true
 
-            if (titleAndDescriptionResult.isSuccessful == true && questionListData.isNotEmpty()) {
+            if (titleAndDescriptionResult.isSuccessful == true && questionListData.isNotEmpty() && titleAndDescriptionInfoResult.isSuccessful == true) {
                 for (data in questionListData) {
                     d("AddSurvey", "Item: ${data.toString()}")
                     val surveyResult = addSurveyRepository.addSurvey(data, titleAndDescription)
-                    if(surveyResult.isSuccessful == false) {
+                    if (surveyResult.isSuccessful == false) {
                         emit(
                             Resource.Error<GetSurveyQuestionsResult>(
                                 message = titleAndDescriptionResult.errorMessage
-                                    ?: "Unexpected error occurred"
+                                    ?: Constants.UNEXPECTED_ERROR
                             )
                         )
                         surveyStatus = false
                     }
                 }
-                if(!surveyStatus) {
+                if (!surveyStatus) {
                     Resource.Error<GetSurveyQuestionsResult>(
-                        message = "Unexpected error occurred"
+                        Constants.UNEXPECTED_ERROR
                     )
                 } else {
                     emit(Resource.Success<GetSurveyQuestionsResult>(data = GetSurveyQuestionsResult()))
                     d("AddSurvey", "Successfully added Survey")
                 }
             } else {
-                emit(
-                    Resource.Error<GetSurveyQuestionsResult>(
-                        message = titleAndDescriptionResult.errorMessage
-                            ?: "Unexpected error occurred"
-                    )
-                )
+                when {
+                    titleAndDescriptionInfoResult.isSuccessful != true -> {
+                        emit(
+                            Resource.Error<GetSurveyQuestionsResult>(
+                                message = titleAndDescriptionInfoResult.errorMessage
+                                    ?: Constants.UNEXPECTED_ERROR
+                            )
+                        )
+                    }
+                    titleAndDescriptionResult.isSuccessful != true -> {
+                        emit(
+                            Resource.Error<GetSurveyQuestionsResult>(
+                                message = titleAndDescriptionResult.errorMessage
+                                    ?: Constants.UNEXPECTED_ERROR
+                            )
+                        )
+                    }
+                    else -> {
+                        emit(
+                            Resource.Error<GetSurveyQuestionsResult>(
+                                message = "Empty list"
+                            )
+                        )
+                    }
+                }
             }
-
 
         } catch (e: Exception) {
             d("AddSurvey", "Error")
-            emit(Resource.Error<GetSurveyQuestionsResult>(message = "Unexpected error occurred"))
+            emit(Resource.Error<GetSurveyQuestionsResult>(message = Constants.UNEXPECTED_ERROR))
         }
     }
 }

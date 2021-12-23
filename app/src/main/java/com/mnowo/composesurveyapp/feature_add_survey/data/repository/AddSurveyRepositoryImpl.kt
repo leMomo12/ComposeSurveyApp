@@ -45,5 +45,9 @@ class AddSurveyRepositoryImpl @Inject constructor(
         return addSurveyDao.deleteAllQuestions()
     }
 
+    override suspend fun addSurveyTitleAndDescriptionToInfo(surveyTitleAndDescription: SurveyTitleAndDescription): RemoteDbRespond {
+        return addSurveyRemoteDb.addSurveyTitleAndDescriptionToInfo(surveyTitleAndDescription)
+    }
+
 
 }

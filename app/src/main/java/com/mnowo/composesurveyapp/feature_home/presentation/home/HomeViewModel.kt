@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.feature_auth.presentation.register.RegisterState
+import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
+import com.mnowo.composesurveyapp.feature_home.domain.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -15,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-
+    private val homeRepository: HomeRepository
 ) : ViewModel() {
 
     private val _state = mutableStateOf(HomeState())
@@ -23,6 +25,16 @@ class HomeViewModel @Inject constructor(
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
+
+    private val _surveyInfoList = mutableStateOf<MutableList<SurveyInfo>>(mutableListOf())
+    val surveyInfoList: State<MutableList<SurveyInfo>> = _surveyInfoList
+
+    init {
+        viewModelScope.launch {
+            _surveyInfoList.value = homeRepository.getSurveyInfo()
+        }
+        _surveyInfoList.value.shuffle()
+    }
 
     fun onEvent(event: HomeEvent) {
         when(event) {
@@ -32,9 +44,6 @@ class HomeViewModel @Inject constructor(
                         UiEvent.Navigate(Screen.NewSurveyScreen.route)
                     )
                 }
-            }
-            is HomeEvent.ScrollUp -> {
-
             }
         }
     }
