@@ -47,8 +47,6 @@ iapp/src/test/java/com/mnowo/composesurveyapp/feature_add_survey/domain/use_case
 _app/src/test/java/com/mnowo/composesurveyapp/feature_auth/data/repository/FakeAuthRepository.kt,2\9\29c279feac9326a5297883966c1bb0172241f7c5
 \
 ,.idea/inspectionProfiles/Project_Default.xml,4\9\496a238a6afa168dbaf6efd37bb459331589579c
-ë
-aapp/src/main/java/com/mnowo/composesurveyapp/feature_auth/presentation/register/RegisterScreen.kt,c\0\c0694769f3aec514f10ba50187904e0cf581a607
 ç
 ]app/src/main/java/com/mnowo/composesurveyapp/feature_auth/domain/repository/AuthRepository.kt,8\b\8b3cdb84fb952ba0db35d8e40a4714dd2f763f31
 è

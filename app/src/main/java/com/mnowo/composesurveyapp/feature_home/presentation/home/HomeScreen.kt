@@ -1,6 +1,9 @@
 package com.mnowo.composesurveyapp.feature_home.presentation.home
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -144,12 +147,28 @@ fun HomeScreen(
 }
 
 
+@ExperimentalAnimationApi
 @Composable
 fun SurveyListItem(data: SurveyInfo) {
+
+    var expandedState by remember {
+        mutableStateOf(false)
+    }
+
     Card(
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 10.dp, top = 10.dp),
         elevation = 5.dp,
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(10.dp),
+        modifier = Modifier
+            .animateContentSize(
+                animationSpec = tween(
+                    durationMillis = 400,
+                    easing = LinearOutSlowInEasing
+                )
+            )
+            .padding(start = 20.dp, end = 20.dp, bottom = 10.dp, top = 10.dp)
+            .clickable {
+                expandedState = !expandedState
+            }
     ) {
         Column(
             Modifier
@@ -162,7 +181,8 @@ fun SurveyListItem(data: SurveyInfo) {
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
                     fontFamily = FontFamily.SansSerif,
-                    color = grey
+                    color = grey,
+                    maxLines = 2
                 )
             }
             Spacer(modifier = Modifier.padding(vertical = 2.dp))
@@ -205,9 +225,20 @@ fun SurveyListItem(data: SurveyInfo) {
                 )
             }
             Spacer(modifier = Modifier.padding(vertical = 10.dp))
+            if(expandedState) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                    Button(onClick = {  }) {
+                        Text(text = "Start Survey")
+                    }
+                    Spacer(modifier = Modifier.padding(5.dp))
+                    Icon(Icons.Default.LockClock, contentDescription = "", tint = grey, modifier = Modifier.scale(0.7f))
+                    Text(text = "5-10 min", fontSize = 16.sp)
+                }
+            }
         }
     }
 }
+
 
 @ExperimentalAnimationApi
 @Composable
