@@ -39,8 +39,6 @@ fapp/src/main/java/com/mnowo/composesurveyapp/feature_auth/domain/use_case/Delet
 bapp/src/androidTest/java/com/mnowo/composesurveyapp/feature_auth/presentation/di/AuthModuleTest.kt,0\e\0e95c09623addbe2c75c152c2a1548eef787b2c0
 ô
 iapp/src/main/java/com/mnowo/composesurveyapp/feature_add_survey/presentation/new_survey/NewSurveyEvent.kt,b\8\b8e3a9824e8c3758c7a947a9dd4fac5289e595ed
-û
-napp/src/test/java/com/mnowo/composesurveyapp/feature_add_survey/data/repository/FakeAddSurveyRepositoryTest.kt,4\a\4a168c93a9ab8fc5219bbf05773615b723c3687a
 ô
 iapp/src/test/java/com/mnowo/composesurveyapp/feature_add_survey/domain/use_case/AddQuestionUseCaseTest.kt,f\2\f2f21541a1477e416e9135f8c08cb6da361bf2cf
 è
@@ -77,8 +75,6 @@ P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 A
 gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
-~
-Napp/src/main/java/com/mnowo/composesurveyapp/core/presentation/util/UiEvent.kt,5\b\5b8ecf54fe1774e95e80d20fc8bef25879c6af88
 ô
 iapp/src/main/java/com/mnowo/composesurveyapp/feature_add_survey/domain/repositrory/AddSurveyRepository.kt,5\0\506a8040e66f5477b1d5028792e1edce52ff5f26
 ö
@@ -107,3 +103,5 @@ Xapp/src/main/java/com/mnowo/composesurveyapp/feature_home/presentation/home/Hom
 \app/src/main/java/com/mnowo/composesurveyapp/feature_home/presentation/home/HomeViewModel.kt,f\f\ff963184a579092b27a07334ec7ffe493634a6a4
 ë
 aapp/src/main/java/com/mnowo/composesurveyapp/feature_auth/presentation/register/RegisterScreen.kt,c\0\c0694769f3aec514f10ba50187904e0cf581a607
+s
+Capp/src/main/java/com/mnowo/composesurveyapp/core/ui/theme/Color.kt,7\8\78d6ab7905af0c9fcddc7b56db61ac634d4110c2

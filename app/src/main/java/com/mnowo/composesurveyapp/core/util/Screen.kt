@@ -8,4 +8,7 @@ sealed class Screen(val route: String) {
     object NewSurveyScreen : Screen("new_survey_screen")
     object AddSurveyQuestionScreen : Screen("survey_question_screen")
     object DoneScreen : Screen("done_screen")
+    object BeforeAnswerScreen : Screen("before_answer_screen")
+    object AnswerScreen : Screen("answer_screen")
+    object AfterAnswerScreen : Screen("after_answer_screen")
 }

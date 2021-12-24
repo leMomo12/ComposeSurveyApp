@@ -42,4 +42,8 @@ class FakeAddSurveyRepositoryTest : AddSurveyRepository {
         questionList.clear()
     }
 
+    override suspend fun addSurveyTitleAndDescriptionToInfo(surveyTitleAndDescription: SurveyTitleAndDescription): RemoteDbRespond {
+        TODO("Not yet implemented")
+    }
+
 }

@@ -51,7 +51,6 @@ fun AddSurveyQuestionScreen(
     val questionTwoState = viewModel.questionTwoState.value
     val questionThreeState = viewModel.questionThreeState.value
     val questionFourState = viewModel.questionFourState.value
-    val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
     val istokweb = FontFamily(
@@ -79,11 +78,6 @@ fun AddSurveyQuestionScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {
-            Row(modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)) {
-                AddSurveyQuestionTopBar(viewModel = viewModel)
-            }
-        }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
@@ -282,19 +276,4 @@ fun AddSurveyQuestionScreen(
         }
     }
 
-}
-
-@ExperimentalAnimationApi
-@Composable
-fun AddSurveyQuestionTopBar(viewModel: AddSurveyQuestionViewModel) {
-        AnimatedVisibility(
-            visible = viewModel.questionCount != 0,
-            exit = slideOutHorizontally(animationSpec = tween(2000)),
-            enter = slideInHorizontally(animationSpec = tween(4000))
-        ) {
-            Canvas(modifier = Modifier.fillMaxWidth().padding(5.dp)) {
-
-                drawCircle(color = blue, radius = 10f)
-            }
-        }
 }
