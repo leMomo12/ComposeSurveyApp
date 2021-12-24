@@ -15,6 +15,9 @@ import com.google.accompanist.navigation.animation.navigation
 import com.mnowo.composesurveyapp.feature_add_survey.NewSurveyScreen
 import com.mnowo.composesurveyapp.feature_add_survey.presentation.add_survey_question.AddSurveyQuestionScreen
 import com.mnowo.composesurveyapp.feature_add_survey.presentation.done_screen.DoneScreen
+import com.mnowo.composesurveyapp.feature_answer.presentation.after_answer_screen.AfterAnswerScreen
+import com.mnowo.composesurveyapp.feature_answer.presentation.answer_screen.AnswerScreen
+import com.mnowo.composesurveyapp.feature_answer.presentation.before_answer_screen.BeforeAnswerScreen
 import com.mnowo.composesurveyapp.feature_auth.presentation.register.RegisterScreen
 import com.mnowo.composesurveyapp.feature_auth.presentation.splash.SplashScreen
 import com.mnowo.composesurveyapp.feature_home.presentation.home.HomeScreen
@@ -58,6 +61,18 @@ fun Navigation(navController: NavHostController) {
 
         composable(Screen.DoneScreen.route) {
             DoneScreen(onNavigate = navController::navigate)
+        }
+
+        composable(Screen.BeforeAnswerScreen.route) {
+            BeforeAnswerScreen(onNavigate = navController::navigate)
+        }
+
+        composable(Screen.AnswerScreen.route) {
+            AnswerScreen(onNavigate = navController::navigate)
+        }
+
+        composable(Screen.AfterAnswerScreen.route) {
+            AfterAnswerScreen(onNavigate = navController::navigate)
         }
     }
 }

@@ -37,11 +37,18 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onEvent(event: HomeEvent) {
-        when(event) {
+        when (event) {
             is HomeEvent.AddNewSurvey -> {
                 viewModelScope.launch {
                     _eventFlow.emit(
                         UiEvent.Navigate(Screen.NewSurveyScreen.route)
+                    )
+                }
+            }
+            is HomeEvent.NavigateToBeforeSurvey -> {
+                viewModelScope.launch {
+                    _eventFlow.emit(
+                        UiEvent.Navigate(Screen.BeforeAnswerScreen.route)
                     )
                 }
             }

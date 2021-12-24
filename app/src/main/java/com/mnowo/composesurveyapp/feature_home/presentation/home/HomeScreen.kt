@@ -140,7 +140,7 @@ fun HomeScreen(
                 }
             }
             items(surveyInfoList) {
-                SurveyListItem(data = it)
+                SurveyListItem(data = it, viewModel)
             }
         }
     }
@@ -149,7 +149,7 @@ fun HomeScreen(
 
 @ExperimentalAnimationApi
 @Composable
-fun SurveyListItem(data: SurveyInfo) {
+fun SurveyListItem(data: SurveyInfo, viewModel: HomeViewModel) {
 
     var expandedState by remember {
         mutableStateOf(false)
@@ -227,7 +227,9 @@ fun SurveyListItem(data: SurveyInfo) {
             Spacer(modifier = Modifier.padding(vertical = 10.dp))
             if(expandedState) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-                    Button(onClick = {  }) {
+                    Button(onClick = {
+                        viewModel.onEvent(HomeEvent.NavigateToBeforeSurvey)
+                    }) {
                         Text(text = "Start Survey")
                     }
                     Spacer(modifier = Modifier.padding(5.dp))

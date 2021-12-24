@@ -63,8 +63,6 @@ X
 (gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
 F
 app/proguard-rules.pro,9\e\9e08934d811afe28fbc77aaa3c0d747b94348db9
-‡
-Wapp/src/main/java/com/mnowo/composesurveyapp/core/presentation/components/Navigation.kt,a\4\a4742e9213514d2def19f5c1502960ea79d0ee8c
 œ
 lapp/src/androidTest/java/com/mnowo/composesurveyapp/feature_auth/presentation/register/RegisterScreenTest.kt,8\0\80d237c4e1af7e72efbade54f2e87da930ffabd2
 –
@@ -97,11 +95,5 @@ Uapp/src/main/java/com/mnowo/composesurveyapp/feature_home/domain/models/SurveyI
 ]app/src/main/java/com/mnowo/composesurveyapp/feature_home/domain/repository/HomeRepository.kt,f\9\f9df936a714df9135534289a87649bd230fc1151
 ‘
 aapp/src/main/java/com/mnowo/composesurveyapp/feature_home/domain/use_case/GetSurveyInfoUseCase.kt,4\9\4972fff784eb9b1dfb909accdff3c355be64dc0e
-ˆ
-Xapp/src/main/java/com/mnowo/composesurveyapp/feature_home/presentation/home/HomeEvent.kt,7\1\715055b3db12eea930022a86381215a0ecae9bfa
-Œ
-\app/src/main/java/com/mnowo/composesurveyapp/feature_home/presentation/home/HomeViewModel.kt,f\f\ff963184a579092b27a07334ec7ffe493634a6a4
 ‘
 aapp/src/main/java/com/mnowo/composesurveyapp/feature_auth/presentation/register/RegisterScreen.kt,c\0\c0694769f3aec514f10ba50187904e0cf581a607
-s
-Capp/src/main/java/com/mnowo/composesurveyapp/core/ui/theme/Color.kt,7\8\78d6ab7905af0c9fcddc7b56db61ac634d4110c2
