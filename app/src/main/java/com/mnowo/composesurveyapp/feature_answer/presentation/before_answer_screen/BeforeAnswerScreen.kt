@@ -134,5 +134,6 @@ fun BeforeAnswerScreen(
             }
         }
         Spacer(modifier = Modifier.padding(50.dp))
+        //hu
     }
 }
