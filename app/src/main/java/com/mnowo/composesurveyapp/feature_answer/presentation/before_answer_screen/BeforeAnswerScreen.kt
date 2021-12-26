@@ -44,7 +44,7 @@ fun BeforeAnswerScreen(
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.Navigate -> {
-
+                    onNavigate(event.route)
                 }
             }
         }
@@ -90,14 +90,14 @@ fun BeforeAnswerScreen(
 
                 Text(
                     text = "Description:",
-                    fontSize = 17.sp,
+                    fontSize = 18.sp,
                     fontFamily = istokweb,
                     fontWeight = FontWeight.Medium
                 )
                 Spacer(modifier = Modifier.padding(vertical = 5.dp))
                 Text(
                     text = "This survey is the average income. Please answer honestly.",
-                    fontSize = 17.sp,
+                    fontSize = 18.sp,
                     fontFamily = istokweb,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center,
@@ -106,21 +106,21 @@ fun BeforeAnswerScreen(
                 Spacer(modifier = Modifier.padding(vertical = 15.dp))
                 Text(
                     text = "Categories: Science",
-                    fontSize = 17.sp,
+                    fontSize = 18.sp,
                     fontFamily = istokweb,
                     fontWeight = FontWeight.Medium
                 )
                 Spacer(modifier = Modifier.padding(vertical = 10.dp))
                 Text(
                     text = "Expected time: 5-10 minutes",
-                    fontSize = 17.sp,
+                    fontSize = 18.sp,
                     fontFamily = istokweb,
                     fontWeight = FontWeight.Medium
                 )
                 Spacer(modifier = Modifier.padding(vertical = 10.dp))
                 Text(
                     text = "Questions: 15",
-                    fontSize = 17.sp,
+                    fontSize = 18.sp,
                     fontFamily = istokweb,
                     fontWeight = FontWeight.Medium
                 )
@@ -129,11 +129,10 @@ fun BeforeAnswerScreen(
         }
         Spacer(modifier = Modifier.padding(vertical = 50.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Button(onClick = { }) {
+            Button(onClick = { viewModel.onEvent(BeforeAnswerEvent.NavigateToAnswer) }) {
                 Text(text = "Start the survey", fontSize = 18.sp)
             }
         }
         Spacer(modifier = Modifier.padding(50.dp))
-        //hu
     }
 }
