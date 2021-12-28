@@ -5,7 +5,6 @@ import com.mnowo.composesurveyapp.feature_add_survey.data.repository.FakeAddSurv
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
 
 import org.junit.Before
 import org.junit.Test

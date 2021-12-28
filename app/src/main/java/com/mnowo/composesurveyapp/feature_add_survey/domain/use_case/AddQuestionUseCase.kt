@@ -1,6 +1,5 @@
 package com.mnowo.composesurveyapp.feature_add_survey.domain.use_case
 
-import android.util.Log.d
 import com.mnowo.composesurveyapp.core.presentation.util.Resource
 import com.mnowo.composesurveyapp.core.util.ValidationUtil
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion

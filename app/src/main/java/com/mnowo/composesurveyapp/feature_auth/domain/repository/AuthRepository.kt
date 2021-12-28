@@ -1,6 +1,6 @@
 package com.mnowo.composesurveyapp.feature_auth.domain.repository
 
-import com.mnowo.composesurveyapp.core.models.RemoteDbRespond
+import com.mnowo.composesurveyapp.core.domain.models.RemoteDbRespond
 
 interface AuthRepository {
 

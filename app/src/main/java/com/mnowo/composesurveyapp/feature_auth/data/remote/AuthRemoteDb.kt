@@ -3,7 +3,7 @@ package com.mnowo.composesurveyapp.feature_auth.data.remote
 import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.mnowo.composesurveyapp.core.models.RemoteDbRespond
+import com.mnowo.composesurveyapp.core.domain.models.RemoteDbRespond
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 import javax.inject.Inject

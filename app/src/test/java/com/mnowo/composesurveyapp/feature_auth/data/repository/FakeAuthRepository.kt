@@ -1,8 +1,7 @@
 package com.mnowo.composesurveyapp.feature_auth.data.repository
 
-import com.mnowo.composesurveyapp.core.models.RemoteDbRespond
+import com.mnowo.composesurveyapp.core.domain.models.RemoteDbRespond
 import com.mnowo.composesurveyapp.feature_auth.domain.repository.AuthRepository
-import org.junit.Assert.*
 
 class FakeAuthRepository : AuthRepository {
     override suspend fun signInWithEmailAndPassword(

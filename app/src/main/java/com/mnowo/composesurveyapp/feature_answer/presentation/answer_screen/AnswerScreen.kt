@@ -1,7 +1,9 @@
 package com.mnowo.composesurveyapp.feature_answer.presentation.answer_screen
 
+import android.util.Log.d
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,22 +11,31 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mnowo.composesurveyapp.R
-import com.mnowo.composesurveyapp.core.ui.theme.blue
-import com.mnowo.composesurveyapp.core.ui.theme.grey
 import com.mnowo.composesurveyapp.core.ui.theme.lightBlue2
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun AnswerScreen(onNavigate: (String) -> Unit = {}) {
+
+    val coroutineScope = rememberCoroutineScope()
+
+    var loading: Boolean = true
 
     val istokweb = FontFamily(
         Font(R.font.istokweb_bold, FontWeight.Bold),
@@ -33,6 +44,115 @@ fun AnswerScreen(onNavigate: (String) -> Unit = {}) {
         Font(R.font.istokweb_regular, FontWeight.Medium),
     )
 
+    LaunchedEffect(key1 = true) {
+        coroutineScope.launch {
+            delay(10000)
+            loading = false
+        }
+    }
+
+    val shimmerColors = listOf(
+        Color.LightGray.copy(alpha = 0.6f),
+        Color.LightGray.copy(alpha = 0.2f),
+        Color.LightGray.copy(alpha = 0.6f)
+    )
+    val transition = rememberInfiniteTransition()
+    val translateAime = transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1000f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 1000,
+                easing = FastOutSlowInEasing
+            )
+        )
+    )
+
+    val brush = Brush.linearGradient(
+        colors = shimmerColors,
+        start = Offset.Zero,
+        end = Offset(x = translateAime.value, y = translateAime.value)
+    )
+
+    Scaffold {
+            if (loading) {
+                AnswerScreenItem(istokweb = istokweb)
+            } else {
+                d("Shimmer", "false")
+                AnswerShimmerGrid(istokweb = istokweb, brush = brush)
+            }
+    }
+}
+
+@Composable
+fun AnswerShimmerGrid(istokweb: FontFamily, brush: Brush) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(20.dp)
+    ) {
+        Row(Modifier.fillMaxWidth()) {
+            Icon(Icons.Default.ArrowBackIos, contentDescription = "")
+            Text(
+                text = "0 of 10",
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Medium,
+                fontFamily = istokweb,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        }
+        LinearProgressIndicator(
+            progress = 0.0f,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 15.dp)
+                .clip(
+                    RoundedCornerShape(60.dp)
+                ),
+            color = lightBlue2,
+        )
+        Spacer(modifier = Modifier.padding(vertical = 20.dp))
+        ShimmerTextItem(fraction = 0.6f, brush = brush, height = 30.dp)
+        Spacer(modifier = Modifier.padding(vertical = 5.dp))
+        ShimmerTextItem(fraction = 0.45f, brush = brush, height = 30.dp)
+        Spacer(modifier = Modifier.padding(vertical = 5.dp))
+        ShimmerTextItem(fraction = 0.5f, brush = brush, height = 30.dp)
+        Spacer(modifier = Modifier.padding(vertical = 20.dp))
+
+        LazyColumn {
+            items(4) {
+                ShimmerAnswerListItem(brush = brush)
+                Spacer(modifier = Modifier.padding(vertical = 10.dp))
+            }
+        }
+        Spacer(modifier = Modifier.padding(vertical = 20.dp))
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            Button(onClick = { }, enabled = false) {
+                Text(
+                    text = "Next",
+                    fontSize = 21.sp,
+                    modifier = Modifier.fillMaxWidth(0.7f),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ShimmerTextItem(fraction: Float, brush: Brush, height: Dp) {
+    Spacer(
+        modifier = Modifier
+            .height(height)
+            .clip(RoundedCornerShape(10.dp))
+            .fillMaxWidth(fraction = fraction)
+            .background(brush = brush)
+    )
+}
+
+@Composable
+fun AnswerScreenItem(istokweb: FontFamily) {
     Column(
         Modifier
             .fillMaxSize()
@@ -102,6 +222,26 @@ fun AnswerListItem(istokweb: FontFamily) {
             fontFamily = istokweb,
             fontWeight = FontWeight.Medium,
             modifier = Modifier.padding(start = 25.dp, top = 20.dp, bottom = 20.dp, end = 25.dp)
+        )
+    }
+}
+
+@Composable
+fun ShimmerAnswerListItem(brush: Brush) {
+    Card(
+        shape = RoundedCornerShape(15.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp),
+        border = BorderStroke(1.dp, Color.LightGray),
+    ) {
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
+                .fillMaxWidth()
+                .padding(start = 25.dp, top = 20.dp, bottom = 20.dp, end = 25.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(brush = brush)
         )
     }
 }

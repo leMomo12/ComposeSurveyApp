@@ -1,6 +1,6 @@
 package com.mnowo.composesurveyapp.core.util
 
-import com.mnowo.composesurveyapp.core.models.ValidationResult
+import com.mnowo.composesurveyapp.core.domain.models.ValidationResult
 
 object ValidationUtil {
 

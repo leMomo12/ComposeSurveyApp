@@ -1,13 +1,10 @@
 package com.mnowo.composesurveyapp.feature_add_survey.domain.use_case
 
-import android.util.Log.d
 import com.google.common.truth.Truth
 import com.mnowo.composesurveyapp.feature_add_survey.data.repository.FakeAddSurveyRepositoryTest
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 

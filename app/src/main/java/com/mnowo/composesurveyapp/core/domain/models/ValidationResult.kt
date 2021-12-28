@@ -1,4 +1,4 @@
-package com.mnowo.composesurveyapp.core.models
+package com.mnowo.composesurveyapp.core.domain.models
 
 data class ValidationResult(
     var isValidInput: Boolean? = null,

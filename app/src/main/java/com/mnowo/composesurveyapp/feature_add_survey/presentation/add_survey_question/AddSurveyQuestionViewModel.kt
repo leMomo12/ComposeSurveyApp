@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.mnowo.composesurveyapp.core.domain.TextFieldState
 import com.mnowo.composesurveyapp.core.presentation.util.Resource
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
-import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.core.util.UiText
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion

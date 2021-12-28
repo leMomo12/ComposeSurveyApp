@@ -1,10 +1,9 @@
 package com.mnowo.composesurveyapp.feature_add_survey.data.repository
 
-import com.mnowo.composesurveyapp.core.models.RemoteDbRespond
+import com.mnowo.composesurveyapp.core.domain.models.RemoteDbRespond
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyTitleAndDescription
 import com.mnowo.composesurveyapp.feature_add_survey.domain.repositrory.AddSurveyRepository
-import org.junit.Assert.*
 
 class FakeAddSurveyRepositoryTest : AddSurveyRepository {
 

@@ -6,7 +6,6 @@ import com.mnowo.composesurveyapp.feature_add_survey.data.local.AddSurveyDao
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyTitleAndDescription
 import com.mnowo.composesurveyapp.feature_auth.data.local.AuthDao
-import javax.inject.Inject
 
 @Database(
     entities = [SurveyTitleAndDescription::class, SurveyQuestion::class],

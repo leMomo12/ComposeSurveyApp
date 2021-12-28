@@ -1,14 +1,8 @@
 package com.mnowo.composesurveyapp.feature_auth.domain.use_case
 
-import android.util.Log.d
 import com.google.common.truth.Truth.assertThat
-import com.mnowo.composesurveyapp.core.models.RemoteDbRespond
 import com.mnowo.composesurveyapp.feature_auth.data.repository.FakeAuthRepository
-import com.mnowo.composesurveyapp.feature_auth.domain.models.RegisterResult
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test

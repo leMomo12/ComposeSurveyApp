@@ -3,7 +3,7 @@ package com.mnowo.composesurveyapp.feature_add_survey.data.remote
 import android.util.Log.d
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.mnowo.composesurveyapp.core.models.RemoteDbRespond
+import com.mnowo.composesurveyapp.core.domain.models.RemoteDbRespond
 import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyTitleAndDescription
