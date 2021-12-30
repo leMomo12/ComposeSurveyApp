@@ -1,5 +1,6 @@
 package com.mnowo.composesurveyapp.feature_home.presentation.home
 
+import android.util.Log.d
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -26,6 +27,9 @@ class HomeViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
+    private val _surveyInfoState = mutableStateOf<SurveyInfo>(SurveyInfo("", "", 0, 0, 0, "empty"))
+    val surveyInfoState: State<SurveyInfo> = _surveyInfoState
+
     private val _surveyInfoList = mutableStateOf<MutableList<SurveyInfo>>(mutableListOf())
     val surveyInfoList: State<MutableList<SurveyInfo>> = _surveyInfoList
 
@@ -38,6 +42,17 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event: HomeEvent) {
         when (event) {
+            is HomeEvent.SurveyInfoState -> {
+                _surveyInfoState.value = SurveyInfo(
+                    event.data.title,
+                    event.data.description,
+                    event.data.questionCount,
+                    event.data.likes,
+                    event.data.dislikes,
+                    event.data.errorMessage
+                )
+            }
+
             is HomeEvent.AddNewSurvey -> {
                 viewModelScope.launch {
                     _eventFlow.emit(
@@ -47,6 +62,7 @@ class HomeViewModel @Inject constructor(
             }
             is HomeEvent.NavigateToBeforeSurvey -> {
                 viewModelScope.launch {
+                    d("savedState", "$surveyInfoState")
                     _eventFlow.emit(
                         UiEvent.Navigate(Screen.BeforeAnswerScreen.route)
                     )

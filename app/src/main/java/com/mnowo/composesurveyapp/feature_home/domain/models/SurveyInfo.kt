@@ -1,5 +1,10 @@
 package com.mnowo.composesurveyapp.feature_home.domain.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+
+@Parcelize
 data class SurveyInfo(
     val title: String,
     val description: String,
@@ -7,4 +12,4 @@ data class SurveyInfo(
     val likes: Int,
     val dislikes: Int,
     val errorMessage: String? = null
-)
+) : Parcelable

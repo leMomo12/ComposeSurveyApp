@@ -14,4 +14,7 @@ object Constants {
     const val MAX_TITLE_LENGTH = 40
     const val MAX_DESCRIPTION_LENGTH = 50
     const val MAX_QUESTION_LENGTH = 30
+
+    const val PARAM_SURVEY_PATH = "surveyPath"
+    const val PARAM_SURVEY_INFO = "surveyInfo"
 }

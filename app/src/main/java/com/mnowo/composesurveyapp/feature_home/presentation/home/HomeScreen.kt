@@ -1,5 +1,6 @@
 package com.mnowo.composesurveyapp.feature_home.presentation.home
 
+import android.os.Bundle
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -38,6 +39,7 @@ import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.ui.theme.blue
 import com.mnowo.composesurveyapp.core.ui.theme.grey
 import com.mnowo.composesurveyapp.core.ui.theme.white
+import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.TestTags
 import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 import kotlinx.coroutines.CoroutineScope
@@ -49,7 +51,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    onNavigate: (String) -> Unit = {}
+    onNavigate: (String) -> Unit = {},
+    navController: NavController
 ) {
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -70,6 +73,10 @@ fun HomeScreen(
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.Navigate -> {
+                    navController.currentBackStackEntry?.arguments =
+                        Bundle().apply {
+                            putParcelable(Constants.PARAM_SURVEY_INFO, viewModel.surveyInfoState.value)
+                        }
                     onNavigate(event.route)
                 }
                 is UiEvent.ShowSnackbar -> {
@@ -228,6 +235,7 @@ fun SurveyListItem(data: SurveyInfo, viewModel: HomeViewModel) {
             if(expandedState) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
                     Button(onClick = {
+                        viewModel.onEvent(HomeEvent.SurveyInfoState(data = data))
                         viewModel.onEvent(HomeEvent.NavigateToBeforeSurvey)
                     }) {
                         Text(text = "Start Survey")

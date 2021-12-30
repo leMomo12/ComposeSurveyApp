@@ -14,7 +14,7 @@ class GetSurveyQuestionsUseCase @Inject constructor(
     operator fun invoke(collectionPath: String): Flow<Resource<MutableList<GetQuestion>>> = flow {
         emit(Resource.Loading<MutableList<GetQuestion>>())
         val result = answerRepository.getSurvey(collectionPath = collectionPath)
-        var succcessful: Boolean = true
+        var succcessful = true
         var errorMessage: String? = null
 
         for (document in result) {
@@ -25,9 +25,9 @@ class GetSurveyQuestionsUseCase @Inject constructor(
         }
 
         if(succcessful) {
-            emit(Resource.Success(data = result))
+            emit(Resource.Success<MutableList<GetQuestion>>(data = result))
         } else {
-            emit(Resource.Error(message = errorMessage ?: "An unexpected error occurred"))
+            emit(Resource.Error<MutableList<GetQuestion>>(message = errorMessage ?: "An unexpected error occurred"))
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.mnowo.composesurveyapp.feature_answer.presentation.before_answer_screen
 
+import android.util.Log.d
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,16 +21,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mnowo.composesurveyapp.R
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.ui.theme.blue
 import com.mnowo.composesurveyapp.core.ui.theme.grey
+import com.mnowo.composesurveyapp.core.util.Constants
+import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun BeforeAnswerScreen(
     onNavigate: (String) -> Unit = {},
-    viewModel: BeforeAnswerViewModel = hiltViewModel()
+    viewModel: BeforeAnswerViewModel = hiltViewModel(),
+    navController: NavController
 ) {
 
     val istokweb = FontFamily(
@@ -39,7 +44,9 @@ fun BeforeAnswerScreen(
         Font(R.font.istokweb_regular, FontWeight.Medium),
     )
 
+
     LaunchedEffect(key1 = true) {
+        viewModel.surveyDetail = navController.previousBackStackEntry?.arguments?.getParcelable<SurveyInfo>(Constants.PARAM_SURVEY_INFO)
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.Navigate -> {
@@ -95,7 +102,7 @@ fun BeforeAnswerScreen(
                 )
                 Spacer(modifier = Modifier.padding(vertical = 5.dp))
                 Text(
-                    text = "This survey is the average income. Please answer honestly.",
+                    text = viewModel.surveyDetail!!.description,
                     fontSize = 18.sp,
                     fontFamily = istokweb,
                     fontWeight = FontWeight.Medium,
@@ -118,7 +125,7 @@ fun BeforeAnswerScreen(
                 )
                 Spacer(modifier = Modifier.padding(vertical = 10.dp))
                 Text(
-                    text = "Questions: 15",
+                    text = "Questions: " + viewModel.surveyDetail!!.questionCount,
                     fontSize = 18.sp,
                     fontFamily = istokweb,
                     fontWeight = FontWeight.Medium
