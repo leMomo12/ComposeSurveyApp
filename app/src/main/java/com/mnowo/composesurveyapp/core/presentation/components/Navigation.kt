@@ -74,7 +74,7 @@ fun Navigation(navController: NavHostController) {
         }
 
         composable(Screen.AnswerScreen.route) {
-            AnswerScreen(onNavigate = navController::navigate)
+            AnswerScreen(onNavigate = navController::navigate, navController = navController)
         }
 
         composable(Screen.AfterAnswerScreen.route) {

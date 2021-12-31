@@ -4,15 +4,14 @@ import android.util.Log.d
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -25,13 +24,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mnowo.composesurveyapp.R
+import com.mnowo.composesurveyapp.core.ui.theme.blue
 import com.mnowo.composesurveyapp.core.ui.theme.lightBlue2
+import com.mnowo.composesurveyapp.core.util.Constants
+import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun AnswerScreen(onNavigate: (String) -> Unit = {}) {
+fun AnswerScreen(
+    onNavigate: (String) -> Unit = {},
+    viewModel: AnswerViewModel = hiltViewModel(),
+    navController: NavController
+) {
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -45,10 +53,9 @@ fun AnswerScreen(onNavigate: (String) -> Unit = {}) {
     )
 
     LaunchedEffect(key1 = true) {
-        coroutineScope.launch {
-            delay(10000)
-            loading = false
-        }
+        viewModel.title =
+            navController.previousBackStackEntry?.arguments?.getString(Constants.PARAM_SURVEY_PATH)
+        d("savedState", "title: ${viewModel.title}")
     }
 
     val shimmerColors = listOf(
@@ -75,12 +82,12 @@ fun AnswerScreen(onNavigate: (String) -> Unit = {}) {
     )
 
     Scaffold {
-            if (loading) {
-                AnswerScreenItem(istokweb = istokweb)
-            } else {
-                d("Shimmer", "false")
-                AnswerShimmerGrid(istokweb = istokweb, brush = brush)
-            }
+        if (loading) {
+            AnswerScreenItem(istokweb = istokweb, viewModel = viewModel)
+        } else {
+            d("Shimmer", "false")
+            AnswerShimmerGrid(istokweb = istokweb, brush = brush)
+        }
     }
 }
 
@@ -152,7 +159,7 @@ fun ShimmerTextItem(fraction: Float, brush: Brush, height: Dp) {
 }
 
 @Composable
-fun AnswerScreenItem(istokweb: FontFamily) {
+fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
     Column(
         Modifier
             .fillMaxSize()
@@ -191,7 +198,7 @@ fun AnswerScreenItem(istokweb: FontFamily) {
 
         LazyColumn {
             items(4) {
-                AnswerListItem(istokweb = istokweb)
+                AnswerListItem(istokweb = istokweb, viewModel = viewModel)
                 Spacer(modifier = Modifier.padding(vertical = 10.dp))
             }
         }
@@ -210,11 +217,20 @@ fun AnswerScreenItem(istokweb: FontFamily) {
 }
 
 @Composable
-fun AnswerListItem(istokweb: FontFamily) {
+fun AnswerListItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
+
+    var color by remember {
+        mutableStateOf(Color.LightGray)
+    }
+
     Card(
         shape = RoundedCornerShape(15.dp),
-        modifier = Modifier.fillMaxWidth(),
-        border = BorderStroke(1.dp, Color.LightGray),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+              color = viewModel.checkColor(oldColor = color)
+            },
+        border = BorderStroke(1.dp, color = color),
     ) {
         Text(
             text = "Arctic Circle",

@@ -1,5 +1,6 @@
 package com.mnowo.composesurveyapp.feature_answer.presentation.before_answer_screen
 
+import android.os.Bundle
 import android.util.Log.d
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -50,6 +51,10 @@ fun BeforeAnswerScreen(
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.Navigate -> {
+                    navController.currentBackStackEntry?.arguments =
+                        Bundle().apply {
+                            putString(Constants.PARAM_SURVEY_PATH, viewModel.surveyDetail?.title)
+                        }
                     onNavigate(event.route)
                 }
             }
