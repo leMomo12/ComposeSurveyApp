@@ -8,6 +8,7 @@ import javax.inject.Inject
 class HomeRepositoryImpl @Inject constructor(
     private val remoteDb: HomeRemoteDb
 ): HomeRepository {
+
     override suspend fun getSurveyInfo(): MutableList<SurveyInfo> {
         return remoteDb.getSurveyInfo()
     }

@@ -7,16 +7,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -27,11 +31,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mnowo.composesurveyapp.R
+import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.ui.theme.blue
 import com.mnowo.composesurveyapp.core.ui.theme.lightBlue2
 import com.mnowo.composesurveyapp.core.util.Constants
+import com.mnowo.composesurveyapp.core.util.asString
+import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
 import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -40,10 +48,11 @@ fun AnswerScreen(
     viewModel: AnswerViewModel = hiltViewModel(),
     navController: NavController
 ) {
-
     val coroutineScope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
+    val state = viewModel.state.value
+    val context = LocalContext.current
 
-    var loading: Boolean = true
 
     val istokweb = FontFamily(
         Font(R.font.istokweb_bold, FontWeight.Bold),
@@ -53,9 +62,25 @@ fun AnswerScreen(
     )
 
     LaunchedEffect(key1 = true) {
-        viewModel.title =
-            navController.previousBackStackEntry?.arguments?.getString(Constants.PARAM_SURVEY_PATH)
-        d("savedState", "title: ${viewModel.title}")
+        viewModel.surveyDetail = navController.previousBackStackEntry?.arguments?.getParcelable<SurveyInfo>(Constants.PARAM_SURVEY_INFO)
+
+        d("getSurvey", "title: ${viewModel.surveyDetail!!.title.toString()}")
+
+        viewModel.onEvent(AnswerEvent.GetSurvey)
+
+        viewModel.eventFlow.collectLatest {
+            when (it) {
+                is UiEvent.Navigate -> {
+                    onNavigate(it.route)
+                }
+                is UiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        it.uiText.asString(context = context),
+                        duration = SnackbarDuration.Long
+                    )
+                }
+            }
+        }
     }
 
     val shimmerColors = listOf(
@@ -81,11 +106,14 @@ fun AnswerScreen(
         end = Offset(x = translateAime.value, y = translateAime.value)
     )
 
-    Scaffold {
-        if (loading) {
+    Scaffold(
+        scaffoldState = scaffoldState
+    ) {
+        if (state.isLoading == false) {
+            d("Shimmer", "no shimmer ${state.isLoading}")
             AnswerScreenItem(istokweb = istokweb, viewModel = viewModel)
         } else {
-            d("Shimmer", "false")
+            d("Shimmer", "shimmerrrr")
             AnswerShimmerGrid(istokweb = istokweb, brush = brush)
         }
     }
@@ -168,7 +196,7 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
         Row(Modifier.fillMaxWidth()) {
             Icon(Icons.Default.ArrowBackIos, contentDescription = "")
             Text(
-                text = "2 of 10",
+                text = "0 of 12",
                 fontSize = 17.sp,
                 fontWeight = FontWeight.Medium,
                 fontFamily = istokweb,
@@ -177,7 +205,7 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
             )
         }
         LinearProgressIndicator(
-            progress = 0.2f,
+            progress = 0.0f,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 15.dp)
@@ -188,7 +216,7 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
         )
         Spacer(modifier = Modifier.padding(vertical = 20.dp))
         Text(
-            text = "Which of the following cirles do you like the most?",
+            text = viewModel.surveyData.value[viewModel.currentQuestion].questionTitle,
             fontSize = 28.sp,
             fontFamily = istokweb,
             fontWeight = FontWeight.Bold,
@@ -197,13 +225,16 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
         Spacer(modifier = Modifier.padding(vertical = 20.dp))
 
         LazyColumn {
-            items(4) {
-                AnswerListItem(istokweb = istokweb, viewModel = viewModel)
-                Spacer(modifier = Modifier.padding(vertical = 10.dp))
+            for(item in viewModel.surveyData.value) {
+                items(viewModel.surveyData.value) {
+                    AnswerListItem(istokweb = istokweb, viewModel = viewModel, getQuestion = it)
+                    Spacer(modifier = Modifier.padding(vertical = 10.dp))
+                }
             }
+
         }
         Spacer(modifier = Modifier.padding(vertical = 20.dp))
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
             Button(onClick = { }) {
                 Text(
                     text = "Next",
@@ -217,7 +248,7 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
 }
 
 @Composable
-fun AnswerListItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
+fun AnswerListItem(istokweb: FontFamily, viewModel: AnswerViewModel, getQuestion: GetQuestion) {
 
     var color by remember {
         mutableStateOf(Color.LightGray)
@@ -228,12 +259,12 @@ fun AnswerListItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-              color = viewModel.checkColor(oldColor = color)
+                color = viewModel.checkColor(oldColor = color)
             },
         border = BorderStroke(1.dp, color = color),
     ) {
         Text(
-            text = "Arctic Circle",
+            text = getQuestion.questionOne.toString(),
             fontSize = 18.sp,
             fontFamily = istokweb,
             fontWeight = FontWeight.Medium,

@@ -53,7 +53,7 @@ fun BeforeAnswerScreen(
                 is UiEvent.Navigate -> {
                     navController.currentBackStackEntry?.arguments =
                         Bundle().apply {
-                            putString(Constants.PARAM_SURVEY_PATH, viewModel.surveyDetail?.title)
+                            putParcelable(Constants.PARAM_SURVEY_INFO, viewModel.surveyDetail)
                         }
                     onNavigate(event.route)
                 }

@@ -1,5 +1,6 @@
 package com.mnowo.composesurveyapp.feature_answer.data.remote
 
+import android.util.Log.d
 import androidx.compose.ui.res.stringResource
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
@@ -12,15 +13,15 @@ import javax.inject.Inject
 
 class AnswerRemoteDb @Inject constructor() {
 
-    suspend fun getSurvey(collectionPath: String) : MutableList<GetQuestion> {
-
+    suspend fun getSurvey(collectionPath: String) : List<GetQuestion> {
+        d("getSurvey", "collectionPath: $collectionPath")
         val surveyListData: MutableList<GetQuestion> = mutableListOf()
 
         try {
             Firebase.firestore.collection(collectionPath).whereEqualTo("type", "question").get()
                 .addOnSuccessListener {
                     for (document in it.documents) {
-                        val questionTitle = document.getString("title")
+                        val questionTitle = document.getString("questionTitle")
                         val question1 = document.getString("questionOne")
                         val question2 = document.getString("questionTwo")
                         val question3 = document.getString("questionThree")

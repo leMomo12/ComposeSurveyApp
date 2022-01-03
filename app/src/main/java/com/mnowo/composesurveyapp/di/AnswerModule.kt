@@ -1,5 +1,7 @@
 package com.mnowo.composesurveyapp.di
 
+import com.mnowo.composesurveyapp.core.data.SurveyDatabase
+import com.mnowo.composesurveyapp.feature_answer.data.local.AnswerDao
 import com.mnowo.composesurveyapp.feature_answer.data.remote.AnswerRemoteDb
 import com.mnowo.composesurveyapp.feature_answer.data.repository.AnswerRepositoryImpl
 import com.mnowo.composesurveyapp.feature_answer.domain.repository.AnswerRepository
@@ -15,12 +17,19 @@ object AnswerModule {
 
     @Singleton
     @Provides
-    fun provideAddSurveyRepository(
-        answerRemoteDb: AnswerRemoteDb
+    fun provideAnswerRepository(
+        answerRemoteDb: AnswerRemoteDb,
+        answerDao: AnswerDao
     ): AnswerRepository {
         return AnswerRepositoryImpl(
-            answerRemoteDb = answerRemoteDb
+            answerRemoteDb = answerRemoteDb,
+            answerDao = answerDao
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideAnswerDao(db: SurveyDatabase) = db.answerDao()
+
 
 }
