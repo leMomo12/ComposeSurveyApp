@@ -62,12 +62,6 @@ fun AnswerScreen(
     )
 
     LaunchedEffect(key1 = true) {
-        viewModel.surveyDetail = navController.previousBackStackEntry?.arguments?.getParcelable<SurveyInfo>(Constants.PARAM_SURVEY_INFO)
-
-        d("getSurvey", "title: ${viewModel.surveyDetail!!.title.toString()}")
-
-        viewModel.onEvent(AnswerEvent.GetSurvey)
-
         viewModel.eventFlow.collectLatest {
             when (it) {
                 is UiEvent.Navigate -> {
@@ -110,12 +104,103 @@ fun AnswerScreen(
         scaffoldState = scaffoldState
     ) {
         if (state.isLoading == false) {
-            d("Shimmer", "no shimmer ${state.isLoading}")
             AnswerScreenItem(istokweb = istokweb, viewModel = viewModel)
         } else {
-            d("Shimmer", "shimmerrrr")
             AnswerShimmerGrid(istokweb = istokweb, brush = brush)
         }
+    }
+}
+
+
+
+@Composable
+fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(20.dp)
+    ) {
+        Row(Modifier.fillMaxWidth()) {
+            Icon(Icons.Default.ArrowBackIos, contentDescription = "")
+            Text(
+                text = "0 of 12",
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Medium,
+                fontFamily = istokweb,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        }
+        LinearProgressIndicator(
+            progress = 0.0f,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 15.dp)
+                .clip(
+                    RoundedCornerShape(60.dp)
+                ),
+            color = lightBlue2,
+        )
+        Spacer(modifier = Modifier.padding(vertical = 20.dp))
+        Text(
+            text = viewModel.currentQuestionData.value.questionTitle,
+            fontSize = 28.sp,
+            fontFamily = istokweb,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(end = 70.dp)
+        )
+        Spacer(modifier = Modifier.padding(vertical = 20.dp))
+
+        LazyColumn {
+                items(3) {
+                    AnswerListItem(istokweb = istokweb, viewModel = viewModel, getQuestion = viewModel.currentQuestionData.value)
+                    Spacer(modifier = Modifier.padding(vertical = 10.dp))
+                }
+        }
+        Spacer(modifier = Modifier.padding(vertical = 20.dp))
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
+            Button(onClick = { }) {
+                Text(
+                    text = "Next",
+                    fontSize = 21.sp,
+                    modifier = Modifier.fillMaxWidth(0.7f),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+@Composable
+fun AnswerListItem(istokweb: FontFamily, viewModel: AnswerViewModel, getQuestion: GetQuestion) {
+
+    var color by remember {
+        mutableStateOf(Color.LightGray)
+    }
+
+    Card(
+        shape = RoundedCornerShape(15.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                color = viewModel.checkColor(oldColor = color)
+            },
+        border = BorderStroke(1.dp, color = color),
+    ) {
+        Text(
+            text = getQuestion.questionOne.toString(),
+            fontSize = 18.sp,
+            fontFamily = istokweb,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(start = 25.dp, top = 20.dp, bottom = 20.dp, end = 25.dp)
+        )
     }
 }
 
@@ -175,6 +260,7 @@ fun AnswerShimmerGrid(istokweb: FontFamily, brush: Brush) {
     }
 }
 
+
 @Composable
 fun ShimmerTextItem(fraction: Float, brush: Brush, height: Dp) {
     Spacer(
@@ -184,93 +270,6 @@ fun ShimmerTextItem(fraction: Float, brush: Brush, height: Dp) {
             .fillMaxWidth(fraction = fraction)
             .background(brush = brush)
     )
-}
-
-@Composable
-fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
-    Column(
-        Modifier
-            .fillMaxSize()
-            .padding(20.dp)
-    ) {
-        Row(Modifier.fillMaxWidth()) {
-            Icon(Icons.Default.ArrowBackIos, contentDescription = "")
-            Text(
-                text = "0 of 12",
-                fontSize = 17.sp,
-                fontWeight = FontWeight.Medium,
-                fontFamily = istokweb,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-        }
-        LinearProgressIndicator(
-            progress = 0.0f,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 15.dp)
-                .clip(
-                    RoundedCornerShape(60.dp)
-                ),
-            color = lightBlue2,
-        )
-        Spacer(modifier = Modifier.padding(vertical = 20.dp))
-        Text(
-            text = viewModel.surveyData.value[viewModel.currentQuestion].questionTitle,
-            fontSize = 28.sp,
-            fontFamily = istokweb,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(end = 70.dp)
-        )
-        Spacer(modifier = Modifier.padding(vertical = 20.dp))
-
-        LazyColumn {
-            for(item in viewModel.surveyData.value) {
-                items(viewModel.surveyData.value) {
-                    AnswerListItem(istokweb = istokweb, viewModel = viewModel, getQuestion = it)
-                    Spacer(modifier = Modifier.padding(vertical = 10.dp))
-                }
-            }
-
-        }
-        Spacer(modifier = Modifier.padding(vertical = 20.dp))
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
-            Button(onClick = { }) {
-                Text(
-                    text = "Next",
-                    fontSize = 21.sp,
-                    modifier = Modifier.fillMaxWidth(0.7f),
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun AnswerListItem(istokweb: FontFamily, viewModel: AnswerViewModel, getQuestion: GetQuestion) {
-
-    var color by remember {
-        mutableStateOf(Color.LightGray)
-    }
-
-    Card(
-        shape = RoundedCornerShape(15.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                color = viewModel.checkColor(oldColor = color)
-            },
-        border = BorderStroke(1.dp, color = color),
-    ) {
-        Text(
-            text = getQuestion.questionOne.toString(),
-            fontSize = 18.sp,
-            fontFamily = istokweb,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(start = 25.dp, top = 20.dp, bottom = 20.dp, end = 25.dp)
-        )
-    }
 }
 
 @Composable

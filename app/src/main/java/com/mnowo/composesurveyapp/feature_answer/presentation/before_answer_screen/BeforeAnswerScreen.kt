@@ -35,8 +35,10 @@ import kotlinx.coroutines.flow.collectLatest
 fun BeforeAnswerScreen(
     onNavigate: (String) -> Unit = {},
     viewModel: BeforeAnswerViewModel = hiltViewModel(),
-    navController: NavController
+    surveyInfo: SurveyInfo
 ) {
+
+    d("Details", surveyInfo.toString())
 
     val istokweb = FontFamily(
         Font(R.font.istokweb_bold, FontWeight.Bold),
@@ -47,15 +49,11 @@ fun BeforeAnswerScreen(
 
 
     LaunchedEffect(key1 = true) {
-        viewModel.surveyDetail = navController.previousBackStackEntry?.arguments?.getParcelable<SurveyInfo>(Constants.PARAM_SURVEY_INFO)
+        viewModel.surveyDetail = surveyInfo
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.Navigate -> {
-                    navController.currentBackStackEntry?.arguments =
-                        Bundle().apply {
-                            putParcelable(Constants.PARAM_SURVEY_INFO, viewModel.surveyDetail)
-                        }
-                    onNavigate(event.route)
+                    onNavigate(event.route + "/${viewModel.surveyDetail!!.title}")
                 }
             }
         }

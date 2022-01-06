@@ -1,5 +1,6 @@
 package com.mnowo.composesurveyapp.feature_answer.data.repository
 
+import android.util.Log.d
 import com.mnowo.composesurveyapp.feature_answer.data.local.AnswerDao
 import com.mnowo.composesurveyapp.feature_answer.data.remote.AnswerRemoteDb
 import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
@@ -16,11 +17,16 @@ class AnswerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun cachingSurveyQuestions(getQuestion: GetQuestion) {
+        d("GetSurvey", "caching $getQuestion")
         return answerDao.cachingSurveyQuestions(getQuestion = getQuestion)
     }
 
     override suspend fun getCachedQuestion(id: Int): GetQuestion {
         return answerDao.getCachedQuestion(id = id)
+    }
+
+    override suspend fun deleteAllCachedQuestions() {
+        return answerDao.deleteAllCachedQuestions()
     }
 
 }

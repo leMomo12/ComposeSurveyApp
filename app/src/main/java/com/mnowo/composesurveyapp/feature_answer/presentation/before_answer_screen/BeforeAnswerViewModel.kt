@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.Screen
+import com.mnowo.composesurveyapp.feature_answer.domain.use_case.DeleteCachedQuestions
 import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BeforeAnswerViewModel @Inject constructor(
+    private val deleteCachedQuestions: DeleteCachedQuestions,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -28,7 +30,13 @@ class BeforeAnswerViewModel @Inject constructor(
     private val _surveyInfo = mutableStateOf<SurveyInfo>(value = SurveyInfo("", "",0, 0,0, "empty"))
     val surveyInfo: State<SurveyInfo> = _surveyInfo
 
-    var surveyDetail: SurveyInfo? = SurveyInfo("","",0,0,0,"")
+    var surveyDetail: SurveyInfo = SurveyInfo("","",0,0,0,"")
+
+    init {
+        viewModelScope.launch {
+            deleteCachedQuestions.invoke()
+        }
+    }
 
     fun onEvent(beforeAnswerEvent: BeforeAnswerEvent) {
         when (beforeAnswerEvent) {

@@ -9,4 +9,6 @@ interface AnswerRepository {
     suspend fun cachingSurveyQuestions(getQuestion: GetQuestion)
 
     suspend fun getCachedQuestion(id: Int): GetQuestion
+
+    suspend fun deleteAllCachedQuestions()
 }

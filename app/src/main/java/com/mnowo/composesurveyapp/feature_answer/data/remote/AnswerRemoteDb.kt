@@ -2,6 +2,7 @@ package com.mnowo.composesurveyapp.feature_answer.data.remote
 
 import android.util.Log.d
 import androidx.compose.ui.res.stringResource
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
@@ -18,53 +19,26 @@ class AnswerRemoteDb @Inject constructor() {
         val surveyListData: MutableList<GetQuestion> = mutableListOf()
 
         try {
-            Firebase.firestore.collection(collectionPath).whereEqualTo("type", "question").get()
-                .addOnSuccessListener {
-                    for (document in it.documents) {
-                        val questionTitle = document.getString("questionTitle")
-                        val question1 = document.getString("questionOne")
-                        val question2 = document.getString("questionTwo")
-                        val question3 = document.getString("questionThree")
-                        val question4 = document.getString("questionFour")
-                        val id = document.getField<Int>("id")
+            val result = FirebaseFirestore.getInstance().collection(collectionPath)
+                .whereEqualTo("type", "question")
+                .get()
+                .await()
 
-                        val getQuestion = GetQuestion(
-                            id!!,
-                            questionTitle!!,
-                            question1,
-                            question2,
-                            question3,
-                            question4
-                        )
+            for(document in result.documents) {
+                d("remote", "heere")
+                val questionTitle = document.getString("questionTitle")
+                val questionOne = document.getString("questionOne")
+                val questionTwo = document.getString("questionTwo")
+                val questionThree = document.getString("questionThree")
+                val questionFour = document.getString("questionFour")
 
-                        surveyListData.add(getQuestion)
-                    }
+                val getQuestion = GetQuestion(0, questionTitle!!, questionOne, questionTwo, questionThree, questionFour)
 
-                }.addOnFailureListener {
-                    val getQuestion = GetQuestion(
-                        0,
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        it.localizedMessage ?: "An unexpected error occurred"
-                    )
-
-                    surveyListData.add(getQuestion)
-                }.await()
+                surveyListData.add(getQuestion)
+            }
         } catch (e: Exception) {
-            val getQuestion = GetQuestion(
-                0,
-                "",
-                "",
-                "",
-                "",
-                "",
-                e.localizedMessage ?: "An unexpected error occurred"
-            )
+            d("getSurvey", "Exception: ${e.localizedMessage} , ${e.cause}")
 
-            surveyListData.add(getQuestion)
         }
         return surveyListData
     }

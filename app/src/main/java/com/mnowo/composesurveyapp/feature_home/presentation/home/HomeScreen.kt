@@ -1,6 +1,7 @@
 package com.mnowo.composesurveyapp.feature_home.presentation.home
 
 import android.os.Bundle
+import android.util.Log.d
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -73,10 +74,8 @@ fun HomeScreen(
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.Navigate -> {
-                    navController.currentBackStackEntry?.arguments =
-                        Bundle().apply {
-                            putParcelable(Constants.PARAM_SURVEY_INFO, viewModel.surveyInfoState.value)
-                        }
+                    d("Details", viewModel.surveyInfoState.value.toString())
+                    navController.currentBackStackEntry?.savedStateHandle?.set(Constants.PARAM_SURVEY_INFO, viewModel.surveyInfoState.value)
                     onNavigate(event.route)
                 }
                 is UiEvent.ShowSnackbar -> {
@@ -235,9 +234,9 @@ fun SurveyListItem(data: SurveyInfo, viewModel: HomeViewModel) {
             if(expandedState) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
                     Button(onClick = {
-                        viewModel.onEvent(HomeEvent.SurveyInfoState(data = data))
-                        viewModel.onEvent(HomeEvent.NavigateToBeforeSurvey)
+                        viewModel.onEvent(HomeEvent.NavigateToBeforeSurvey(data = data))
                     }) {
+                        viewModel.setSurveyInfoState(data)
                         Text(text = "Start Survey")
                     }
                     Spacer(modifier = Modifier.padding(5.dp))

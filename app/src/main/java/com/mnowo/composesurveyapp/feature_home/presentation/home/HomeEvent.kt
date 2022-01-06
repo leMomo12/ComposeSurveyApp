@@ -4,6 +4,5 @@ import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 
 sealed class HomeEvent {
     object AddNewSurvey : HomeEvent()
-    data class SurveyInfoState(var data: SurveyInfo) : HomeEvent()
-    object NavigateToBeforeSurvey : HomeEvent()
+    data class NavigateToBeforeSurvey(var data: SurveyInfo) : HomeEvent()
 }

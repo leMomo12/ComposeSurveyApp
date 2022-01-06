@@ -1,28 +1,24 @@
 package com.mnowo.composesurveyapp.core.presentation.components
 
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavArgument
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.mnowo.composesurveyapp.core.util.Screen
-import com.mnowo.composesurveyapp.feature_auth.presentation.login.LoginScreen
-import com.google.accompanist.navigation.animation.navigation
 import com.mnowo.composesurveyapp.core.util.Constants
+import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.feature_add_survey.NewSurveyScreen
 import com.mnowo.composesurveyapp.feature_add_survey.presentation.add_survey_question.AddSurveyQuestionScreen
 import com.mnowo.composesurveyapp.feature_add_survey.presentation.done_screen.DoneScreen
 import com.mnowo.composesurveyapp.feature_answer.presentation.after_answer_screen.AfterAnswerScreen
 import com.mnowo.composesurveyapp.feature_answer.presentation.answer_screen.AnswerScreen
 import com.mnowo.composesurveyapp.feature_answer.presentation.before_answer_screen.BeforeAnswerScreen
+import com.mnowo.composesurveyapp.feature_auth.presentation.login.LoginScreen
 import com.mnowo.composesurveyapp.feature_auth.presentation.register.RegisterScreen
 import com.mnowo.composesurveyapp.feature_auth.presentation.splash.SplashScreen
 import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
@@ -70,10 +66,15 @@ fun Navigation(navController: NavHostController) {
         }
 
         composable(Screen.BeforeAnswerScreen.route) {
-            BeforeAnswerScreen(onNavigate = navController::navigate, navController = navController)
+
+            val surveyInfo = navController.previousBackStackEntry?.savedStateHandle?.get<SurveyInfo>(Constants.PARAM_SURVEY_INFO)
+
+            surveyInfo?.let {
+                BeforeAnswerScreen(onNavigate = navController::navigate, surveyInfo = it)
+            }
         }
 
-        composable(Screen.AnswerScreen.route) {
+        composable(Screen.AnswerScreen.route + "/{surveyPath}") {
             AnswerScreen(onNavigate = navController::navigate, navController = navController)
         }
 

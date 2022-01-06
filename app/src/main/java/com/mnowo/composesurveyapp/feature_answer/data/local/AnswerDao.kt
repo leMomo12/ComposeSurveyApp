@@ -15,4 +15,7 @@ interface AnswerDao {
 
     @Query("SELECT * FROM ${Constants.SURVEY_ANSWER_TABLE} WHERE id = :id ")
     suspend fun getCachedQuestion(id: Int): GetQuestion
+
+    @Query("DELETE  FROM ${Constants.SURVEY_ANSWER_TABLE}")
+    suspend fun deleteAllCachedQuestions()
 }
