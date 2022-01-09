@@ -15,13 +15,12 @@ class GetCachedQuestionUseCase @Inject constructor(
 ) {
 
     @ExperimentalCoroutinesApi
-    operator fun invoke(id: Int) : Flow<Resource<GetQuestion>> = channelFlow {
+    operator fun invoke() : Flow<Resource<List<GetQuestion>>> = channelFlow {
         d("GetSurvey", "here")
         send(Resource.Loading())
         try {
-            val result = answerRepository.getCachedQuestion(id)
-
-            send(Resource.Success<GetQuestion>(data = result))
+            val result = answerRepository.getCachedQuestion()
+            send(Resource.Success<List<GetQuestion>>(data = result))
             d("GetSurvey", "result: $result")
         } catch (e: Exception) {
             d("GetSurvey", "${e.localizedMessage}")

@@ -11,7 +11,7 @@ import com.mnowo.composesurveyapp.feature_auth.data.local.AuthDao
 
 @Database(
     entities = [SurveyTitleAndDescription::class, SurveyQuestion::class, GetQuestion::class],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
 abstract class SurveyDatabase : RoomDatabase() {

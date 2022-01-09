@@ -15,6 +15,7 @@ class GetSurveyQuestionsUseCase @Inject constructor(
 
     operator fun invoke(collectionPath: String): Flow<Resource<List<GetQuestion>>> = flow {
         try {
+            d("Survey", "path: $collectionPath")
             emit(Resource.Loading<List<GetQuestion>>())
             val result = answerRepository.getSurvey(collectionPath = collectionPath)
             var succcessful = true
@@ -46,6 +47,7 @@ class GetSurveyQuestionsUseCase @Inject constructor(
                 )
             }
         } catch (e: Exception) {
+            d("Survey", "exception: ${e.localizedMessage}")
             emit(
                 Resource.Error<List<GetQuestion>>(
                     message = e.localizedMessage ?: "An unexpected error occurred"

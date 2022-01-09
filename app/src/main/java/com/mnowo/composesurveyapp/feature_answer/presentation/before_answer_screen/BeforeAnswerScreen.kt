@@ -35,7 +35,8 @@ import kotlinx.coroutines.flow.collectLatest
 fun BeforeAnswerScreen(
     onNavigate: (String) -> Unit = {},
     viewModel: BeforeAnswerViewModel = hiltViewModel(),
-    surveyInfo: SurveyInfo
+    surveyInfo: SurveyInfo,
+    navController: NavController
 ) {
 
     d("Details", surveyInfo.toString())
@@ -53,7 +54,9 @@ fun BeforeAnswerScreen(
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.Navigate -> {
-                    onNavigate(event.route + "/${viewModel.surveyDetail!!.title}")
+                    navController.currentBackStackEntry?.savedStateHandle?.set(Constants.PARAM_SURVEY_PATH, viewModel.surveyDetail.title)
+
+                    onNavigate(event.route)
                 }
             }
         }

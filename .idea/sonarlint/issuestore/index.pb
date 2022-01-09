@@ -73,8 +73,6 @@ Yapp/src/main/java/com/mnowo/composesurveyapp/feature_auth/domain/models/Registe
 `app/src/main/java/com/mnowo/composesurveyapp/feature_add_survey/data/remote/AddSurveyRemoteDb.kt,c\d\cd3867563d600b0e8d3fefe0a089ef6ba08c2122
 Ç
 Rapp/src/main/java/com/mnowo/composesurveyapp/core/domain/models/RemoteDbRespond.kt,1\8\18880d73c7e73db214f13c2734ee8cf8892dccb7
-ä
-Zapp/src/main/java/com/mnowo/composesurveyapp/feature_add_survey/data/local/AddSurveyDao.kt,f\f\ff979502f025299d31f4eb60f5a589368630c168
 ó
 gapp/src/test/java/com/mnowo/composesurveyapp/feature_add_survey/domain/use_case/AddSurveyUseCaseTest.kt,7\5\75552d63bedf5b81c0395db7689875a1c747277f
 É
@@ -123,8 +121,6 @@ s
 Capp/src/main/java/com/mnowo/composesurveyapp/core/util/Constants.kt,a\d\adbb049dc563997515086621855f2334526b569d
 ï
 eapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/presentation/answer_screen/AnswerState.kt,1\4\141ffb0b81ea73e1c550f7ce81bb9358beda9ab9
-x
-Happ/src/main/java/com/mnowo/composesurveyapp/core/data/SurveyDatabase.kt,d\a\da2d652a7489d583f6c78b069c39684fde74ce8d
 è
 _app/src/main/java/com/mnowo/composesurveyapp/feature_home/data/repository/HomeRepositoryImpl.kt,1\d\1d12dbb5cd0107bd107509da30caadc2bd597969
 Ö
@@ -133,3 +129,15 @@ p
 @app/src/main/java/com/mnowo/composesurveyapp/core/util/UiText.kt,8\d\8d99900063504ace48b2218688514efabe64c397
 ë
 aapp/src/main/java/com/mnowo/composesurveyapp/feature_home/domain/use_case/GetSurveyInfoUseCase.kt,4\9\4972fff784eb9b1dfb909accdff3c355be64dc0e
+ä
+Zapp/src/main/java/com/mnowo/composesurveyapp/feature_auth/presentation/login/LoginEvent.kt,7\7\7789bb4cf2c2b9fd91ee3c1d3077020506831fac
+@
+app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
+é
+^app/src/main/java/com/mnowo/composesurveyapp/feature_auth/presentation/login/LoginViewModel.kt,2\0\20135697630c8c2abe2972a28ab771b7c667fdf7
+î
+dapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/domain/use_case/DeleteCachedQuestions.kt,7\d\7d55b4272c0dd99affd49dd4ff8fbf20d268bbb0
+â
+Yapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/data/remote/AnswerRemoteDb.kt,c\e\cef2bd4f6eaf943453a6b37319f203bab1ffafd5
+à
+Xapp/src/main/java/com/mnowo/composesurveyapp/feature_home/presentation/home/HomeEvent.kt,7\1\715055b3db12eea930022a86381215a0ecae9bfa

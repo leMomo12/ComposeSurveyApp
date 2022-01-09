@@ -10,11 +10,11 @@ import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
 @Dao
 interface AnswerDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun cachingSurveyQuestions(getQuestion: GetQuestion)
 
-    @Query("SELECT * FROM ${Constants.SURVEY_ANSWER_TABLE} WHERE id = :id ")
-    suspend fun getCachedQuestion(id: Int): GetQuestion
+    @Query("SELECT * FROM ${Constants.SURVEY_ANSWER_TABLE} ")
+    suspend fun getCachedQuestion(): List<GetQuestion>
 
     @Query("DELETE  FROM ${Constants.SURVEY_ANSWER_TABLE}")
     suspend fun deleteAllCachedQuestions()

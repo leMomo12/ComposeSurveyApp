@@ -38,15 +38,18 @@ import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.asString
 import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
 import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@ExperimentalCoroutinesApi
 @Composable
 fun AnswerScreen(
     onNavigate: (String) -> Unit = {},
     viewModel: AnswerViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
+    surveyPath: String
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -62,6 +65,8 @@ fun AnswerScreen(
     )
 
     LaunchedEffect(key1 = true) {
+        viewModel.setTitle(surveyPath)
+        d("Title", "Title, ${viewModel.title.value}")
         viewModel.eventFlow.collectLatest {
             when (it) {
                 is UiEvent.Navigate -> {
@@ -108,11 +113,12 @@ fun AnswerScreen(
         } else {
             AnswerShimmerGrid(istokweb = istokweb, brush = brush)
         }
+        CustomDialog(viewModel = viewModel)
     }
 }
 
 
-
+@ExperimentalCoroutinesApi
 @Composable
 fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
     Column(
@@ -121,7 +127,12 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
             .padding(20.dp)
     ) {
         Row(Modifier.fillMaxWidth()) {
-            Icon(Icons.Default.ArrowBackIos, contentDescription = "")
+            Icon(
+                Icons.Default.ArrowBackIos,
+                contentDescription = "",
+                modifier = Modifier.clickable {
+                    viewModel.setOpenDialog(true)
+                })
             Text(
                 text = "0 of 12",
                 fontSize = 17.sp,
@@ -143,7 +154,7 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
         )
         Spacer(modifier = Modifier.padding(vertical = 20.dp))
         Text(
-            text = viewModel.currentQuestionData.value.questionTitle,
+            text = viewModel.questionList.value[viewModel.currentQuestion].questionTitle,
             fontSize = 28.sp,
             fontFamily = istokweb,
             fontWeight = FontWeight.Bold,
@@ -152,13 +163,22 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
         Spacer(modifier = Modifier.padding(vertical = 20.dp))
 
         LazyColumn {
-                items(3) {
-                    AnswerListItem(istokweb = istokweb, viewModel = viewModel, getQuestion = viewModel.currentQuestionData.value)
-                    Spacer(modifier = Modifier.padding(vertical = 10.dp))
-                }
+            items(4) {
+                AnswerListItem(
+                    istokweb = istokweb,
+                    viewModel = viewModel,
+                    getQuestion = viewModel.questionList.value[viewModel.currentQuestion],
+                    index = it
+                )
+                Spacer(modifier = Modifier.padding(vertical = 10.dp))
+            }
         }
         Spacer(modifier = Modifier.padding(vertical = 20.dp))
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
+        Row(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.Bottom
+        ) {
             Button(onClick = { }) {
                 Text(
                     text = "Next",
@@ -171,31 +191,49 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
     }
 }
 
-
-
-
-
-
-
-
+@ExperimentalCoroutinesApi
 @Composable
-fun AnswerListItem(istokweb: FontFamily, viewModel: AnswerViewModel, getQuestion: GetQuestion) {
+fun AnswerListItem(
+    istokweb: FontFamily,
+    viewModel: AnswerViewModel,
+    getQuestion: GetQuestion,
+    index: Int
+) {
+
 
     var color by remember {
         mutableStateOf(Color.LightGray)
     }
+
+    var text = ""
 
     Card(
         shape = RoundedCornerShape(15.dp),
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                color = viewModel.checkColor(oldColor = color)
+                if (text.isNotBlank()) {
+                    color = viewModel.checkColor(oldColor = color)
+                }
             },
         border = BorderStroke(1.dp, color = color),
     ) {
+        when (index) {
+            0 -> {
+                text = getQuestion.questionOne.toString()
+            }
+            1 -> {
+                text = getQuestion.questionTwo.toString()
+            }
+            2 -> {
+                text = getQuestion.questionThree.toString()
+            }
+            3 -> {
+                text = getQuestion.questionFour.toString()
+            }
+        }
         Text(
-            text = getQuestion.questionOne.toString(),
+            text = text,
             fontSize = 18.sp,
             fontFamily = istokweb,
             fontWeight = FontWeight.Medium,
@@ -203,6 +241,40 @@ fun AnswerListItem(istokweb: FontFamily, viewModel: AnswerViewModel, getQuestion
         )
     }
 }
+
+@ExperimentalCoroutinesApi
+@Composable
+fun CustomDialog(viewModel: AnswerViewModel) {
+    if (viewModel.openDialog.value) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            AlertDialog(onDismissRequest = {
+                viewModel.setOpenDialog(false)
+            },
+                title = {
+                    Text(text = "Are you sure to go back")
+                },
+                text = {
+                    Text(text = "The survey will be canceled and not saved")
+                },
+                confirmButton = {
+                    Button(onClick = {
+                        viewModel.onEvent(AnswerEvent.NavigateToHome)
+                    }) {
+                        Text(text = "Go back")
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = {
+                        viewModel.setOpenDialog(false)
+                    }) {
+                        Text(text = "Stop")
+                    }
+                }
+            )
+        }
+    }
+}
+
 
 @Composable
 fun AnswerShimmerGrid(istokweb: FontFamily, brush: Brush) {

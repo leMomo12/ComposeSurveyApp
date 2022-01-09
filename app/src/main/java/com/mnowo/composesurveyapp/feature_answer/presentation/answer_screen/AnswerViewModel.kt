@@ -20,11 +20,13 @@ import com.mnowo.composesurveyapp.feature_answer.domain.use_case.GetSurveyQuesti
 import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class AnswerViewModel @Inject constructor(
     private val getSurveyQuestionsUseCase: GetSurveyQuestionsUseCase,
@@ -41,10 +43,8 @@ class AnswerViewModel @Inject constructor(
     private val _questionIsSelected = mutableStateOf<Boolean>(false)
     val questionIsSelected: State<Boolean> = _questionIsSelected
 
-    private val _currentQuestionData = mutableStateOf<GetQuestion>(value = GetQuestion(0,"","","","",""))
-    val currentQuestionData: State<GetQuestion> = _currentQuestionData
-
-    var currentQuestion = 1
+    private val _questionList = mutableStateOf<List<GetQuestion>>(emptyList())
+    val questionList: State<List<GetQuestion>> = _questionList
 
     private fun setQuestionIsSelected(value: Boolean) {
         _questionIsSelected.value = value
@@ -53,9 +53,22 @@ class AnswerViewModel @Inject constructor(
     private val _title = mutableStateOf<String>("")
     val title: State<String> = _title
 
+    private val _openDialog = mutableStateOf<Boolean>(value = false)
+    val openDialog: State<Boolean> = _openDialog
+
+    fun setOpenDialog(value: Boolean) {
+        _openDialog.value = value
+    }
+    
+    var currentQuestion = 0
+    
+    fun setTitle(path: String) {
+        _title.value = path
+    }
+
     init {
-        savedStateHandle.get<String>(Constants.PARAM_SURVEY_PATH)?.let { title ->
-            _title.value = title
+        viewModelScope.launch {
+            delay(1000)
             onEvent(AnswerEvent.GetSurvey)
         }
     }
@@ -105,11 +118,14 @@ class AnswerViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         isLoading = true
                     )
-                    getCachedQuestionUseCase.invoke(currentQuestion).onEach {
+                    getCachedQuestionUseCase.invoke().onEach {
                         when (it) {
                             is Resource.Success -> {
                                 d("GetSurvey", "ViewModel ${it.data}")
-                                _currentQuestionData.value = it.data!!
+                               it.data?.let { listData ->
+                                   _questionList.value = listData
+                               }
+                                _state.value = state.value.copy(isLoading = false)
                             }
                             is Resource.Error -> {
                                 _eventFlow.emit(
@@ -121,6 +137,13 @@ class AnswerViewModel @Inject constructor(
                             }
                         }
                     }.launchIn(viewModelScope)
+                }
+            }
+            is AnswerEvent.NavigateToHome -> {
+                viewModelScope.launch {
+                    _eventFlow.emit(
+                        UiEvent.Navigate(Screen.HomeScreen.route)
+                    )
                 }
             }
         }

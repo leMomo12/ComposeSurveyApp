@@ -23,7 +23,9 @@ import com.mnowo.composesurveyapp.feature_auth.presentation.register.RegisterScr
 import com.mnowo.composesurveyapp.feature_auth.presentation.splash.SplashScreen
 import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 import com.mnowo.composesurveyapp.feature_home.presentation.home.HomeScreen
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @ExperimentalAnimationApi
 @Composable
 fun Navigation(navController: NavHostController) {
@@ -70,12 +72,18 @@ fun Navigation(navController: NavHostController) {
             val surveyInfo = navController.previousBackStackEntry?.savedStateHandle?.get<SurveyInfo>(Constants.PARAM_SURVEY_INFO)
 
             surveyInfo?.let {
-                BeforeAnswerScreen(onNavigate = navController::navigate, surveyInfo = it)
+                BeforeAnswerScreen(onNavigate = navController::navigate, surveyInfo = it, navController = navController)
             }
         }
 
-        composable(Screen.AnswerScreen.route + "/{surveyPath}") {
-            AnswerScreen(onNavigate = navController::navigate, navController = navController)
+        composable(Screen.AnswerScreen.route) {
+
+            val surveyPath = navController.previousBackStackEntry?.savedStateHandle?.get<String>(Constants.PARAM_SURVEY_PATH)
+
+            surveyPath?.let {
+                AnswerScreen(onNavigate = navController::navigate, navController = navController, surveyPath = it)
+            }
+
         }
 
         composable(Screen.AfterAnswerScreen.route) {

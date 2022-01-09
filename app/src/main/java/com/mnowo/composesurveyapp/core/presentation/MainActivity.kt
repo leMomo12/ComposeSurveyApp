@@ -8,7 +8,9 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mnowo.composesurveyapp.core.presentation.components.Navigation
 import com.mnowo.composesurveyapp.core.ui.theme.ComposeSurveyAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @ExperimentalAnimationApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

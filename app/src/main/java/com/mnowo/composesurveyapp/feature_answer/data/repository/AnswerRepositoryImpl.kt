@@ -7,6 +7,7 @@ import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
 import com.mnowo.composesurveyapp.feature_answer.domain.repository.AnswerRepository
 import javax.inject.Inject
 
+
 class AnswerRepositoryImpl @Inject constructor(
     private val answerRemoteDb: AnswerRemoteDb,
     private val answerDao: AnswerDao
@@ -21,8 +22,8 @@ class AnswerRepositoryImpl @Inject constructor(
         return answerDao.cachingSurveyQuestions(getQuestion = getQuestion)
     }
 
-    override suspend fun getCachedQuestion(id: Int): GetQuestion {
-        return answerDao.getCachedQuestion(id = id)
+    override suspend fun getCachedQuestion(): List<GetQuestion> {
+        return answerDao.getCachedQuestion()
     }
 
     override suspend fun deleteAllCachedQuestions() {
