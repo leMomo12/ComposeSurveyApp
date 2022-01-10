@@ -37,6 +37,9 @@ class AnswerViewModel @Inject constructor(
     private val _state = mutableStateOf(AnswerState())
     val state: State<AnswerState> = _state
 
+    private val _progressIndicator = mutableStateOf<Float>(value = 0.0f)
+    val progressIndicator: State<Float> = _progressIndicator
+
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
@@ -45,6 +48,9 @@ class AnswerViewModel @Inject constructor(
 
     private val _questionList = mutableStateOf<List<GetQuestion>>(emptyList())
     val questionList: State<List<GetQuestion>> = _questionList
+
+    private val _questionCount = mutableStateOf<Int>(value = 0)
+    val questionCount: State<Int> = _questionCount
 
     private fun setQuestionIsSelected(value: Boolean) {
         _questionIsSelected.value = value
@@ -59,9 +65,9 @@ class AnswerViewModel @Inject constructor(
     fun setOpenDialog(value: Boolean) {
         _openDialog.value = value
     }
-    
+
     var currentQuestion = 0
-    
+
     fun setTitle(path: String) {
         _title.value = path
     }
@@ -122,10 +128,11 @@ class AnswerViewModel @Inject constructor(
                         when (it) {
                             is Resource.Success -> {
                                 d("GetSurvey", "ViewModel ${it.data}")
-                               it.data?.let { listData ->
-                                   _questionList.value = listData
-                               }
+                                it.data?.let { listData ->
+                                    _questionList.value = listData
+                                }
                                 _state.value = state.value.copy(isLoading = false)
+                                _questionCount.value = questionList.value.size
                             }
                             is Resource.Error -> {
                                 _eventFlow.emit(
@@ -146,9 +153,14 @@ class AnswerViewModel @Inject constructor(
                     )
                 }
             }
+            is AnswerEvent.ProgressIndicator -> {
+                val progress: Float = 1 / questionCount.value.toFloat()
+                _progressIndicator.value = progressIndicator.value.plus(
+                    progress
+                )
+            }
         }
     }
-
 
 
     fun checkColor(oldColor: Color): Color {

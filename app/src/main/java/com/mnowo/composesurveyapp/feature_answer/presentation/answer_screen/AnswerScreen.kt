@@ -143,7 +143,7 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
             )
         }
         LinearProgressIndicator(
-            progress = 0.0f,
+            progress = viewModel.progressIndicator.value,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 15.dp)
@@ -179,7 +179,10 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.Bottom
         ) {
-            Button(onClick = { }) {
+            Button(onClick = {
+                viewModel.currentQuestion++
+                viewModel.onEvent(AnswerEvent.ProgressIndicator(3f))
+            }) {
                 Text(
                     text = "Next",
                     fontSize = 21.sp,

@@ -3,10 +3,7 @@ package com.mnowo.composesurveyapp.feature_home.presentation.home
 import android.os.Bundle
 import android.util.Log.d
 import androidx.compose.animation.*
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.Font
@@ -70,12 +69,38 @@ fun HomeScreen(
         Font(R.font.istokweb_regular, FontWeight.Medium),
     )
 
+    val shimmerColors = listOf(
+        Color.LightGray.copy(alpha = 0.6f),
+        Color.LightGray.copy(alpha = 0.2f),
+        Color.LightGray.copy(alpha = 0.6f)
+    )
+    val transition = rememberInfiniteTransition()
+    val translateAime = transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1000f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 1000,
+                easing = FastOutSlowInEasing
+            )
+        )
+    )
+
+    val brush = Brush.linearGradient(
+        colors = shimmerColors,
+        start = Offset.Zero,
+        end = Offset(x = translateAime.value, y = translateAime.value)
+    )
+
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.Navigate -> {
                     d("Details", viewModel.surveyInfoState.value.toString())
-                    navController.currentBackStackEntry?.savedStateHandle?.set(Constants.PARAM_SURVEY_INFO, viewModel.surveyInfoState.value)
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        Constants.PARAM_SURVEY_INFO,
+                        viewModel.surveyInfoState.value
+                    )
                     onNavigate(event.route)
                 }
                 is UiEvent.ShowSnackbar -> {
@@ -107,9 +132,6 @@ fun HomeScreen(
         LazyColumn(
             state = lazyListState
         ) {
-            item {
-
-            }
             item {
                 Column(
                     horizontalAlignment = Alignment.Start,
@@ -145,9 +167,12 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.padding(vertical = 2.dp))
                 }
             }
-            items(surveyInfoList) {
-                SurveyListItem(data = it, viewModel)
+            items(5) {
+                ShimmerSurveyListItem(brush = brush)
             }
+            // items(surveyInfoList) {
+            //    SurveyListItem(data = it, viewModel)
+            // }
         }
     }
 }
@@ -231,8 +256,12 @@ fun SurveyListItem(data: SurveyInfo, viewModel: HomeViewModel) {
                 )
             }
             Spacer(modifier = Modifier.padding(vertical = 10.dp))
-            if(expandedState) {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+            if (expandedState) {
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Button(onClick = {
                         viewModel.onEvent(HomeEvent.NavigateToBeforeSurvey(data = data))
                     }) {
@@ -240,10 +269,82 @@ fun SurveyListItem(data: SurveyInfo, viewModel: HomeViewModel) {
                         Text(text = "Start Survey")
                     }
                     Spacer(modifier = Modifier.padding(5.dp))
-                    Icon(Icons.Default.LockClock, contentDescription = "", tint = grey, modifier = Modifier.scale(0.7f))
+                    Icon(
+                        Icons.Default.LockClock,
+                        contentDescription = "",
+                        tint = grey,
+                        modifier = Modifier.scale(0.7f)
+                    )
                     Text(text = "5-10 min", fontSize = 16.sp)
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ShimmerSurveyListItem(brush: Brush) {
+    Card(
+        elevation = 5.dp,
+        shape = RoundedCornerShape(10.dp),
+        modifier = Modifier
+            .padding(start = 20.dp, end = 20.dp, bottom = 10.dp, top = 10.dp)
+    ) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(12.dp)
+        ) {
+            Row(Modifier.fillMaxWidth(), Arrangement.End) {
+                // Question
+                Spacer(
+                    modifier = Modifier
+                        .height(15.dp)
+                        .fillMaxWidth(0.2f)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(brush = brush)
+                )
+            }
+            Spacer(modifier = Modifier.padding(vertical = 2.dp))
+            // Title
+            Spacer(
+                modifier = Modifier
+                    .height(25.dp)
+                    .fillMaxWidth(0.6f)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(brush = brush)
+            )
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+            // Description
+            Spacer(
+                modifier = Modifier
+                    .height(20.dp)
+                    .fillMaxWidth(0.8f)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(brush = brush)
+            )
+            Spacer(modifier = Modifier.padding(vertical = 10.dp))
+            // Thumb up/down
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Spacer(
+                    modifier = Modifier
+                        .height(22.dp)
+                        .fillMaxWidth(0.2f)
+                        .padding(start = 6.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(brush = brush)
+                )
+                Spacer(modifier = Modifier.padding(horizontal = 5.dp))
+                Spacer(
+                    modifier = Modifier
+                        .height(22.dp)
+                        .fillMaxWidth(0.3f)
+                        .padding(start = 6.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(brush = brush)
+                )
+            }
+            Spacer(modifier = Modifier.padding(vertical = 10.dp))
         }
     }
 }
