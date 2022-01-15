@@ -167,12 +167,15 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.padding(vertical = 2.dp))
                 }
             }
-            items(5) {
-                ShimmerSurveyListItem(brush = brush)
+            if (viewModel.state.value.isLoading) {
+                items(5) {
+                    ShimmerSurveyListItem(brush = brush)
+                }
+            } else {
+                items(surveyInfoList) {
+                    SurveyListItem(data = it, viewModel)
+                }
             }
-            // items(surveyInfoList) {
-            //    SurveyListItem(data = it, viewModel)
-            // }
         }
     }
 }

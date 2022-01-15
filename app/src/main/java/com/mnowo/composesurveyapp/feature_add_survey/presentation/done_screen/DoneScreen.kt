@@ -37,7 +37,7 @@ fun DoneScreen(onNavigate: (String) -> Unit, viewModel: DoneViewModel = hiltView
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest {
-            when(it) {
+            when (it) {
                 is UiEvent.Navigate -> {
                     onNavigate(it.route)
                 }
@@ -61,11 +61,16 @@ fun DoneScreen(onNavigate: (String) -> Unit, viewModel: DoneViewModel = hiltView
             fontFamily = istokweb
         )
         Spacer(modifier = Modifier.padding(vertical = 15.dp))
-        Text(text = "You have successfully published your survey", fontSize = 18.sp, fontWeight = FontWeight.Light, color = grey)
+        Text(
+            text = "You have successfully published your survey",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Light,
+            color = grey
+        )
         Spacer(modifier = Modifier.padding(vertical = 15.dp))
         Button(
             onClick = {
-                      viewModel.onEvent(DoneEvent.doneBtnClicked)
+                viewModel.onEvent(DoneEvent.doneBtnClicked)
             },
             Modifier
                 .fillMaxWidth()

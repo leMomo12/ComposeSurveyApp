@@ -36,12 +36,14 @@ import com.mnowo.composesurveyapp.core.ui.theme.blue
 import com.mnowo.composesurveyapp.core.ui.theme.lightBlue2
 import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.asString
+import com.mnowo.composesurveyapp.feature_answer.domain.models.Answer
 import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
 import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.lang.StringBuilder
 
 @ExperimentalCoroutinesApi
 @Composable
@@ -134,7 +136,7 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
                     viewModel.setOpenDialog(true)
                 })
             Text(
-                text = "0 of 12",
+                text = "${viewModel.currentQuestion + 1} of ${viewModel.questionCount.value}",
                 fontSize = 17.sp,
                 fontWeight = FontWeight.Medium,
                 fontFamily = istokweb,
@@ -181,10 +183,13 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
         ) {
             Button(onClick = {
                 viewModel.currentQuestion++
-                viewModel.onEvent(AnswerEvent.ProgressIndicator(3f))
-            }) {
+                viewModel.onEvent(AnswerEvent.ProgressIndicator)
+                viewModel.onEvent(AnswerEvent.NextQuestion)
+            },
+            enabled = viewModel.questionIsSelected.value
+            ) {
                 Text(
-                    text = "Next",
+                    text = viewModel.buttonText.value,
                     fontSize = 21.sp,
                     modifier = Modifier.fillMaxWidth(0.7f),
                     textAlign = TextAlign.Center
@@ -216,7 +221,7 @@ fun AnswerListItem(
             .fillMaxWidth()
             .clickable {
                 if (text.isNotBlank()) {
-                    color = viewModel.checkColor(oldColor = color)
+                    color = viewModel.checkColor(oldColor = color, index = index)
                 }
             },
         border = BorderStroke(1.dp, color = color),
@@ -289,7 +294,7 @@ fun AnswerShimmerGrid(istokweb: FontFamily, brush: Brush) {
         Row(Modifier.fillMaxWidth()) {
             Icon(Icons.Default.ArrowBackIos, contentDescription = "")
             Text(
-                text = "0 of 10",
+                text = "0 of 0",
                 fontSize = 17.sp,
                 fontWeight = FontWeight.Medium,
                 fontFamily = istokweb,

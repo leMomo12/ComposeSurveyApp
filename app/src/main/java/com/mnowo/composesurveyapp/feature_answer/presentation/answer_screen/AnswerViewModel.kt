@@ -8,13 +8,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mnowo.composesurveyapp.core.domain.TextFieldState
 import com.mnowo.composesurveyapp.core.presentation.util.Resource
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.ui.theme.blue
 import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.core.util.UiText
+import com.mnowo.composesurveyapp.feature_answer.domain.models.Answer
 import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
+import com.mnowo.composesurveyapp.feature_answer.domain.use_case.CachingAnswerUseCase
 import com.mnowo.composesurveyapp.feature_answer.domain.use_case.GetCachedQuestionUseCase
 import com.mnowo.composesurveyapp.feature_answer.domain.use_case.GetSurveyQuestionsUseCase
 import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
@@ -31,6 +34,7 @@ import javax.inject.Inject
 class AnswerViewModel @Inject constructor(
     private val getSurveyQuestionsUseCase: GetSurveyQuestionsUseCase,
     private val getCachedQuestionUseCase: GetCachedQuestionUseCase,
+    private val cachingAnswerUseCase: CachingAnswerUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -52,6 +56,9 @@ class AnswerViewModel @Inject constructor(
     private val _questionCount = mutableStateOf<Int>(value = 0)
     val questionCount: State<Int> = _questionCount
 
+    private val _answerOption = mutableStateOf(value = Answer.AnswerOptions.NULL)
+    val answerOption: State<Answer.AnswerOptions> = _answerOption
+
     private fun setQuestionIsSelected(value: Boolean) {
         _questionIsSelected.value = value
     }
@@ -61,6 +68,9 @@ class AnswerViewModel @Inject constructor(
 
     private val _openDialog = mutableStateOf<Boolean>(value = false)
     val openDialog: State<Boolean> = _openDialog
+
+    private val _buttonText = mutableStateOf<String>("Next")
+    val buttonText: State<String> = _buttonText
 
     fun setOpenDialog(value: Boolean) {
         _openDialog.value = value
@@ -133,6 +143,7 @@ class AnswerViewModel @Inject constructor(
                                 }
                                 _state.value = state.value.copy(isLoading = false)
                                 _questionCount.value = questionList.value.size
+                                onEvent(AnswerEvent.ProgressIndicator)
                             }
                             is Resource.Error -> {
                                 _eventFlow.emit(
@@ -158,12 +169,26 @@ class AnswerViewModel @Inject constructor(
                 _progressIndicator.value = progressIndicator.value.plus(
                     progress
                 )
+                if (currentQuestion == questionList.value.size - 1) {
+                    _buttonText.value = "Finish"
+                }
+            }
+            is AnswerEvent.NextQuestion -> {
+                viewModelScope.launch {
+                    cachingAnswerUseCase.invoke(
+                        answer = Answer(
+                            id = 0,
+                            questionTitle = title.value,
+                            answer = answerOption.value
+                        )
+                    )
+                }
             }
         }
     }
 
 
-    fun checkColor(oldColor: Color): Color {
+    fun checkColor(oldColor: Color, index: Int): Color {
         var color = oldColor
 
         viewModelScope.launch {
@@ -175,6 +200,20 @@ class AnswerViewModel @Inject constructor(
                 color = blue
                 setQuestionIsSelected(true)
                 d("colorState", "is grey")
+            }
+            when (index) {
+                0 -> {
+                    _answerOption.value = Answer.AnswerOptions.FIRST
+                }
+                1 -> {
+                    _answerOption.value = Answer.AnswerOptions.SECOND
+                }
+                2 -> {
+                    _answerOption.value = Answer.AnswerOptions.THIRD
+                }
+                3 -> {
+                    _answerOption.value = Answer.AnswerOptions.FOURTH
+                }
             }
         }
         return color

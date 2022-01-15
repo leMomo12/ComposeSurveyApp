@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.mnowo.composesurveyapp.core.util.Constants
+import com.mnowo.composesurveyapp.feature_answer.domain.models.Answer
 import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
 
 @Dao
@@ -12,6 +13,9 @@ interface AnswerDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun cachingSurveyQuestions(getQuestion: GetQuestion)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun cachingAnswer(answer: Answer)
 
     @Query("SELECT * FROM ${Constants.SURVEY_ANSWER_TABLE} ")
     suspend fun getCachedQuestion(): List<GetQuestion>

@@ -40,8 +40,9 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _surveyInfoList.value = homeRepository.getSurveyInfo()
+            _surveyInfoList.value.shuffle()
+            _state.value = state.value.copy(isLoading = false)
         }
-        _surveyInfoList.value.shuffle()
     }
 
     fun onEvent(event: HomeEvent) {
