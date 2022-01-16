@@ -11,6 +11,7 @@ import com.mnowo.composesurveyapp.core.util.Constants
 data class Answer(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
+    var surveyTitle: String,
     var questionTitle: String,
     var answer: AnswerOptions
 ) {

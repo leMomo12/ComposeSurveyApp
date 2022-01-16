@@ -32,11 +32,6 @@ class BeforeAnswerViewModel @Inject constructor(
 
     var surveyDetail: SurveyInfo = SurveyInfo("","",0,0,0,"")
 
-    init {
-        viewModelScope.launch {
-            deleteCachedQuestions.invoke()
-        }
-    }
 
     fun onEvent(beforeAnswerEvent: BeforeAnswerEvent) {
         when (beforeAnswerEvent) {
@@ -45,6 +40,11 @@ class BeforeAnswerViewModel @Inject constructor(
                     _eventFlow.emit(
                         UiEvent.Navigate(Screen.AnswerScreen.route)
                     )
+                }
+            }
+            is BeforeAnswerEvent.DeleteAllCachedQuestions -> {
+                viewModelScope.launch {
+                    deleteCachedQuestions.invoke()
                 }
             }
         }

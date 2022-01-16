@@ -1,5 +1,6 @@
 package com.mnowo.composesurveyapp.feature_home.presentation.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log.d
 import androidx.compose.animation.*
@@ -125,13 +126,14 @@ fun HomeScreen(
                 animationDuration = animationDuration,
                 coroutineScope = coroutineScope
             )
+            d("lazyListState", "lazylistState: ${lazyListState.firstVisibleItemIndex}")
         }
     ) {
-
 
         LazyColumn(
             state = lazyListState
         ) {
+            item { /* Must be there, don't delete */ }
             item {
                 Column(
                     horizontalAlignment = Alignment.Start,

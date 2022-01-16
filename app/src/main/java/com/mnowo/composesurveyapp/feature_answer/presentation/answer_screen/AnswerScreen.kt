@@ -68,7 +68,6 @@ fun AnswerScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.setTitle(surveyPath)
-        d("Title", "Title, ${viewModel.title.value}")
         viewModel.eventFlow.collectLatest {
             when (it) {
                 is UiEvent.Navigate -> {
@@ -77,7 +76,7 @@ fun AnswerScreen(
                 is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         it.uiText.asString(context = context),
-                        duration = SnackbarDuration.Long
+                        duration = SnackbarDuration.Short
                     )
                 }
             }
@@ -182,11 +181,18 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
             verticalAlignment = Alignment.Bottom
         ) {
             Button(onClick = {
-                viewModel.currentQuestion++
-                viewModel.onEvent(AnswerEvent.ProgressIndicator)
-                viewModel.onEvent(AnswerEvent.NextQuestion)
-            },
-            enabled = viewModel.questionIsSelected.value
+                if(viewModel.currentQuestion + 1 != viewModel.questionCount.value) {
+                    if (viewModel.questionIsSelected.value) {
+                        viewModel.currentQuestion++
+                        viewModel.onEvent(AnswerEvent.ProgressIndicator)
+                        viewModel.onEvent(AnswerEvent.NextQuestion)
+                    } else {
+                        viewModel.questionNotSelected()
+                    }
+                } else {
+                    viewModel.onEvent(AnswerEvent.NavigateToAfterAnswer)
+                }
+            }
             ) {
                 Text(
                     text = viewModel.buttonText.value,
@@ -214,6 +220,10 @@ fun AnswerListItem(
     }
 
     var text = ""
+
+    if(viewModel.isNext.value) {
+        color = Color.LightGray
+    }
 
     Card(
         shape = RoundedCornerShape(15.dp),

@@ -51,6 +51,7 @@ fun BeforeAnswerScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.surveyDetail = surveyInfo
+        viewModel.onEvent(BeforeAnswerEvent.DeleteAllCachedQuestions)
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.Navigate -> {

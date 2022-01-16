@@ -41,19 +41,19 @@ class AnswerViewModel @Inject constructor(
     private val _state = mutableStateOf(AnswerState())
     val state: State<AnswerState> = _state
 
-    private val _progressIndicator = mutableStateOf<Float>(value = 0.0f)
+    private val _progressIndicator = mutableStateOf(value = 0.0f)
     val progressIndicator: State<Float> = _progressIndicator
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private val _questionIsSelected = mutableStateOf<Boolean>(false)
+    private val _questionIsSelected = mutableStateOf(false)
     val questionIsSelected: State<Boolean> = _questionIsSelected
 
     private val _questionList = mutableStateOf<List<GetQuestion>>(emptyList())
     val questionList: State<List<GetQuestion>> = _questionList
 
-    private val _questionCount = mutableStateOf<Int>(value = 0)
+    private val _questionCount = mutableStateOf(value = 0)
     val questionCount: State<Int> = _questionCount
 
     private val _answerOption = mutableStateOf(value = Answer.AnswerOptions.NULL)
@@ -63,20 +63,24 @@ class AnswerViewModel @Inject constructor(
         _questionIsSelected.value = value
     }
 
-    private val _title = mutableStateOf<String>("")
+    private val _title = mutableStateOf("")
     val title: State<String> = _title
 
-    private val _openDialog = mutableStateOf<Boolean>(value = false)
+    private val _openDialog = mutableStateOf(value = false)
     val openDialog: State<Boolean> = _openDialog
 
-    private val _buttonText = mutableStateOf<String>("Next")
+    private val _buttonText = mutableStateOf("Next")
     val buttonText: State<String> = _buttonText
+
+    private val _isNext = mutableStateOf(false)
+    val isNext: State<Boolean> = _isNext
 
     fun setOpenDialog(value: Boolean) {
         _openDialog.value = value
     }
 
     var currentQuestion = 0
+
 
     fun setTitle(path: String) {
         _title.value = path
@@ -178,15 +182,34 @@ class AnswerViewModel @Inject constructor(
                     cachingAnswerUseCase.invoke(
                         answer = Answer(
                             id = 0,
-                            questionTitle = title.value,
+                            surveyTitle = title.value,
+                            questionTitle = questionList.value[currentQuestion].questionTitle,
                             answer = answerOption.value
                         )
+                    )
+                    _questionIsSelected.value = false
+                    _isNext.value = true
+                    delay(200)
+                    _isNext.value = false
+                }
+            }
+            is AnswerEvent.NavigateToAfterAnswer -> {
+                viewModelScope.launch {
+                    _eventFlow.emit(
+                        UiEvent.Navigate(Screen.AfterAnswerScreen.route)
                     )
                 }
             }
         }
     }
 
+    fun questionNotSelected() {
+        viewModelScope.launch {
+            _eventFlow.emit(
+                UiEvent.ShowSnackbar(UiText.DynamicString("One question must be selected"))
+            )
+        }
+    }
 
     fun checkColor(oldColor: Color, index: Int): Color {
         var color = oldColor
@@ -195,11 +218,9 @@ class AnswerViewModel @Inject constructor(
             if (oldColor == blue) {
                 color = Color.LightGray
                 setQuestionIsSelected(false)
-                d("colorState", "is blue")
             } else if (oldColor == Color.LightGray && !questionIsSelected.value) {
                 color = blue
                 setQuestionIsSelected(true)
-                d("colorState", "is grey")
             }
             when (index) {
                 0 -> {
