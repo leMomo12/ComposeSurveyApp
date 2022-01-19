@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import kotlin.coroutines.suspendCoroutine
 
-class DeleteCachedQuestions @Inject constructor(
+class DeleteCachedQuestionsUseCase @Inject constructor(
     private val repository: AnswerRepository
 ){
 

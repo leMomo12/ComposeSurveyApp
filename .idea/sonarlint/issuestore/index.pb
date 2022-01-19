@@ -61,8 +61,6 @@ Bapp/src/main/java/com/mnowo/composesurveyapp/di/AddSurveyModule.kt,3\c\3c56c68
 Vapp/src/main/java/com/mnowo/composesurveyapp/feature_auth/domain/models/LoginResult.kt,a\b\ab9e0cc0b3c7509b5acd95956332e867e7d38c84
 â
 Yapp/src/main/java/com/mnowo/composesurveyapp/feature_auth/domain/models/RegisterResult.kt,0\c\0cb93f72f1b0643faa916f89c8c156c17bb8d83a
-ê
-`app/src/main/java/com/mnowo/composesurveyapp/feature_add_survey/data/remote/AddSurveyRemoteDb.kt,c\d\cd3867563d600b0e8d3fefe0a089ef6ba08c2122
 Ç
 Rapp/src/main/java/com/mnowo/composesurveyapp/core/domain/models/RemoteDbRespond.kt,1\8\18880d73c7e73db214f13c2734ee8cf8892dccb7
 ó
@@ -91,8 +89,6 @@ m
 =app/src/main/java/com/mnowo/composesurveyapp/di/HomeModule.kt,0\c\0c335dd3f37242bc13b5e20866c1f0cf70dc1d77
 ù
 mapp/src/main/java/com/mnowo/composesurveyapp/feature_add_survey/presentation/new_survey/NewSurveyViewModel.kt,b\f\bf08bde2e30e809d7d875eab61d56563f90e539f
-Ö
-Uapp/src/main/java/com/mnowo/composesurveyapp/feature_home/domain/models/SurveyInfo.kt,1\c\1c22d3a02db067d351bce16a91973dc89d4c5dd5
 ç
 ]app/src/main/java/com/mnowo/composesurveyapp/feature_home/domain/repository/HomeRepository.kt,f\9\f9df936a714df9135534289a87649bd230fc1151
 m
@@ -105,8 +101,6 @@ o
 eapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/presentation/answer_screen/AnswerState.kt,1\4\141ffb0b81ea73e1c550f7ce81bb9358beda9ab9
 è
 _app/src/main/java/com/mnowo/composesurveyapp/feature_home/data/repository/HomeRepositoryImpl.kt,1\d\1d12dbb5cd0107bd107509da30caadc2bd597969
-Ö
-Uapp/src/main/java/com/mnowo/composesurveyapp/feature_home/data/remote/HomeRemoteDb.kt,5\7\57ca503a55e06105c255d79030d2c5096a2ec342
 p
 @app/src/main/java/com/mnowo/composesurveyapp/core/util/UiText.kt,8\d\8d99900063504ace48b2218688514efabe64c397
 ë
@@ -115,14 +109,10 @@ aapp/src/main/java/com/mnowo/composesurveyapp/feature_home/domain/use_case/GetSu
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 î
 dapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/domain/use_case/DeleteCachedQuestions.kt,7\d\7d55b4272c0dd99affd49dd4ff8fbf20d268bbb0
-â
-Yapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/data/remote/AnswerRemoteDb.kt,c\e\cef2bd4f6eaf943453a6b37319f203bab1ffafd5
 à
 Xapp/src/main/java/com/mnowo/composesurveyapp/feature_home/presentation/home/HomeEvent.kt,7\1\715055b3db12eea930022a86381215a0ecae9bfa
 ä
 Zapp/src/main/java/com/mnowo/composesurveyapp/feature_add_survey/data/local/AddSurveyDao.kt,f\f\ff979502f025299d31f4eb60f5a589368630c168
-á
-Wapp/src/main/java/com/mnowo/composesurveyapp/core/presentation/components/Navigation.kt,a\4\a4742e9213514d2def19f5c1502960ea79d0ee8c
 ~
 Napp/src/main/java/com/mnowo/composesurveyapp/core/presentation/MainActivity.kt,6\b\6b80820c14511623193bb277794a72ffe5f46e78
 z
@@ -155,9 +145,5 @@ japp/src/main/java/com/mnowo/composesurveyapp/feature_add_survey/presentation/ne
 ~app/src/main/java/com/mnowo/composesurveyapp/feature_add_survey/presentation/add_survey_question/AddSurveyQuestionViewModel.kt,9\2\922148fb9b6eace3cd2d8195c19e946c32ea4fae
 ´
 {app/src/main/java/com/mnowo/composesurveyapp/feature_add_survey/presentation/add_survey_question/AddSurveyQuestionScreen.kt,e\3\e3ad59e5be7aabe96f08041b1021fbb55728e6fb
-s
-Capp/src/main/java/com/mnowo/composesurveyapp/core/util/Constants.kt,a\d\adbb049dc563997515086621855f2334526b569d
-É
-Sapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/data/local/AnswerDao.kt,3\b\3b1b43b971501657edee6462d277f6a08d5c7686
-°
-qapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/presentation/after_answer_screen/AfterAnswerScreen.kt,b\7\b7b471aa97b810f81cd88acc8904af5467ffece2
+x
+Happ/src/main/java/com/mnowo/composesurveyapp/core/data/SurveyDatabase.kt,d\a\da2d652a7489d583f6c78b069c39684fde74ce8d

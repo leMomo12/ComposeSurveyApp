@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,13 +19,18 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mnowo.composesurveyapp.R
 import com.mnowo.composesurveyapp.core.ui.theme.blue
 import com.mnowo.composesurveyapp.core.ui.theme.grey
 import com.mnowo.composesurveyapp.core.util.Screen
 
 @Composable
-fun AfterAnswerScreen(onNavigate: (String) -> Unit = {}) {
+fun AfterAnswerScreen(onNavigate: (String) -> Unit = {}, viewModel: AfterAnswerViewModel = hiltViewModel()) {
+
+    LaunchedEffect(key1 = true) {
+        viewModel.addUserSurvey()
+    }
 
     val istokweb = FontFamily(
         Font(R.font.istokweb_bold, FontWeight.Bold),

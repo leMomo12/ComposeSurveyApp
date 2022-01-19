@@ -9,6 +9,8 @@ object Constants {
     const val SURVEY_CACHING_ANSWER_TABLE = "survey_caching_answer_table"
 
     const val SURVEY_INFO = "survey_info###?H"
+    const val SURVEY_INFO_DETAILS = "SurveyInfoDetails"
+    const val DETAILS_DOCUMENT = "Survey details"
 
     const val UNEXPECTED_ERROR = "Unexpected error occurred"
 

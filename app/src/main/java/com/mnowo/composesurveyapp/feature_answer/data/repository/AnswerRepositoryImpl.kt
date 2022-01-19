@@ -23,7 +23,6 @@ class AnswerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun cachingSurveyQuestions(getQuestion: GetQuestion) {
-        d("GetSurvey", "caching $getQuestion")
         return answerDao.cachingSurveyQuestions(getQuestion = getQuestion)
     }
 
@@ -31,8 +30,16 @@ class AnswerRepositoryImpl @Inject constructor(
         return answerDao.getCachedQuestion()
     }
 
+    override suspend fun deleteAllCachedAnswers() {
+        return answerDao.deleteAllCachedAnswers()
+    }
+
     override suspend fun deleteAllCachedQuestions() {
         return answerDao.deleteAllCachedQuestions()
+    }
+
+    override suspend fun addUserAnswer(answer: Answer) {
+        return answerRemoteDb.addUserAnswer(answer = answer)
     }
 
 }

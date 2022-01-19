@@ -7,14 +7,16 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
 import com.mnowo.composesurveyapp.R
+import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
+import com.mnowo.composesurveyapp.feature_answer.domain.models.Answer
 import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class AnswerRemoteDb @Inject constructor() {
 
-    suspend fun getSurvey(collectionPath: String) : List<GetQuestion> {
+    suspend fun getSurvey(collectionPath: String): List<GetQuestion> {
         d("getSurvey", "collectionPath: $collectionPath")
         val surveyListData: MutableList<GetQuestion> = mutableListOf()
 
@@ -24,7 +26,7 @@ class AnswerRemoteDb @Inject constructor() {
                 .get()
                 .await()
 
-            for(document in result.documents) {
+            for (document in result.documents) {
                 d("remote", "heere")
                 val questionTitle = document.getString("questionTitle")
                 val questionOne = document.getString("questionOne")
@@ -32,7 +34,14 @@ class AnswerRemoteDb @Inject constructor() {
                 val questionThree = document.getString("questionThree")
                 val questionFour = document.getString("questionFour")
 
-                val getQuestion = GetQuestion(0, questionTitle!!, questionOne, questionTwo, questionThree, questionFour)
+                val getQuestion = GetQuestion(
+                    0,
+                    questionTitle!!,
+                    questionOne,
+                    questionTwo,
+                    questionThree,
+                    questionFour
+                )
 
                 surveyListData.add(getQuestion)
             }
@@ -41,5 +50,17 @@ class AnswerRemoteDb @Inject constructor() {
 
         }
         return surveyListData
+    }
+
+    suspend fun addUserAnswer(answer: Answer) {
+        Firebase.firestore.collection(Constants.SURVEY_INFO).document("Wie geht es dir?").set(answer).await()
+
+        Firebase.firestore
+            .collection(Constants.SURVEY_INFO)
+            .document("Wie geht es dir?")
+            .collection("SurveyAnswerCount")
+            .add(answer).addOnSuccessListener {
+                d("addUserSurvey", "Successful")
+            }.await()
     }
 }

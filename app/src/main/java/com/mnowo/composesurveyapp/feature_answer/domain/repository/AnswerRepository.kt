@@ -13,5 +13,9 @@ interface AnswerRepository {
 
     suspend fun getCachedQuestion(): List<GetQuestion>
 
+    suspend fun deleteAllCachedAnswers()
+
     suspend fun deleteAllCachedQuestions()
+
+    suspend fun addUserAnswer(answer: Answer)
 }

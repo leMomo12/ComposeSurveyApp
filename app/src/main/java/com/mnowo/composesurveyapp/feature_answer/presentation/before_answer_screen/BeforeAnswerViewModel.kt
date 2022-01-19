@@ -1,16 +1,14 @@
 package com.mnowo.composesurveyapp.feature_answer.presentation.before_answer_screen
 
-import android.os.Parcelable
-import android.util.Log.d
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
-import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.Screen
-import com.mnowo.composesurveyapp.feature_answer.domain.use_case.DeleteCachedQuestions
+import com.mnowo.composesurveyapp.feature_answer.domain.use_case.DeleteCachedAnswerUseCase
+import com.mnowo.composesurveyapp.feature_answer.domain.use_case.DeleteCachedQuestionsUseCase
 import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BeforeAnswerViewModel @Inject constructor(
-    private val deleteCachedQuestions: DeleteCachedQuestions,
+    private val deleteCachedQuestionsUseCase: DeleteCachedQuestionsUseCase,
+    private val deleteCachedAnswerUseCase: DeleteCachedAnswerUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -44,7 +43,12 @@ class BeforeAnswerViewModel @Inject constructor(
             }
             is BeforeAnswerEvent.DeleteAllCachedQuestions -> {
                 viewModelScope.launch {
-                    deleteCachedQuestions.invoke()
+                    deleteCachedQuestionsUseCase.invoke()
+                }
+            }
+            is BeforeAnswerEvent.DeleteAllCachedAnswers -> {
+                viewModelScope.launch {
+                    deleteCachedAnswerUseCase.invoke()
                 }
             }
         }
