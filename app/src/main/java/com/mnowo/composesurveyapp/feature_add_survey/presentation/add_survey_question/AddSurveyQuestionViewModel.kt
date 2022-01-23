@@ -132,7 +132,7 @@ class AddSurveyQuestionViewModel @Inject constructor(
             is AddSurveyQuestionEvent.PublishSurvey -> {
                 viewModelScope.launch {
                     _state.value = state.value.copy(isLoading = true)
-                    addSurveyUseCase().onEach { result ->
+                    addSurveyUseCase(questionCount = questionCount).onEach { result ->
                         when (result) {
                             is Resource.Loading -> {
                                 _state.value = AddSurveyQuestionState(isLoading = true)

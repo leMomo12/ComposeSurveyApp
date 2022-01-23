@@ -11,6 +11,9 @@ object Constants {
     const val SURVEY_INFO = "survey_info###?H"
     const val SURVEY_INFO_DETAILS = "SurveyInfoDetails"
     const val DETAILS_DOCUMENT = "Survey details"
+    const val SURVEY_QUESTION_ANSWER = "SurveyQuestionAnswers"
+    const val SURVEY_QUESTIONS = "SurveyQuestions"
+
 
     const val UNEXPECTED_ERROR = "Unexpected error occurred"
 

@@ -13,29 +13,26 @@ class AddSurveyUseCase @Inject constructor(
     private val addSurveyRepository: AddSurveyRepository
 ) {
 
-    operator fun invoke(): Flow<Resource<GetSurveyQuestionsResult>> = flow {
+    operator fun invoke(questionCount: Int): Flow<Resource<GetSurveyQuestionsResult>> = flow {
         emit(Resource.Loading<GetSurveyQuestionsResult>())
         try {
             val questionListData = addSurveyRepository.getSurveyQuestions()
 
             val titleAndDescription = addSurveyRepository.getTitleAndDescription()
 
-            val titleAndDescriptionResult =
-                addSurveyRepository.addSurveyTitleAndDescription(titleAndDescription)
-
             val titleAndDescriptionInfoResult =
-                addSurveyRepository.addSurveyTitleAndDescriptionToInfo(titleAndDescription)
+                addSurveyRepository.addSurveyTitleAndDescriptionToInfo(titleAndDescription, questionCount)
 
             var surveyStatus = true
 
-            if (titleAndDescriptionResult.isSuccessful == true && questionListData.isNotEmpty() && titleAndDescriptionInfoResult.isSuccessful == true) {
+            if (questionListData.isNotEmpty() && titleAndDescriptionInfoResult.isSuccessful == true) {
                 for (data in questionListData) {
                     d("AddSurvey", "Item: ${data.toString()}")
                     val surveyResult = addSurveyRepository.addSurvey(data, titleAndDescription)
                     if (surveyResult.isSuccessful == false) {
                         emit(
                             Resource.Error<GetSurveyQuestionsResult>(
-                                message = titleAndDescriptionResult.errorMessage
+                                message = titleAndDescriptionInfoResult.errorMessage
                                     ?: Constants.UNEXPECTED_ERROR
                             )
                         )
@@ -56,14 +53,6 @@ class AddSurveyUseCase @Inject constructor(
                         emit(
                             Resource.Error<GetSurveyQuestionsResult>(
                                 message = titleAndDescriptionInfoResult.errorMessage
-                                    ?: Constants.UNEXPECTED_ERROR
-                            )
-                        )
-                    }
-                    titleAndDescriptionResult.isSuccessful != true -> {
-                        emit(
-                            Resource.Error<GetSurveyQuestionsResult>(
-                                message = titleAndDescriptionResult.errorMessage
                                     ?: Constants.UNEXPECTED_ERROR
                             )
                         )

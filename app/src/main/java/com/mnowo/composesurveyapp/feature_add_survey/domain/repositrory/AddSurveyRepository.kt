@@ -23,5 +23,8 @@ interface AddSurveyRepository {
 
     suspend fun deleteAllQuestions()
 
-    suspend fun addSurveyTitleAndDescriptionToInfo(surveyTitleAndDescription: SurveyTitleAndDescription): RemoteDbRespond
+    suspend fun addSurveyTitleAndDescriptionToInfo(
+        surveyTitleAndDescription: SurveyTitleAndDescription,
+        questionCount: Int
+    ): RemoteDbRespond
 }
