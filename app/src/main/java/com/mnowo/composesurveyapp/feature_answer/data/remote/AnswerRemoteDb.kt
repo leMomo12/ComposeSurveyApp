@@ -21,8 +21,9 @@ class AnswerRemoteDb @Inject constructor() {
         val surveyListData: MutableList<GetQuestion> = mutableListOf()
 
         try {
-            val result = FirebaseFirestore.getInstance().collection(collectionPath)
-                .whereEqualTo("type", "question")
+            val result = FirebaseFirestore.getInstance().collection(Constants.SURVEY_INFO)
+                .document(collectionPath)
+                .collection(Constants.SURVEY_QUESTIONS)
                 .get()
                 .await()
 

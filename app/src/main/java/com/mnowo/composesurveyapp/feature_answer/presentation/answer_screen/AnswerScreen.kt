@@ -110,6 +110,7 @@ fun AnswerScreen(
         scaffoldState = scaffoldState
     ) {
         if (state.isLoading == false) {
+            d("Survey", "List: ${viewModel.questionList.value}")
             AnswerScreenItem(istokweb = istokweb, viewModel = viewModel)
         } else {
             AnswerShimmerGrid(istokweb = istokweb, brush = brush)
@@ -181,17 +182,18 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
             verticalAlignment = Alignment.Bottom
         ) {
             Button(onClick = {
-                if(viewModel.currentQuestion + 1 != viewModel.questionCount.value) {
-                    if (viewModel.questionIsSelected.value) {
-                        viewModel.currentQuestion++
-                        viewModel.onEvent(AnswerEvent.ProgressIndicator)
-                        viewModel.onEvent(AnswerEvent.NextQuestion)
+                    if (viewModel.currentQuestion + 1 != viewModel.questionCount.value) {
+                        if (viewModel.questionIsSelected.value) {
+                            viewModel.currentQuestion++
+                            viewModel.onEvent(AnswerEvent.ProgressIndicator)
+                            viewModel.onEvent(AnswerEvent.NextQuestion)
+                        } else {
+                            viewModel.questionNotSelected()
+                        }
                     } else {
-                        viewModel.questionNotSelected()
+                        d("Size", "current: $viewModel.currentQuestion , size: ${viewModel.questionList.value.size}")
+                        viewModel.onEvent(AnswerEvent.NavigateToAfterAnswer)
                     }
-                } else {
-                    viewModel.onEvent(AnswerEvent.NavigateToAfterAnswer)
-                }
             }
             ) {
                 Text(

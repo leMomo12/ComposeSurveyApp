@@ -108,9 +108,6 @@ class AnswerViewModel @Inject constructor(
                                 onEvent(AnswerEvent.GetCachedQuestion)
                             }
                             is Resource.Error -> {
-                                _state.value = state.value.copy(
-                                    isLoading = false
-                                )
                                 _eventFlow.emit(
                                     UiEvent.ShowSnackbar(
                                         UiText.DynamicString(
@@ -144,10 +141,10 @@ class AnswerViewModel @Inject constructor(
                                 d("GetSurvey", "ViewModel ${it.data}")
                                 it.data?.let { listData ->
                                     _questionList.value = listData
+                                    _questionCount.value = questionList.value.size
+                                    _state.value = state.value.copy(isLoading = false)
+                                    onEvent(AnswerEvent.ProgressIndicator)
                                 }
-                                _state.value = state.value.copy(isLoading = false)
-                                _questionCount.value = questionList.value.size
-                                onEvent(AnswerEvent.ProgressIndicator)
                             }
                             is Resource.Error -> {
                                 _eventFlow.emit(
@@ -183,7 +180,7 @@ class AnswerViewModel @Inject constructor(
                         answer = Answer(
                             id = 0,
                             surveyTitle = title.value,
-                            questionTitle = questionList.value[currentQuestion].questionTitle,
+                            questionTitle = questionList.value[currentQuestion - 1].questionTitle,
                             answer = answerOption.value
                         )
                     )
@@ -194,7 +191,17 @@ class AnswerViewModel @Inject constructor(
                 }
             }
             is AnswerEvent.NavigateToAfterAnswer -> {
+                d("Size", "current: $currentQuestion , size: ${questionList.value.size}")
                 viewModelScope.launch {
+                    cachingAnswerUseCase.invoke(
+                        answer = Answer(
+                            id = 0,
+                            surveyTitle = title.value,
+                            questionTitle = questionList.value[currentQuestion].questionTitle,
+                            answer = answerOption.value
+                        )
+                    )
+
                     _eventFlow.emit(
                         UiEvent.Navigate(Screen.AfterAnswerScreen.route)
                     )
