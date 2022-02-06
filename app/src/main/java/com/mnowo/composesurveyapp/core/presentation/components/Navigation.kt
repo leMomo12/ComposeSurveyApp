@@ -87,7 +87,12 @@ fun Navigation(navController: NavHostController) {
         }
 
         composable(Screen.AfterAnswerScreen.route) {
-            AfterAnswerScreen(onNavigate = navController::navigate)
+
+            val surveyPath = navController.previousBackStackEntry?.savedStateHandle?.get<String>(Constants.PARAM_SURVEY_PATH)
+
+            surveyPath?.let {
+                AfterAnswerScreen(onNavigate = navController::navigate, surveyPath = it)
+            }
         }
     }
 }

@@ -20,6 +20,9 @@ interface AnswerDao {
     @Query("SELECT * FROM ${Constants.SURVEY_ANSWER_TABLE} ")
     suspend fun getCachedQuestion(): List<GetQuestion>
 
+    @Query("SELECT * FROM ${Constants.SURVEY_CACHING_ANSWER_TABLE}")
+    suspend fun getCachedAnswers() : List<Answer>
+
     @Query("DELETE FROM ${Constants.SURVEY_CACHING_ANSWER_TABLE}")
     suspend fun deleteAllCachedAnswers()
 

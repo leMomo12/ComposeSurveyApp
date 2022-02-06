@@ -17,6 +17,7 @@ import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.core.util.UiText
 import com.mnowo.composesurveyapp.feature_answer.domain.models.Answer
 import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
+import com.mnowo.composesurveyapp.feature_answer.domain.use_case.AddUserAnswerUseCase
 import com.mnowo.composesurveyapp.feature_answer.domain.use_case.CachingAnswerUseCase
 import com.mnowo.composesurveyapp.feature_answer.domain.use_case.GetCachedQuestionUseCase
 import com.mnowo.composesurveyapp.feature_answer.domain.use_case.GetSurveyQuestionsUseCase
@@ -35,8 +36,9 @@ class AnswerViewModel @Inject constructor(
     private val getSurveyQuestionsUseCase: GetSurveyQuestionsUseCase,
     private val getCachedQuestionUseCase: GetCachedQuestionUseCase,
     private val cachingAnswerUseCase: CachingAnswerUseCase,
-    savedStateHandle: SavedStateHandle
+    private val addUserAnswerUseCase: AddUserAnswerUseCase
 ) : ViewModel() {
+
 
     private val _state = mutableStateOf(AnswerState())
     val state: State<AnswerState> = _state
@@ -165,6 +167,7 @@ class AnswerViewModel @Inject constructor(
                     )
                 }
             }
+
             is AnswerEvent.ProgressIndicator -> {
                 val progress: Float = 1 / questionCount.value.toFloat()
                 _progressIndicator.value = progressIndicator.value.plus(
@@ -191,7 +194,6 @@ class AnswerViewModel @Inject constructor(
                 }
             }
             is AnswerEvent.NavigateToAfterAnswer -> {
-                d("Size", "current: $currentQuestion , size: ${questionList.value.size}")
                 viewModelScope.launch {
                     cachingAnswerUseCase.invoke(
                         answer = Answer(
@@ -201,10 +203,41 @@ class AnswerViewModel @Inject constructor(
                             answer = answerOption.value
                         )
                     )
-
-                    _eventFlow.emit(
-                        UiEvent.Navigate(Screen.AfterAnswerScreen.route)
-                    )
+                }
+            }
+            is AnswerEvent.AddUserAnswer -> {
+                d("AddUserAnswer", "Start")
+                viewModelScope.launch {
+                    addUserAnswerUseCase.invoke().onEach {
+                        when(it) {
+                            is Resource.Success -> {
+                                d("AddUserAnswer", "success")
+                                _eventFlow.emit(
+                                    UiEvent.Navigate(Screen.AfterAnswerScreen.route)
+                                )
+                            }
+                            is Resource.Loading -> {
+                                d("AddUserAnswer", "loading")
+                                _state.value = state.value.copy(isLoading = true)
+                            }
+                            is Resource.Error -> {
+                                d("AddUserAnswer", "error ${it.message}")
+                                viewModelScope.launch {
+                                    it.message?.let { message ->
+                                        _eventFlow.emit(
+                                            UiEvent.ShowSnackbar(
+                                                UiText.DynamicString(message)
+                                            )
+                                        )
+                                    }
+                                    delay(5000)
+                                    _eventFlow.emit(
+                                        UiEvent.Navigate(Screen.HomeScreen.route)
+                                    )
+                                }
+                            }
+                        }
+                    }.launchIn(viewModelScope)
                 }
             }
         }

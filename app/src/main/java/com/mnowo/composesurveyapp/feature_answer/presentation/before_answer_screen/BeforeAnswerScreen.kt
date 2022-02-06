@@ -39,7 +39,6 @@ fun BeforeAnswerScreen(
     navController: NavController
 ) {
 
-    d("Details", surveyInfo.toString())
 
     val istokweb = FontFamily(
         Font(R.font.istokweb_bold, FontWeight.Bold),

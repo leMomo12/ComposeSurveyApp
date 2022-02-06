@@ -1,6 +1,7 @@
 package com.mnowo.composesurveyapp.feature_answer.data.repository
 
 import android.util.Log.d
+import com.mnowo.composesurveyapp.core.domain.models.RemoteDbRespond
 import com.mnowo.composesurveyapp.feature_answer.data.local.AnswerDao
 import com.mnowo.composesurveyapp.feature_answer.data.remote.AnswerRemoteDb
 import com.mnowo.composesurveyapp.feature_answer.domain.models.Answer
@@ -14,7 +15,7 @@ class AnswerRepositoryImpl @Inject constructor(
     private val answerDao: AnswerDao
 ) : AnswerRepository {
 
-    override suspend fun getSurvey(collectionPath: String) : List<GetQuestion> {
+    override suspend fun getSurvey(collectionPath: String): List<GetQuestion> {
         return answerRemoteDb.getSurvey(collectionPath = collectionPath)
     }
 
@@ -38,8 +39,16 @@ class AnswerRepositoryImpl @Inject constructor(
         return answerDao.deleteAllCachedQuestions()
     }
 
-    override suspend fun addUserAnswer(answer: Answer) {
+    override suspend fun addUserAnswer(answer: Answer): RemoteDbRespond {
         return answerRemoteDb.addUserAnswer(answer = answer)
+    }
+
+    override suspend fun getCachedAnswers(): List<Answer> {
+        return answerDao.getCachedAnswers()
+    }
+
+    override suspend fun addSurveyRating(thumbUp: Boolean, surveyName: String): RemoteDbRespond {
+        return answerRemoteDb.addSurveyRating(thumbUp = thumbUp, surveyName = surveyName)
     }
 
 }

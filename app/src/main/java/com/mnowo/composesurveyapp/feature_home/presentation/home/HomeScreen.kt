@@ -126,7 +126,6 @@ fun HomeScreen(
                 animationDuration = animationDuration,
                 coroutineScope = coroutineScope
             )
-            d("lazyListState", "lazylistState: ${lazyListState.firstVisibleItemIndex}")
         }
     ) {
 

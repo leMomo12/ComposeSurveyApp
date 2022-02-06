@@ -5,6 +5,7 @@ sealed class AnswerEvent {
     object NextQuestion : AnswerEvent()
     object GetSurvey : AnswerEvent()
     object GetCachedQuestion : AnswerEvent()
+    object AddUserAnswer : AnswerEvent()
     object NavigateToHome : AnswerEvent()
     object NavigateToAfterAnswer : AnswerEvent()
 }

@@ -44,6 +44,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
+import android.R.array
+
+
+
 
 @ExperimentalCoroutinesApi
 @Composable
@@ -53,7 +57,6 @@ fun AnswerScreen(
     navController: NavController,
     surveyPath: String
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     val state = viewModel.state.value
     val context = LocalContext.current
@@ -71,6 +74,8 @@ fun AnswerScreen(
         viewModel.eventFlow.collectLatest {
             when (it) {
                 is UiEvent.Navigate -> {
+                    navController.currentBackStackEntry?.savedStateHandle?.set(Constants.PARAM_SURVEY_PATH, surveyPath)
+
                     onNavigate(it.route)
                 }
                 is UiEvent.ShowSnackbar -> {
@@ -79,6 +84,7 @@ fun AnswerScreen(
                         duration = SnackbarDuration.Short
                     )
                 }
+                else -> {}
             }
         }
     }
@@ -193,6 +199,7 @@ fun AnswerScreenItem(istokweb: FontFamily, viewModel: AnswerViewModel) {
                     } else {
                         d("Size", "current: $viewModel.currentQuestion , size: ${viewModel.questionList.value.size}")
                         viewModel.onEvent(AnswerEvent.NavigateToAfterAnswer)
+                        viewModel.onEvent(AnswerEvent.AddUserAnswer)
                     }
             }
             ) {
@@ -215,7 +222,6 @@ fun AnswerListItem(
     getQuestion: GetQuestion,
     index: Int
 ) {
-
 
     var color by remember {
         mutableStateOf(Color.LightGray)
