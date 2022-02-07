@@ -1,7 +1,5 @@
 package com.mnowo.composesurveyapp.feature_home.presentation.home
 
-import android.annotation.SuppressLint
-import android.os.Bundle
 import android.util.Log.d
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -44,7 +42,6 @@ import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.TestTags
 import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -55,11 +52,14 @@ fun HomeScreen(
     onNavigate: (String) -> Unit = {},
     navController: NavController
 ) {
-    val scaffoldState = rememberScaffoldState()
+    val scaffoldState =
+        rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))
     val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
 
     val surveyInfoList = viewModel.surveyInfoList.value.toMutableList()
+
+    val drawerState = viewModel.drawerState.value
 
     val animationDuration = 400
 
@@ -114,10 +114,10 @@ fun HomeScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-
             StandardHomeTopBar(
                 lazyListState = lazyListState,
                 animationDuration = animationDuration,
+                coroutineScope = coroutineScope,
                 viewModel = viewModel
             )
             SecondHomeTopBar(lazyListState = lazyListState, animationDuration = animationDuration)
@@ -126,7 +126,11 @@ fun HomeScreen(
                 animationDuration = animationDuration,
                 coroutineScope = coroutineScope
             )
+        },
+        drawerContent = {
+            Text(text = "Drawer")
         }
+
     ) {
 
         LazyColumn(
@@ -286,6 +290,7 @@ fun SurveyListItem(data: SurveyInfo, viewModel: HomeViewModel) {
     }
 }
 
+
 @Composable
 fun ShimmerSurveyListItem(brush: Brush) {
     Card(
@@ -353,14 +358,15 @@ fun ShimmerSurveyListItem(brush: Brush) {
     }
 }
 
-
 @ExperimentalAnimationApi
 @Composable
 fun StandardHomeTopBar(
     lazyListState: LazyListState,
     animationDuration: Int,
+    coroutineScope: CoroutineScope,
     viewModel: HomeViewModel
 ) {
+
     AnimatedVisibility(
         visible = lazyListState.firstVisibleItemIndex == 0,
         exit = fadeOut(animationSpec = tween(animationDuration)),
@@ -368,15 +374,52 @@ fun StandardHomeTopBar(
     ) {
         Row(
             Modifier
-                .padding(top = 10.dp, start = 20.dp, end = 20.dp, bottom = 5.dp)
+                .padding(top = 5.dp, start = 20.dp, end = 20.dp, bottom = 9.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(Icons.Filled.ShortText, contentDescription = "", Modifier.scale(1.3f))
+
+            Icon(Icons.Default.MoreHoriz, contentDescription = "", modifier = Modifier
+                .scale(1.2f)
+                .clickable {
+                    viewModel.setDropDownState(!viewModel.dropDownState.value)
+                })
+
+            DropdownMenu(
+                expanded = viewModel.dropDownState.value,
+                onDismissRequest = { viewModel.setDropDownState(false) }
+            ) {
+                DropdownMenuItem(onClick = { }) {
+                    Row {
+                        Icon(
+                            Icons.Default.Equalizer,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .align(alignment = Alignment.CenterVertically)
+                        )
+                        Spacer(modifier = Modifier.padding(horizontal = 5.dp))
+                        Text(text = "My survey statistics")
+                    }
+                }
+                Divider(
+                    color = Color.LightGray,
+                    thickness = 0.8.dp,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                DropdownMenuItem(onClick = { }) {
+                    Row {
+                        Icon(Icons.Default.Settings, contentDescription = "")
+                        Spacer(modifier = Modifier.padding(horizontal = 5.dp))
+                        Text(text = "Settings")
+                    }
+                }
+            }
+
             Icon(Icons.Outlined.Add, contentDescription = "",
                 Modifier
-                    .scale(1.3f)
+                    .scale(1.2f)
                     .clickable {
                         viewModel.onEvent(HomeEvent.AddNewSurvey)
                     }
@@ -403,19 +446,22 @@ fun SecondHomeTopBar(
         exit = fadeOut(animationSpec = tween(animationDuration)),
         enter = fadeIn(animationSpec = tween(animationDuration))
     ) {
-        Row(
-            Modifier
-                .padding(top = 10.dp, start = 20.dp, end = 20.dp, bottom = 5.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Todays surveys",
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = istokweb
-            )
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                Modifier
+                    .padding(start = 20.dp, end = 20.dp, bottom = 3.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Today's surveys",
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = istokweb
+                )
+            }
+            Divider(color = Color.LightGray, thickness = 0.4.dp, modifier = Modifier.fillMaxWidth())
         }
     }
 }
@@ -438,27 +484,30 @@ fun ListHomeTopBar(
         exit = fadeOut(animationSpec = tween(animationDuration)),
         enter = fadeIn(animationSpec = tween(animationDuration))
     ) {
-        Row(
-            Modifier
-                .padding(top = 10.dp, start = 20.dp, end = 20.dp, bottom = 5.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "All Surveys",
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = istokweb
-            )
-            Icon(Icons.Default.ArrowDropUp, contentDescription = "", modifier = Modifier
-                .scale(1.3f)
-                .clickable {
-                    coroutineScope.launch {
-                        lazyListState.animateScrollToItem(0)
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                Modifier
+                    .padding(start = 20.dp, end = 20.dp, bottom = 3.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "All Surveys",
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = istokweb
+                )
+                Icon(Icons.Default.ArrowDropUp, contentDescription = "", modifier = Modifier
+                    .scale(1.3f)
+                    .clickable {
+                        coroutineScope.launch {
+                            lazyListState.animateScrollToItem(0)
+                        }
                     }
-                }
-            )
+                )
+            }
+            Divider(color = Color.LightGray, thickness = 0.4.dp, modifier = Modifier.fillMaxWidth())
         }
     }
 }
@@ -472,7 +521,8 @@ fun CategoryRow(
             border = BorderStroke(1.dp, Color.LightGray),
             modifier = Modifier
                 .height(60.dp)
-                .width(160.dp)
+                .width(160.dp),
+            elevation = 5.dp
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

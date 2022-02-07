@@ -41,6 +41,19 @@ class HomeViewModel @Inject constructor(
     fun setSurveyInfoState(value: SurveyInfo) {
         _surveyInfoState.value = value
     }
+    private val _drawerState = mutableStateOf<Boolean>(false)
+    val drawerState: State<Boolean> = _drawerState
+
+    fun setDrawerState(value: Boolean) {
+        _drawerState.value = value
+    }
+
+    private val _dropDownState = mutableStateOf<Boolean>(false)
+    val dropDownState: State<Boolean> = _dropDownState
+
+    fun setDropDownState(value: Boolean) {
+        _dropDownState.value = value
+    }
 
     init {
         viewModelScope.launch {
