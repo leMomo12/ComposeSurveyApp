@@ -99,6 +99,18 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
+            is HomeEvent.NavToStatistics -> {
+                viewModelScope.launch {
+                    _eventFlow.emit(
+                        UiEvent.Navigate(Screen.MySurveyListScreen.route)
+                    )
+                }
+            }
+            is HomeEvent.Logout -> {
+                viewModelScope.launch {
+
+                }
+            }
         }
     }
 }

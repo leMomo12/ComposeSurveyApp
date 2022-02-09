@@ -12,4 +12,6 @@ sealed class Screen(val route: String) {
     object BeforeAnswerScreen : Screen("before_answer_screen")
     object AnswerScreen : Screen("answer_screen")
     object AfterAnswerScreen : Screen("after_answer_screen")
+    object StatisticScreen : Screen("statistic_screen")
+    object MySurveyListScreen : Screen("my_survey_list_screen")
 }

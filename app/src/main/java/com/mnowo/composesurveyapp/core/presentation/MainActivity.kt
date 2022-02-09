@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mnowo.composesurveyapp.core.presentation.components.Navigation
 import com.mnowo.composesurveyapp.core.ui.theme.ComposeSurveyAppTheme
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeSurveyAppTheme {
-                val navController = rememberAnimatedNavController()
+                val navController = rememberNavController()
                 Navigation(navController = navController)
             }
         }

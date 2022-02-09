@@ -390,7 +390,9 @@ fun StandardHomeTopBar(
                 expanded = viewModel.dropDownState.value,
                 onDismissRequest = { viewModel.setDropDownState(false) }
             ) {
-                DropdownMenuItem(onClick = { }) {
+                DropdownMenuItem(onClick = {
+                    viewModel.onEvent(HomeEvent.NavToStatistics)
+                }) {
                     Row {
                         Icon(
                             Icons.Default.Equalizer,
@@ -408,11 +410,13 @@ fun StandardHomeTopBar(
                     thickness = 0.8.dp,
                     modifier = Modifier.fillMaxWidth()
                 )
-                DropdownMenuItem(onClick = { }) {
+                DropdownMenuItem(onClick = {
+                    viewModel.onEvent(HomeEvent.Logout)
+                }) {
                     Row {
-                        Icon(Icons.Default.Settings, contentDescription = "")
+                        Icon(Icons.Default.Logout, contentDescription = "")
                         Spacer(modifier = Modifier.padding(horizontal = 5.dp))
-                        Text(text = "Settings")
+                        Text(text = "Logout")
                     }
                 }
             }
@@ -461,7 +465,6 @@ fun SecondHomeTopBar(
                     fontFamily = istokweb
                 )
             }
-            Divider(color = Color.LightGray, thickness = 0.4.dp, modifier = Modifier.fillMaxWidth())
         }
     }
 }
@@ -507,7 +510,6 @@ fun ListHomeTopBar(
                     }
                 )
             }
-            Divider(color = Color.LightGray, thickness = 0.4.dp, modifier = Modifier.fillMaxWidth())
         }
     }
 }
