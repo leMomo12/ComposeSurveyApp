@@ -4,7 +4,7 @@ import com.mnowo.composesurveyapp.core.data.SurveyDatabase
 import com.mnowo.composesurveyapp.feature_statistics.data.local.StatisticDao
 import com.mnowo.composesurveyapp.feature_statistics.data.remote.StatisticRemoteDb
 import com.mnowo.composesurveyapp.feature_statistics.data.repository.StatisticRepositoryImpl
-import com.mnowo.composesurveyapp.feature_statistics.domain.StatisticRepository
+import com.mnowo.composesurveyapp.feature_statistics.domain.repository.StatisticRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

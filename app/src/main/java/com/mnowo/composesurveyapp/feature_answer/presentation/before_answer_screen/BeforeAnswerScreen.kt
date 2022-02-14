@@ -1,7 +1,5 @@
 package com.mnowo.composesurveyapp.feature_answer.presentation.before_answer_screen
 
-import android.os.Bundle
-import android.util.Log.d
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,18 +15,15 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mnowo.composesurveyapp.R
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
-import com.mnowo.composesurveyapp.core.ui.theme.blue
 import com.mnowo.composesurveyapp.core.ui.theme.grey
 import com.mnowo.composesurveyapp.core.util.Constants
-import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
+import com.mnowo.composesurveyapp.core.domain.models.SurveyInfo
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable

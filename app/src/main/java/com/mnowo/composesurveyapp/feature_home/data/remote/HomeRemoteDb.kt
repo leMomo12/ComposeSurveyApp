@@ -2,12 +2,9 @@ package com.mnowo.composesurveyapp.feature_home.data.remote
 
 import android.util.Log.d
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
-import com.google.firebase.ktx.Firebase
 import com.mnowo.composesurveyapp.core.util.Constants
-import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
-import kotlinx.coroutines.delay
+import com.mnowo.composesurveyapp.core.domain.models.SurveyInfo
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 

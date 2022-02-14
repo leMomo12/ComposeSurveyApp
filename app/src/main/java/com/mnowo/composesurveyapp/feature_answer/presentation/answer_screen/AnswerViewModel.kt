@@ -1,18 +1,14 @@
 package com.mnowo.composesurveyapp.feature_answer.presentation.answer_screen
 
-import android.os.Parcelable
 import android.util.Log.d
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mnowo.composesurveyapp.core.domain.TextFieldState
 import com.mnowo.composesurveyapp.core.presentation.util.Resource
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.ui.theme.blue
-import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.core.util.UiText
 import com.mnowo.composesurveyapp.feature_answer.domain.models.Answer
@@ -21,13 +17,11 @@ import com.mnowo.composesurveyapp.feature_answer.domain.use_case.AddUserAnswerUs
 import com.mnowo.composesurveyapp.feature_answer.domain.use_case.CachingAnswerUseCase
 import com.mnowo.composesurveyapp.feature_answer.domain.use_case.GetCachedQuestionUseCase
 import com.mnowo.composesurveyapp.feature_answer.domain.use_case.GetSurveyQuestionsUseCase
-import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi

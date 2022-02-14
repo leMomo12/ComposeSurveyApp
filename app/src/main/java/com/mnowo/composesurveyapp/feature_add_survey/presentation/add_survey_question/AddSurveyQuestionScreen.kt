@@ -69,7 +69,7 @@ fun AddSurveyQuestionScreen(
                 }
                 is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
-                        message = event.uiText.asString(context)
+                        message = event.uiText.asString(context = context)
                     )
                 }
             }

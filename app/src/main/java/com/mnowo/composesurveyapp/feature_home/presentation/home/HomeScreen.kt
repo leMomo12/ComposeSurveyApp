@@ -40,7 +40,7 @@ import com.mnowo.composesurveyapp.core.ui.theme.grey
 import com.mnowo.composesurveyapp.core.ui.theme.white
 import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.TestTags
-import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
+import com.mnowo.composesurveyapp.core.domain.models.SurveyInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -58,8 +58,6 @@ fun HomeScreen(
     val lazyListState = rememberLazyListState()
 
     val surveyInfoList = viewModel.surveyInfoList.value.toMutableList()
-
-    val drawerState = viewModel.drawerState.value
 
     val animationDuration = 400
 

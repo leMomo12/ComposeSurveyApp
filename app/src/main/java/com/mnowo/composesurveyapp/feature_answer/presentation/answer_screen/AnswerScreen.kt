@@ -7,8 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -32,21 +30,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mnowo.composesurveyapp.R
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
-import com.mnowo.composesurveyapp.core.ui.theme.blue
 import com.mnowo.composesurveyapp.core.ui.theme.lightBlue2
 import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.asString
-import com.mnowo.composesurveyapp.feature_answer.domain.models.Answer
 import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
-import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import java.lang.StringBuilder
-import android.R.array
-
-
 
 
 @ExperimentalCoroutinesApi

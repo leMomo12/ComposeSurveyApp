@@ -1,6 +1,5 @@
 package com.mnowo.composesurveyapp.feature_home.presentation.home
 
-import android.util.Log.d
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -9,9 +8,7 @@ import com.mnowo.composesurveyapp.core.presentation.util.Resource
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.core.util.UiText
-import com.mnowo.composesurveyapp.feature_auth.presentation.register.RegisterState
-import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
-import com.mnowo.composesurveyapp.feature_home.domain.repository.HomeRepository
+import com.mnowo.composesurveyapp.core.domain.models.SurveyInfo
 import com.mnowo.composesurveyapp.feature_home.domain.use_case.GetSurveyInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

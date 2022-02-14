@@ -9,7 +9,7 @@ import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.feature_answer.domain.use_case.DeleteCachedAnswerUseCase
 import com.mnowo.composesurveyapp.feature_answer.domain.use_case.DeleteCachedQuestionsUseCase
-import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
+import com.mnowo.composesurveyapp.core.domain.models.SurveyInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

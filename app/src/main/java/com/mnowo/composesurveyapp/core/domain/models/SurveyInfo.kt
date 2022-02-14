@@ -1,4 +1,4 @@
-package com.mnowo.composesurveyapp.feature_home.domain.models
+package com.mnowo.composesurveyapp.core.domain.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

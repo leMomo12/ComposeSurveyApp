@@ -16,7 +16,7 @@ import com.mnowo.composesurveyapp.feature_answer.presentation.before_answer_scre
 import com.mnowo.composesurveyapp.feature_auth.presentation.login.LoginScreen
 import com.mnowo.composesurveyapp.feature_auth.presentation.register.RegisterScreen
 import com.mnowo.composesurveyapp.feature_auth.presentation.splash.SplashScreen
-import com.mnowo.composesurveyapp.feature_home.domain.models.SurveyInfo
+import com.mnowo.composesurveyapp.core.domain.models.SurveyInfo
 import com.mnowo.composesurveyapp.feature_home.presentation.home.HomeScreen
 import com.mnowo.composesurveyapp.feature_statistics.MySurveyListScreen
 import com.mnowo.composesurveyapp.feature_statistics.StatisticScreen
