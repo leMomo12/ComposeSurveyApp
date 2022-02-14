@@ -1,6 +1,7 @@
 package com.mnowo.composesurveyapp.feature_add_survey.data.repository
 
 import com.mnowo.composesurveyapp.core.domain.models.RemoteDbRespond
+import com.mnowo.composesurveyapp.core.domain.models.SavingOwnSurvey
 import com.mnowo.composesurveyapp.feature_add_survey.data.local.AddSurveyDao
 import com.mnowo.composesurveyapp.feature_add_survey.data.remote.AddSurveyRemoteDb
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
@@ -30,6 +31,10 @@ class AddSurveyRepositoryImpl @Inject constructor(
         surveyTitleAndDescription: SurveyTitleAndDescription
     ): RemoteDbRespond {
         return addSurveyRemoteDb.addSurveyQuestions(surveyQuestion, surveyTitleAndDescription)
+    }
+
+    override suspend fun savingOwnSurvey(savingOwnSurvey: SavingOwnSurvey) {
+        return addSurveyDao.savingOwnSurvey(savingOwnSurvey = savingOwnSurvey)
     }
 
     override suspend fun addSurveyTitleAndDescription(surveyTitleAndDescription: SurveyTitleAndDescription): RemoteDbRespond {

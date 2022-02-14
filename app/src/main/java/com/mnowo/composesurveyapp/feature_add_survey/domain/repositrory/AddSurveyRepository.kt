@@ -1,6 +1,7 @@
 package com.mnowo.composesurveyapp.feature_add_survey.domain.repositrory
 
 import com.mnowo.composesurveyapp.core.domain.models.RemoteDbRespond
+import com.mnowo.composesurveyapp.core.domain.models.SavingOwnSurvey
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyTitleAndDescription
 
@@ -16,6 +17,8 @@ interface AddSurveyRepository {
         surveyQuestion: SurveyQuestion,
         surveyTitleAndDescription: SurveyTitleAndDescription
     ): RemoteDbRespond
+
+    suspend fun savingOwnSurvey(savingOwnSurvey: SavingOwnSurvey)
 
     suspend fun addSurveyTitleAndDescription(surveyTitleAndDescription: SurveyTitleAndDescription): RemoteDbRespond
 

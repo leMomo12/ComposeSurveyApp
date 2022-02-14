@@ -7,6 +7,7 @@ object Constants {
     const val SURVEY_QUESTION_TABLE = "survey_question_table"
     const val SURVEY_ANSWER_TABLE = "survey_answer_table"
     const val SURVEY_CACHING_ANSWER_TABLE = "survey_caching_answer_table"
+    const val SURVEY_CACHING_OWN_SURVEY_TABLE = "survey_caching_own_survey"
 
     const val SURVEY_INFO = "survey_info###?H"
     const val SURVEY_INFO_DETAILS = "SurveyInfoDetails"

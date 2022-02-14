@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mnowo.composesurveyapp.core.domain.TextFieldState
+import com.mnowo.composesurveyapp.core.domain.models.SavingOwnSurvey
 import com.mnowo.composesurveyapp.core.presentation.util.Resource
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.util.Screen
@@ -14,6 +15,7 @@ import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestio
 import com.mnowo.composesurveyapp.feature_add_survey.domain.use_case.AddQuestionUseCase
 import com.mnowo.composesurveyapp.feature_add_survey.domain.use_case.AddSurveyUseCase
 import com.mnowo.composesurveyapp.feature_add_survey.domain.use_case.DeleteAllQuestionsUseCase
+import com.mnowo.composesurveyapp.feature_add_survey.domain.use_case.SavingOwnSurveyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -26,7 +28,8 @@ import javax.inject.Inject
 class AddSurveyQuestionViewModel @Inject constructor(
     private val addQuestionUseCase: AddQuestionUseCase,
     private val addSurveyUseCase: AddSurveyUseCase,
-    private val deleteAllQuestionsUseCase: DeleteAllQuestionsUseCase
+    private val deleteAllQuestionsUseCase: DeleteAllQuestionsUseCase,
+    private val savingOwnSurveyUseCase: SavingOwnSurveyUseCase
 ) : ViewModel() {
 
     var questionCount = 0
@@ -139,7 +142,7 @@ class AddSurveyQuestionViewModel @Inject constructor(
                             }
                             is Resource.Success -> {
                                 _state.value = AddSurveyQuestionState(isLoading = false)
-
+                                savingOwnSurveyUseCase.invoke().launchIn(viewModelScope)
                                 deleteAllQuestionsUseCase.invoke().launchIn(viewModelScope)
 
                                 _eventFlow.emit(
