@@ -67,7 +67,13 @@ class MySurveyListViewModel @Inject constructor(
                     )
                 }
             }
-            is MySurveyListEvent.NavToStatistics -> {}
+            is MySurveyListEvent.NavToStatistics -> {
+                viewModelScope.launch {
+                    _eventFlow.emit(
+                        UiEvent.Navigate(Screen.StatisticScreen.route)
+                    )
+                }
+            }
         }
     }
 }

@@ -122,7 +122,7 @@ fun MySurveyListScreen(
                         modifier = Modifier.padding(top = 25.dp, start = 20.dp, end = 20.dp)
                     )
                     Text(
-                        text = "survey's statistics",
+                        text = "survey's performing",
                         fontSize = 32.sp,
                         fontFamily = istokweb,
                         fontWeight = FontWeight.Bold,
@@ -228,7 +228,7 @@ fun StatisticsListItem(data: SurveyInfo, viewModel: MySurveyListViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(onClick = {
-
+                        viewModel.onEvent(MySurveyListEvent.NavToStatistics)
                     }) {
                         Text(text = "Open statistics")
                     }
