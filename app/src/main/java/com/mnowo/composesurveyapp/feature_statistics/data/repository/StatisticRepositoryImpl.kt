@@ -2,6 +2,7 @@ package com.mnowo.composesurveyapp.feature_statistics.data.repository
 
 import com.mnowo.composesurveyapp.core.domain.models.SavingOwnSurvey
 import com.mnowo.composesurveyapp.core.domain.models.SurveyInfo
+import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
 import com.mnowo.composesurveyapp.feature_statistics.data.local.StatisticDao
 import com.mnowo.composesurveyapp.feature_statistics.data.remote.StatisticRemoteDb
 import com.mnowo.composesurveyapp.feature_statistics.domain.repository.StatisticRepository
@@ -18,6 +19,10 @@ class StatisticRepositoryImpl @Inject constructor(
 
     override suspend fun getOwnCachedSurveys(): List<SavingOwnSurvey> {
         return dao.getOwnCachedSurveys()
+    }
+
+    override suspend fun getAnswer(collectionPath: String): List<GetQuestion> {
+        return remoteDb.getAnswer(collectionPath = collectionPath)
     }
 
 }

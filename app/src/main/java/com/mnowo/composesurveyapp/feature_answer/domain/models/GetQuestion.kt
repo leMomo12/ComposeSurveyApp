@@ -13,5 +13,9 @@ data class GetQuestion(
     var questionTwo: String?,
     var questionThree: String?,
     var questionFour: String?,
+    var countOne: Int? = null,
+    var countTwo: Int? = null,
+    var countThree: Int? = null,
+    var countFour: Int? = null,
     var error: String? = null
 )

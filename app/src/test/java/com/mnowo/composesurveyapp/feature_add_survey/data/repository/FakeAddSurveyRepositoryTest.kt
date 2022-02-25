@@ -1,6 +1,7 @@
 package com.mnowo.composesurveyapp.feature_add_survey.data.repository
 
 import com.mnowo.composesurveyapp.core.domain.models.RemoteDbRespond
+import com.mnowo.composesurveyapp.core.domain.models.SavingOwnSurvey
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyQuestion
 import com.mnowo.composesurveyapp.feature_add_survey.domain.models.SurveyTitleAndDescription
 import com.mnowo.composesurveyapp.feature_add_survey.domain.repositrory.AddSurveyRepository
@@ -29,8 +30,11 @@ class FakeAddSurveyRepositoryTest : AddSurveyRepository {
         return RemoteDbRespond(isSuccessful = true)
     }
 
+    override suspend fun savingOwnSurvey(savingOwnSurvey: SavingOwnSurvey) {
+    }
+
     override suspend fun addSurveyTitleAndDescription(surveyTitleAndDescription: SurveyTitleAndDescription): RemoteDbRespond {
-        TODO()
+        return RemoteDbRespond()
     }
 
     override suspend fun addSurveyTitleAndDescriptionToRoom(surveyTitleAndDescription: SurveyTitleAndDescription) {
@@ -41,8 +45,13 @@ class FakeAddSurveyRepositoryTest : AddSurveyRepository {
         questionList.clear()
     }
 
-    override suspend fun addSurveyTitleAndDescriptionToInfo(surveyTitleAndDescription: SurveyTitleAndDescription): RemoteDbRespond {
-        TODO("Not yet implemented")
+    override suspend fun addSurveyTitleAndDescriptionToInfo(
+        surveyTitleAndDescription: SurveyTitleAndDescription,
+        questionCount: Int
+    ): RemoteDbRespond {
+       return RemoteDbRespond()
     }
+
+
 
 }

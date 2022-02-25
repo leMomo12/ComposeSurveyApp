@@ -122,7 +122,7 @@ fun MySurveyListScreen(
                         modifier = Modifier.padding(top = 25.dp, start = 20.dp, end = 20.dp)
                     )
                     Text(
-                        text = "survey's performing",
+                        text = "Survey's performing",
                         fontSize = 32.sp,
                         fontFamily = istokweb,
                         fontWeight = FontWeight.Bold,

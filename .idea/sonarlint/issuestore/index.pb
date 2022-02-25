@@ -43,8 +43,6 @@ A
 gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
 ?
 settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
-s
-Capp/src/main/java/com/mnowo/composesurveyapp/core/ui/theme/Color.kt,7\8\78d6ab7905af0c9fcddc7b56db61ac634d4110c2
 r
 Bapp/src/main/java/com/mnowo/composesurveyapp/di/AddSurveyModule.kt,3\c\3c56c688d6cfeaaa2fb8531a41013ba2e9fdd910
 Ü
@@ -61,8 +59,6 @@ Sapp/src/main/java/com/mnowo/composesurveyapp/core/domain/models/ValidationResul
 _app/src/main/java/com/mnowo/composesurveyapp/feature_auth/data/repository/AuthRepositoryImpl.kt,f\5\f5672af88d10bc080eaa1385b91300d54b8a4397
 ç
 ]app/src/main/java/com/mnowo/composesurveyapp/feature_auth/domain/repository/AuthRepository.kt,8\b\8b3cdb84fb952ba0db35d8e40a4714dd2f763f31
-û
-napp/src/test/java/com/mnowo/composesurveyapp/feature_add_survey/data/repository/FakeAddSurveyRepositoryTest.kt,4\a\4a168c93a9ab8fc5219bbf05773615b723c3687a
 Ö
 Uapp/src/main/java/com/mnowo/composesurveyapp/feature_auth/data/remote/AuthRemoteDb.kt,6\e\6eab8b532e2ae3c4ec04419f5e3e0e07101e211e
 ô
@@ -81,8 +77,6 @@ p
 Zapp/src/main/java/com/mnowo/composesurveyapp/feature_auth/presentation/login/LoginEvent.kt,7\7\7789bb4cf2c2b9fd91ee3c1d3077020506831fac
 ò
 happ/src/main/java/com/mnowo/composesurveyapp/feature_answer/domain/use_case/GetSurveyQuestionsUseCase.kt,9\7\97ddb5e45c355d6928f4ec9eb6b61c48cf9f35e0
-à
-Xapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/domain/models/GetQuestion.kt,5\b\5b176b23aabccc476a091aad346f2ecf73d388f8
 à
 Xapp/src/main/java/com/mnowo/composesurveyapp/feature_home/presentation/home/HomeState.kt,3\d\3d4639a13f8610a354a22c13369dfae9c74d22ae
 ñ
@@ -139,14 +133,8 @@ Bapp/src/main/java/com/mnowo/composesurveyapp/core/ui/theme/Type.kt,0\8\08ab4b2
 tapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/presentation/after_answer_screen/AfterAnswerViewModel.kt,d\e\de3c35c513d0cede9eadef3c52de68ce38614495
 °
 qapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/presentation/after_answer_screen/AfterAnswerScreen.kt,b\7\b7b471aa97b810f81cd88acc8904af5467ffece2
-â
-Yapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/data/remote/AnswerRemoteDb.kt,c\e\cef2bd4f6eaf943453a6b37319f203bab1ffafd5
-<
-build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 s
 Capp/src/main/java/com/mnowo/composesurveyapp/core/ui/theme/Theme.kt,3\9\3932194f40672949b2173b28673379a684bd79fb
-@
-app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 ~
 Napp/src/main/java/com/mnowo/composesurveyapp/core/presentation/MainActivity.kt,6\b\6b80820c14511623193bb277794a72ffe5f46e78
 ö
@@ -185,8 +173,6 @@ p
 @app/src/main/java/com/mnowo/composesurveyapp/core/util/Screen.kt,d\c\dc5a43cdca4f6f1f5b677a9439e04b7e368b86bf
 ¶
 vapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/presentation/before_answer_screen/BeforeAnswerViewModel.kt,b\5\b5de328b7c82accc8703c905e500a3b2413f13b9
-ñ
-fapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/presentation/answer_screen/AnswerScreen.kt,a\d\ad1d8b69337fd23160059e7bdef3cf6df740214d
 Ö
 Uapp/src/main/java/com/mnowo/composesurveyapp/feature_home/data/remote/HomeRemoteDb.kt,5\7\57ca503a55e06105c255d79030d2c5096a2ec342
 è
@@ -207,5 +193,5 @@ Xapp/src/main/java/com/mnowo/composesurveyapp/feature_home/presentation/home/Hom
 sapp/src/main/java/com/mnowo/composesurveyapp/feature_answer/presentation/before_answer_screen/BeforeAnswerScreen.kt,c\6\c6c7f9a702fd3b7b37277ac016c7fbe05fe45d11
 á
 Wapp/src/main/java/com/mnowo/composesurveyapp/core/presentation/components/Navigation.kt,a\4\a4742e9213514d2def19f5c1502960ea79d0ee8c
-ó
-gapp/src/main/java/com/mnowo/composesurveyapp/feature_statistics/domain/use_case/GetOwnSurveysUseCase.kt,b\3\b3d497bbf66cf81d250e3d31b374cd09de7105cd
+´
+{app/src/main/java/com/mnowo/composesurveyapp/feature_add_survey/presentation/add_survey_question/AddSurveyQuestionScreen.kt,e\3\e3ad59e5be7aabe96f08041b1021fbb55728e6fb
