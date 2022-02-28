@@ -1,6 +1,7 @@
 package com.mnowo.composesurveyapp.feature_statistics.data.remote
 
 import android.util.Log
+import android.util.Log.d
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
@@ -68,51 +69,61 @@ class StatisticRemoteDb @Inject constructor() {
         val surveyListData: MutableList<GetQuestion> = mutableListOf()
 
         try {
-            val result = FirebaseFirestore.getInstance().collection(Constants.SURVEY_INFO)
-                .document(collectionPath)
-                .collection(Constants.SURVEY_QUESTIONS)
-                .get()
-                .await()
+            Firebase.runCatching {
+                val result = FirebaseFirestore.getInstance().collection(Constants.SURVEY_INFO)
+                    .document(collectionPath)
+                    .collection(Constants.SURVEY_QUESTIONS)
+                    .get()
+                    .await()
 
-            val answerResult = FirebaseFirestore.getInstance().collection(Constants.SURVEY_INFO)
-                .document(collectionPath)
-                .collection(Constants.SURVEY_QUESTION_ANSWER)
-                .get()
-                .await()
+                for (document in result.documents) {
 
-            for (document in result.documents) {
-                val questionTitle = document.getString("questionTitle")
-                for (answer in answerResult.documents) {
-                    if (answer.toString() == questionTitle) {
-                        val firstQuestion = answer.getField<Int>("firstQuestion")
-                        val secondQuestion = answer.getField<Int>("secondQuestion")
-                        val thirdQuestion = answer.getField<Int>("thirdQuestion")
-                        val fourthQuestion = answer.getField<Int>("fourthQuestion")
+                    val questionTitle = document.getString("questionTitle")
 
-                        val questionOne = document.getString("questionOne")
-                        val questionTwo = document.getString("questionTwo")
-                        val questionThree = document.getString("questionThree")
-                        val questionFour = document.getString("questionFour")
-
-                        val getQuestion = GetQuestion(
-                            0,
-                            questionTitle!!,
-                            questionOne,
-                            questionTwo,
-                            questionThree,
-                            questionFour,
-                            countOne = firstQuestion,
-                            countTwo = secondQuestion,
-                            countThree = thirdQuestion,
-                            countFour = fourthQuestion
-                        )
-
-                        surveyListData.add(getQuestion)
+                    val answerResult = questionTitle?.let {
+                        FirebaseFirestore.getInstance().collection(Constants.SURVEY_INFO)
+                            .document(collectionPath)
+                            .collection(Constants.SURVEY_QUESTION_ANSWER)
+                            .document(it)
+                            .get()
+                            .await()
                     }
+
+                    val firstQuestion = answerResult?.getField<Int>("firstQuestion")
+                    val secondQuestion = answerResult?.getField<Int>("secondQuestion")
+                    val thirdQuestion = answerResult?.getField<Int>("thirdQuestion")
+                    val fourthQuestion = answerResult?.getField<Int>("fourthQuestion")
+
+
+                    val questionOne = document.getString("questionOne")
+                    val questionTwo = document.getString("questionTwo")
+                    val questionThree = document.getString("questionThree")
+                    val questionFour = document.getString("questionFour")
+
+                    val getQuestion = GetQuestion(
+                        0,
+                        questionTitle!!,
+                        questionOne,
+                        questionTwo,
+                        questionThree,
+                        questionFour,
+                        countOne = firstQuestion,
+                        countTwo = secondQuestion,
+                        countThree = thirdQuestion,
+                        countFour = fourthQuestion
+                    )
+
+                    d("stats", "listData: ${getQuestion.toString()}")
+                    surveyListData.add(getQuestion)
                 }
+            }.onSuccess {
+                d("stats", "firebase success")
+            }.onFailure {
+                d("stats", "firebase failed")
             }
+
         } catch (e: Exception) {
-            Log.d("getSurvey", "Exception: ${e.localizedMessage} , ${e.cause}")
+            Log.d("stats", "Exception: ${e.localizedMessage} , ${e.cause}")
 
         }
         return surveyListData

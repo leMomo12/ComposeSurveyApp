@@ -29,10 +29,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mnowo.composesurveyapp.R
 import com.mnowo.composesurveyapp.core.ui.theme.grey
 import com.mnowo.composesurveyapp.core.domain.models.SurveyInfo
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
+import com.mnowo.composesurveyapp.core.util.Constants
 import com.mnowo.composesurveyapp.core.util.asString
 import com.mnowo.composesurveyapp.feature_statistics.presentation.my_survey_list_screen.MySurveyListEvent
 import com.mnowo.composesurveyapp.feature_statistics.presentation.my_survey_list_screen.MySurveyListViewModel
@@ -43,7 +45,8 @@ import androidx.compose.ui.unit.dp as dp
 @Composable
 fun MySurveyListScreen(
     onNavigate: (String) -> Unit,
-    viewModel: MySurveyListViewModel = hiltViewModel()
+    viewModel: MySurveyListViewModel = hiltViewModel(),
+    navController: NavController
 ) {
 
     val scaffoldState = rememberScaffoldState()
@@ -84,6 +87,8 @@ fun MySurveyListScreen(
         viewModel.eventFlow.collectLatest {
             when (it) {
                 is UiEvent.Navigate -> {
+                    navController.currentBackStackEntry?.savedStateHandle?.set(Constants.PARAM_SURVEY_PATH, viewModel.surveyPath.value)
+
                     onNavigate(it.route)
                 }
                 is UiEvent.ShowSnackbar -> {
@@ -228,7 +233,7 @@ fun StatisticsListItem(data: SurveyInfo, viewModel: MySurveyListViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(onClick = {
-                        viewModel.onEvent(MySurveyListEvent.NavToStatistics)
+                        viewModel.onEvent(MySurveyListEvent.NavToStatistics(data.title))
                     }) {
                         Text(text = "Open statistics")
                     }

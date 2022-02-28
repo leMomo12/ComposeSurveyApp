@@ -18,7 +18,7 @@ import com.mnowo.composesurveyapp.feature_statistics.data.local.StatisticDao
         GetQuestion::class,
         Answer::class,
         SavingOwnSurvey::class],
-    version = 11,
+    version = 12,
     exportSchema = false
 )
 abstract class SurveyDatabase : RoomDatabase() {

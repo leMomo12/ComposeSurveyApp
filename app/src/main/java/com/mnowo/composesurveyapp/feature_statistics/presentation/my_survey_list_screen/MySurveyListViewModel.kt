@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MySurveyListViewModel @Inject constructor(
-    private val getOwnSurveysUseCase: GetOwnSurveysUseCase
+    getOwnSurveysUseCase: GetOwnSurveysUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf(MySurveyListState())
@@ -31,6 +31,9 @@ class MySurveyListViewModel @Inject constructor(
 
     private val _surveyInfoList = mutableStateOf<MutableList<SurveyInfo>>(mutableListOf())
     val surveyInfoList: State<MutableList<SurveyInfo>> = _surveyInfoList
+
+    private val _surveyPath = mutableStateOf<String>("")
+    val surveyPath: State<String> = _surveyPath
 
     init {
         getOwnSurveysUseCase.invoke().onEach {
@@ -68,6 +71,7 @@ class MySurveyListViewModel @Inject constructor(
                 }
             }
             is MySurveyListEvent.NavToStatistics -> {
+                _surveyPath.value = event.title
                 viewModelScope.launch {
                     _eventFlow.emit(
                         UiEvent.Navigate(Screen.StatisticScreen.route)

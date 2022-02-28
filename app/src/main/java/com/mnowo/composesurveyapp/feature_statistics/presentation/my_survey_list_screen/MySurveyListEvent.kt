@@ -2,6 +2,6 @@ package com.mnowo.composesurveyapp.feature_statistics.presentation.my_survey_lis
 
 sealed class MySurveyListEvent {
     object NavBackToHome : MySurveyListEvent()
-    object NavToStatistics  : MySurveyListEvent()
+    data class NavToStatistics(var title: String)  : MySurveyListEvent()
     object More : MySurveyListEvent()
 }

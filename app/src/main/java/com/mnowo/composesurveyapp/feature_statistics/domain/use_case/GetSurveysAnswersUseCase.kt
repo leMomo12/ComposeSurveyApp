@@ -1,5 +1,6 @@
 package com.mnowo.composesurveyapp.feature_statistics.domain.use_case
 
+import android.util.Log.d
 import com.mnowo.composesurveyapp.core.presentation.util.Resource
 import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
 import com.mnowo.composesurveyapp.feature_statistics.data.repository.StatisticRepositoryImpl
@@ -15,9 +16,7 @@ class GetSurveysAnswersUseCase @Inject constructor(
         emit(Resource.Loading<List<GetQuestion>>())
 
         val result = repositoryImpl.getAnswer(collectionPath)
-
-        if (!result.isNullOrEmpty()) {
-            emit(Resource.Success<List<GetQuestion>>(data = result))
-        }
+        d("stats", "nice")
+        emit(Resource.Success<List<GetQuestion>>(data = result))
     }
 }
