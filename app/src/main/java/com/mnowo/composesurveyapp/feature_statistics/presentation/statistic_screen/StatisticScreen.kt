@@ -1,5 +1,6 @@
 package com.mnowo.composesurveyapp.feature_statistics
 
+import android.util.Log.d
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -7,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.runtime.*
@@ -14,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +28,8 @@ import com.mnowo.composesurveyapp.R
 import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.ui.theme.grey
 import com.mnowo.composesurveyapp.core.ui.theme.lightBlue2
+import com.mnowo.composesurveyapp.core.util.UiText
+import com.mnowo.composesurveyapp.core.util.asString
 import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
 import com.mnowo.composesurveyapp.feature_statistics.presentation.statistic_screen.StatisticEvent
 import com.mnowo.composesurveyapp.feature_statistics.presentation.statistic_screen.StatisticViewModel
@@ -33,8 +38,9 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun StatisticScreen(onNavigate: (String) -> Unit, viewModel: StatisticViewModel = hiltViewModel(), surveyPath: String) {
-    val scaffoldState = rememberScaffoldState()
 
+    val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
 
     val istokweb = FontFamily(
         Font(R.font.istokweb_bold, FontWeight.Bold),
@@ -51,7 +57,11 @@ fun StatisticScreen(onNavigate: (String) -> Unit, viewModel: StatisticViewModel 
                 is UiEvent.Navigate -> {
                     onNavigate(it.route)
                 }
-                is UiEvent.ShowSnackbar -> {}
+                is UiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = it.uiText.asString(context = context)
+                    )
+                }
             }
         }
     }
@@ -77,6 +87,9 @@ fun StatisticScreenContent(
     viewModel: StatisticViewModel
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
+        IconButton(onClick = { viewModel.onEvent(StatisticEvent.BackToMySurveyList) }) {
+            Icon(Icons.Default.ArrowBackIos, contentDescription = "")
+        }
         Text(
             text = "Watch your",
             fontSize = 32.sp,
@@ -95,7 +108,7 @@ fun StatisticScreenContent(
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Icon(Icons.Default.ArrowLeft, contentDescription = "",
                 Modifier
-                    .scale(1.6f)
+                    .scale(1.3f)
                     .clickable {
                         viewModel.onEvent(StatisticEvent.PreviousSurvey)
                     })
@@ -104,7 +117,7 @@ fun StatisticScreenContent(
             Spacer(modifier = Modifier.padding(horizontal = 20.dp))
             Icon(Icons.Default.ArrowRight, contentDescription = "",
                 Modifier
-                    .scale(1.6f)
+                    .scale(1.3f)
                     .clickable {
                         viewModel.onEvent(StatisticEvent.NextSurvey)
                     })
@@ -144,6 +157,12 @@ fun StatisticAnswerItem(
         mutableStateOf("")
     }
 
+    var percentage by remember {
+        mutableStateOf(0.0)
+    }
+
+    val percentageArray = viewModel.calculatePercentage()
+
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Card(
             shape = RoundedCornerShape(15.dp),
@@ -155,15 +174,19 @@ fun StatisticAnswerItem(
             when (index) {
                 0 -> {
                     text = data.questionOne.toString()
+                    percentage = percentageArray[0]
                 }
                 1 -> {
                     text = data.questionTwo.toString()
+                    percentage = percentageArray[1]
                 }
                 2 -> {
                     text = data.questionThree.toString()
+                    percentage = percentageArray[2]
                 }
                 3 -> {
                     text = data.questionFour.toString()
+                    percentage = percentageArray[3]
                 }
             }
 
@@ -175,8 +198,8 @@ fun StatisticAnswerItem(
                 modifier = Modifier.padding(start = 25.dp, top = 20.dp, bottom = 20.dp, end = 25.dp)
             )
         }
-        Spacer(modifier = Modifier.padding(horizontal = 10.dp))
-        Text(text = "100%", fontFamily = istokweb, fontWeight = FontWeight.Normal, color = grey)
+        Spacer(modifier = Modifier.padding(horizontal = 5.dp))
+        Text(text = "$percentage%", fontFamily = istokweb, fontWeight = FontWeight.Normal, color = grey)
     }
 }
 
