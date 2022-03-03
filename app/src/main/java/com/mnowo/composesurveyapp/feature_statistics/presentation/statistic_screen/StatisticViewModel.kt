@@ -11,7 +11,7 @@ import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.core.util.UiText
 import com.mnowo.composesurveyapp.feature_answer.domain.models.GetQuestion
 import com.mnowo.composesurveyapp.feature_statistics.domain.use_case.GetSurveysAnswersUseCase
-import com.mnowo.composesurveyapp.feature_statistics.presentation.statistic_screen.util.RoundOffDecimals
+import com.mnowo.composesurveyapp.core.util.RoundOffDecimals
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

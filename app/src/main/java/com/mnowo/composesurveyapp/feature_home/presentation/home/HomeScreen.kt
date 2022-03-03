@@ -192,6 +192,14 @@ fun SurveyListItem(data: SurveyInfo, viewModel: HomeViewModel) {
         mutableStateOf(false)
     }
 
+    var minExpectedTime by remember {
+        mutableStateOf(viewModel.calcMinimumTime(data = data))
+    }
+
+    var maxExpectedTime by remember {
+        mutableStateOf(viewModel.calcMaximumTime(data = data))
+    }
+
     Card(
         elevation = 5.dp,
         shape = RoundedCornerShape(10.dp),
@@ -281,7 +289,7 @@ fun SurveyListItem(data: SurveyInfo, viewModel: HomeViewModel) {
                         tint = grey,
                         modifier = Modifier.scale(0.7f)
                     )
-                    Text(text = "5-10 min", fontSize = 16.sp)
+                    Text(text = "$minExpectedTime-$maxExpectedTime min", fontSize = 16.sp)
                 }
             }
         }

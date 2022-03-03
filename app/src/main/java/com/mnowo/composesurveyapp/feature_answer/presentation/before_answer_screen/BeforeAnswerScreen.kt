@@ -45,12 +45,17 @@ fun BeforeAnswerScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.surveyDetail = surveyInfo
+        viewModel.setMinExpectedTime(surveyInfo.questionCount)
+        viewModel.setMaxExpectedTime(surveyInfo.questionCount)
         viewModel.onEvent(BeforeAnswerEvent.DeleteAllCachedQuestions)
         viewModel.onEvent(BeforeAnswerEvent.DeleteAllCachedAnswers)
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.Navigate -> {
-                    navController.currentBackStackEntry?.savedStateHandle?.set(Constants.PARAM_SURVEY_PATH, viewModel.surveyDetail.title)
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        Constants.PARAM_SURVEY_PATH,
+                        viewModel.surveyDetail.title
+                    )
 
                     onNavigate(event.route)
                 }
@@ -120,7 +125,7 @@ fun BeforeAnswerScreen(
                 )
                 Spacer(modifier = Modifier.padding(vertical = 10.dp))
                 Text(
-                    text = "Expected time: 5-10 minutes",
+                    text = "Expected time: ${viewModel.minExpectedTime.value}-${viewModel.maxExpectedTime.value} minutes",
                     fontSize = 18.sp,
                     fontFamily = istokweb,
                     fontWeight = FontWeight.Medium

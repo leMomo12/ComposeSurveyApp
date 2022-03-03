@@ -9,6 +9,7 @@ import com.mnowo.composesurveyapp.core.presentation.util.UiEvent
 import com.mnowo.composesurveyapp.core.util.Screen
 import com.mnowo.composesurveyapp.core.util.UiText
 import com.mnowo.composesurveyapp.core.domain.models.SurveyInfo
+import com.mnowo.composesurveyapp.core.util.RoundOffDecimals
 import com.mnowo.composesurveyapp.feature_home.domain.use_case.GetSurveyInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -38,12 +39,7 @@ class HomeViewModel @Inject constructor(
     fun setSurveyInfoState(value: SurveyInfo) {
         _surveyInfoState.value = value
     }
-    private val _drawerState = mutableStateOf<Boolean>(false)
-    val drawerState: State<Boolean> = _drawerState
 
-    fun setDrawerState(value: Boolean) {
-        _drawerState.value = value
-    }
 
     private val _dropDownState = mutableStateOf<Boolean>(false)
     val dropDownState: State<Boolean> = _dropDownState
@@ -109,5 +105,23 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun calcMinimumTime(data: SurveyInfo): Double {
+        var expectedTime = 0.0
+        viewModelScope.launch {
+            expectedTime = data.questionCount * 0.25
+            expectedTime = RoundOffDecimals.roundOffDecimal(expectedTime)!!
+        }
+        return expectedTime
+    }
+
+    fun calcMaximumTime(data: SurveyInfo): Double {
+        var expectedTime = 0.0
+        viewModelScope.launch {
+            expectedTime = data.questionCount * 0.5
+            expectedTime = RoundOffDecimals.roundOffDecimal(expectedTime)!!
+        }
+        return expectedTime
     }
 }

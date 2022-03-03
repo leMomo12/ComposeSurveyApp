@@ -1,4 +1,4 @@
-package com.mnowo.composesurveyapp.feature_statistics.presentation.statistic_screen.util
+package com.mnowo.composesurveyapp.core.util
 
 import java.math.RoundingMode
 import java.text.DecimalFormat
